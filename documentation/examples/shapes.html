@@ -1,0 +1,136 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+	<link rel="stylesheet" href="../style.css" type="text/css" />
+	<script type="text/javascript" src="../../cajal.js"></script>
+	<title>Examples: basic shapes of cajal - canvas javascript library</title>
+</head>
+<body>
+<div id="wrapper">
+	<ol id="nav">
+		<li><a href="../index.html">Documentation</a></li>
+		<li><a href="../function-reference.html">Function Reference</a></li>
+		<li>
+			<a href="shapes.html" class='active'>Examples</a>
+			<ul>
+				<li><a href="shapes.html" class='active'>Basic shapes</a></li>
+				<li><a href="animations.html">Animations</a></li>
+				<li><a href="bars.html">Bar chart</a></li>
+				<li><a href="particular.html">Particle explosion</a></li>
+			</ul>
+		</li>
+	</ol>
+	<div id="content">
+		<h1>Basic shapes</h1>
+		<div class="inner">
+		
+			<h2>Circle</h2>
+			<canvas id="circle" height="200" width="400"></canvas>
+			<script type="text/javascript">
+			var circle = new cajal('circle');
+			circle.addItem('c1', new cajal.Circle(200, 100, 50)).draw({fill: 'black', stroke:'blue', width: 10});
+			</script>
+			<h3>Code</h3>
+			<pre>
+&lt;canvas id="circle" height="200" width="400"&gt;&lt;/canvas&gt;
+&lt;script type="text/javascript"&gt;
+    var circle = new cajal('circle');
+    circle.addItem('c1', new cajal.Circle(200, 100, 50)).draw({
+        fill  : 'black',
+        stroke: 'blue',
+        width : 10
+    });
+&lt;/script&gt;
+			</pre>
+			
+			<h2>Rectangular (normal &amp; rounded corners)</h2>
+			<canvas id="rect" height="200" width="400"></canvas>
+			<script type="text/javascript">
+			var rect = new cajal('rect');
+			rect.addItem('r1', new cajal.Rect(50, 50, 60, 80)).addItem('r2', new cajal.Rect(200,50,60,80,15)).draw({fill: 'black', stroke:'blue', width: 10});
+			</script>
+			<h3>Code</h3>
+			<pre>
+&lt;canvas id="rect" height="200" width="400"&gt;&lt;/canvas&gt;
+&lt;script type="text/javascript"&gt;
+    var rect = new cajal('rect');
+    rect.addItem('r1', new cajal.Rect(50, 50, 60, 80))
+        .addItem('r2', new cajal.Rect(200, 50, 60, 80, 15))
+        .draw({
+        fill  : 'black',
+        stroke: 'blue',
+        width : 10
+    });
+&lt;/script&gt;
+			</pre>
+			
+			<h2>Path</h2>
+			<canvas id="path" height="200" width="400"></canvas>
+			<script type="text/javascript">
+			var path = new cajal('path');
+			path.addItem('p1', new cajal.Path(50,50).quadraticCurve(100,50,50,80).to(80,120).to(20,80)).draw({fill: 'black', stroke:'blue', width: 10});
+			</script>
+			<h3>Code</h3>
+			<pre>
+&lt;canvas id="path" height="200" width="400"&gt;&lt;/canvas&gt;
+&lt;script type="text/javascript"&gt;
+    var path = new cajal('path');
+    path.addItem('p1', new cajal.Path(50, 50).quadraticCurve(100, 50, 50, 80)
+                                             .to(80, 120)
+                                             .to(20, 80)))
+        .draw({
+            fill  : 'black',
+            stroke: 'blue',
+            width : 10
+    });
+&lt;/script&gt;
+			</pre>
+			
+			<h2>Text</h2>
+			<canvas id="text" height="200" width="400"></canvas>
+			<script type="text/javascript">
+			var text = new cajal('text');
+			text.addItem('t1', new cajal.Text(50, 150, "cajal")).draw({fill: 'black', font: '90px sans-serif'});
+			</script>
+			<h3>Code</h3>
+			<pre>
+&lt;canvas id="text" height="200" width="400"&gt;&lt;/canvas&gt;
+&lt;script type="text/javascript"&gt;
+    var text = new cajal('text');
+    text.addItem('t1', new cajal.Text(50, 150, "cajal"))
+        .draw({
+            fill  : 'black',
+            font  : '90px sans-serif'
+    });
+&lt;/script&gt;
+			</pre>
+			
+			<h2>Polygon</h2>
+			<canvas id="poly" height="200" width="400"></canvas>
+			<script type="text/javascript">
+			var poly = new cajal('poly');
+			poly.addItem('poly', new cajal.Polygon(200, 100, 5, 80)).draw({fill: 'black', stroke: 'blue', width: 10});
+			</script>
+			<h3>Polygon</h3>
+			<pre>
+&lt;canvas id="poly" height="200" width="400"&gt;&lt;/canvas&gt;
+&lt;script type="text/javascript"&gt;
+    var poly = new cajal('poly');
+    poly.addItem('poly', new cajal.Polygon(200, 100, 5, 80))
+        .draw({
+            fill  : 'black',
+            stroke: 'blue',
+            width : 10
+    });
+&lt;/script&gt;
+			</pre>
+			
+			
+			
+		</div>
+	</div>
+</div>
+<div style="clear:both;padding-bottom:20px;"></div>
+</body>
+</html>

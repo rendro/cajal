@@ -1,0 +1,352 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+	<link rel="stylesheet" href="style.css" type="text/css" />
+	<title>Documentation of cajal - canvas javascript library</title>
+</head>
+<body>
+<div id="wrapper">
+	<ol id="nav">
+		<li><a href="index.html" class='active'>Documentation</a></li>
+		<li><a href="function-reference.html">Function Reference</a></li>
+		<li>
+			<a href="examples">Examples</a>
+			<ul>
+				<li><a href="examples/shapes.html">Basic shapes</a></li>
+				<li><a href="examples/animations.html">Animations</a></li>
+				<li><a href="examples/bars.html">Bar chart</a></li>
+				<li><a href="examples/particular.html">Particle explosion</a></li>
+			</ul>
+		</li>
+	</ol>
+	<div id="content">
+		<h1>Documentation</h1>
+		<div class="inner">
+
+<p>cajal is a javascript library to draw and animate shapes on the HTML5 canvas element</p>
+
+<h2>Installation</h2>
+
+<p>Download the source and include the cajal.js file in the head section of your html document:</p>
+
+<pre><code>&lt;script type="text/javascript" src="cajal.js"&gt;&lt;/script&gt;
+</code></pre>
+
+<h2>Getting an instance of cajal</h2>
+
+<p>To create a instance of the cajal library call the cajal constructor and pass the id of your canvas element as an argument</p>
+
+<pre><code>&lt;canvas id="mycanvas" width="800" height="600"&gt;&lt;/canvas&gt;
+&lt;script type="text/javascript"&gt;
+    var c = new cajal('mycanvas');
+&lt;/script&gt;
+</code></pre>
+
+<h2>The shapes</h2>
+
+<p>Each shape is an object that is independet from the canvas it is later drawn on. So you can draw the same shape (e.g. a circle) on several canvas elements.</p>
+
+<h3>Circle</h3>
+
+<p>You can create a circle by calling the circle constructor <code>cajal.Circle(xPos, yPos, radius)</code>. The arguments are the x and y position of the circle and the radius.</p>
+
+<pre><code>var circle = new cajal.Circle(50, 80, 30);
+</code></pre>
+
+<h4>Item specific methods</h4>
+
+<ul>
+<li><code>center()</code>: The return value is a literal object with the x and the y coordinates of the circle's center. (For example: <code>{ x: 50, y: 80}</code>)</li>
+</ul>
+
+<h3>Rectangular</h3>
+
+<p>Create a rectangular using <code>cajal.Rect(xPos, yPos, width, height, [radius])</code>. The parameter <code>radius</code> is optional for creating a rectangular with rounded corners.</p>
+
+<pre><code>//normal rectangular
+var rect = new cajal.Rect(50, 80, 100, 120);
+
+//rounded corners
+var roundedRect = new cajal.Rect(50, 80, 100, 120,30);
+</code></pre>
+
+<h4>Item specific methods</h4>
+
+<ul>
+<li><code>center()</code>: The return value is a literal object with the x and the y coordinates of the rectangular's center. (For example: <code>{ x: 50, y: 80}</code>)</li>
+<li><code>width()</code>: Returns the width of the rectangular</li>
+<li><code>height()</code>: Returns the height of the rectangular</li>
+</ul>
+
+<h3>Path</h3>
+
+<p>Create a path object with <code>cajal.Path(xPos, yPos)</code>. There are several methods you can call to add points, or bezier curves to this path.</p>
+
+<pre><code>var path = cajal.Path(20, 30).to(100, 30).to(100, 80).close();
+</code></pre>
+
+<h4>Item specific methods</h4>
+
+<ul>
+<li><code>line(xPos, yPos)</code>: Draw a line from the last point in path to the position (xPos, yPos)</li>
+<li><code>to(xPos, yPos)</code>: Synonym for <code>to(xPos, yPos)</code></li>
+<li><code>quadraticCurve(xPos, yPos, cx, cy)</code>: Draw a quadratic bezier curve to (xPos, yPos) with the control point (cx, cy)</li>
+<li><code>bezierCurve(xPos, yPos, c1x, c1y, c2x, c2y)</code>: Draw a quadratic bezier curve to (xPos, yPos) with the control points (c1x, c1y) and (c2x, c2y)</li>
+<li><code>close()</code>: Close the path (every path will be automatically closed before drawing it on the canvas)</li>
+<li><code>center()</code>: The return value is a literal object with the <strong>approximate</strong> x and the y coordinates of the path's center. (For example: <code>{ x: 50, y: 80}</code>)</li>
+</ul>
+
+<h3>Text</h3>
+
+<p>Create a path object with <code>cajal.Text(xPos, yPos, text)</code>.</p>
+
+<pre><code>var text = cajal.Text(20, 30, 'cajal - canvas javascript library');
+</code></pre>
+
+<h4>Item specific methods</h4>
+
+<ul>
+<li><code>append(text)</code>: Append text to the current text</li>
+<li><code>prepend(text)</code>: Prepend text to the current text</li>
+<li><code>text(text)</code>: Set new text</li>
+<li><code>center()</code>: The return value is a literal object with the <strong>approximate</strong> x and the y coordinates of the center. (For example: <code>{ x: 50, y: 80}</code>)</li>
+</ul>
+
+<h3>Polygon</h3>
+
+<p>Create a symmetric polygon object with <code>cajal.Polygon(xPos, yPos, edges, radius)</code>.
+Example: create a poygon with 5 edges and a radius of 50px</p>
+
+<pre><code>var poly = cajal.Polygon(20, 30, 5, 30);
+</code></pre>
+
+<h4>Item specific methods</h4>
+
+<ul>
+<li><code>setPoints(n, r)</code>: Set the number of edges and the radius to new values</li>
+<li><code>center()</code>: The return value is a literal object with the x and the y coordinates of the center. (For example: <code>{ x: 50, y: 80}</code>)</li>
+</ul>
+
+<h3>Methods for every item</h3>
+
+<p>There are a bunch of methods that you can call on each item object to modify it.</p>
+
+<ul>
+<li><code>clone()</code>: Returns a clone of the item</li>
+<li><code>hide()</code>: Hide the item (will not be drawn on the canvas)</li>
+<li><code>show()</code>: Show the item if it was hidden</li>
+<li><code>changeMatrix(m11, m12, m21, m22, dy, dx)</code>: Change the matrix of the canvas element only for this item. The current matrix will be multiplied with your matrix (scaling, rotation and moving can be done in one step if you know the basics of matrix stuff)</li>
+<li><code>setMatrix(m11, m12, m21, m22, dy, dx)</code>: Set the matrix of the canvas element only for this item. The current matrix will be overwritten with your matrix (scaling, rotation and moving can be done in one step if you know the basics of matrix stuff)</li>
+<li><code>rotate(angle)</code>: Rotate the item to the given angle (in degrees)</li>
+<li><code>rotateBy(angle)</code>: Rotate the item by a given angle (in degrees)</li>
+<li><code>move(x, y)</code>: Move the item to the given position</li>
+<li><code>moveBy(dx, dy)</code>: Move the item by the given offset</li>
+<li><code>scale(dx, dy)</code>: Scale the item to a given size <code>item.scale(1.2, 1.2)</code> will scale your item to 120% of its initial size</li>
+<li><code>scaleBy(dx, dy)</code>: Scale the item by a given size <code>item.scale(1.5, 1.5)</code> will scale your item to 150% of its current size</li>
+<li><code>setDrawOptions(options)</code>: Set draw options for this item as described in the chapter below</li>
+</ul>
+
+<h3>Draw options</h3>
+
+<p>The draw options must be a literal object with the following optional variables. Other variables will be ignored by the script an can be used as a data storage for item relevant information</p>
+
+<ul>
+<li><code>stroke</code>: Color to stroke, or <em>null</em> for no stroke. Accepted values are hexadecimal color codes (e.g. #175175), strings (e.g. <em>red</em> or <em>blue</em>), rgb(a) values (e.g. <em>rgba(120,200,85,0.7)</em> or <em>rgb(120,200,85)</em>) [default value: <em>null</em>]</li>
+<li><code>fill</code>: Color to fill, or <em>null</em> for no filling. Accepted values are hexadecimal color codes (e.g. #175175), strings (e.g. <em>red</em> or <em>blue</em>), rgb(a) values (e.g. <em>rgba(120,200,85,0.7)</em> or <em>rgb(120,200,85)</em>) [default value: <em>null</em>]</li>
+<li><code>width</code>: Width of the stroke line [default value: 1]</li>
+<li><code>font</code>: Font size and family for text renderings [default value: '13px sans-serif']</li>
+<li><code>lineCap</code>: Accepted values: <em>butt</em>, <em>square</em> and <em>round</em> [default value: <em>butt</em>] (<a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/the-canvas-element.html#line-styles">more information</a>)</li>
+<li><code>lineJoin</code>: Accepted values: <em>miter</em>, <em>bevel</em> and <em>round</em> [default value: <em>miter</em>] (<a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/the-canvas-element.html#line-styles">more information</a>)</li>
+<li><code>miterLimit</code>: <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/the-canvas-element.html#line-styles">More information</a> [default value: 10]</li>
+<li><code>shadowX</code>: Shadow x offset</li>
+<li><code>shadowX</code>: Shadow y offset</li>
+<li><code>shadowBlur</code>: Shadow blur value</li>
+<li><code>shadow</code>: Shadow color or <em>null</em> for no shadow. Accepted values are hexadecimal color codes (e.g. #175175), strings (e.g. <em>red</em> or <em>blue</em>), rgb(a) values (e.g. <em>rgba(120,200,85,0.7)</em> or <em>rgb(120,200,85)</em>) [default value: <em>null</em>]</li>
+</ul>
+
+<h2>How to add, remove and draw items to the canvas</h2>
+
+<p>First of all you need an instance of cajal with for the canvas element that you want to draw on.</p>
+
+<h3>Add items</h3>
+
+<p>Then you can add items with the method <code>addItem(itemId, item)</code>. The parameter <code>itemId</code> is the name of the item that you can define as you like. The second parameter is the item object.</p>
+
+<p>Example: drawing a circle</p>
+
+<pre><code>//get the cajal instance
+var c = cajal('mycanvas');
+
+//create a black circle with a white 2px stroke
+var circle = cajal.Circle(30,40,100).setDrawOptions({
+    fill   : 'black',
+    stroke : 'white',
+    width  : 2
+});
+
+//add the item to the cajal instance
+c.addItem('myCircle', circle);
+
+//draw all items (in that case only the circle
+c.draw();
+</code></pre>
+
+<h3>Get item for manipulation</h3>
+
+<p>If you want to manipulate your item after adding it to the cajal instance call <code>getItem(itemId)</code></p>
+
+<p>Example: fill the circle created above blue and move by 100px right and 50px down</p>
+
+<pre><code>c.getItem('myCircle').move(100, 50).setDrawOptions({
+    fill: 'blue'
+});
+
+//draw again to see the changes
+
+c.draw()
+</code></pre>
+
+<h3>Overwrite an existing item</h3>
+
+<p>If you want to overwrite the circle created above use <code>setItem(itemid, newItem)</code>.</p>
+
+<p>Example: Replace the circle with a rectangular</p>
+
+<pre><code>c.setItem('myCircle', new cajal.Rect(30, 40, 100, 200).setDrawOptions({
+    fill   : 'blue',
+    stroke : 'white',
+    width  : 3
+}));
+
+//draw again to see changes
+c.draw();
+</code></pre>
+
+<h3>Remove items</h3>
+
+<p>You can remove an item from the canvas with <code>deleteItem(itemId)</code> where <code>itemId</code> is your name for the item used in the <code>addItem</code> method</p>
+
+<p>Example: removing the circle created above</p>
+
+<pre><code>c.deleteItem('myCircle');
+</code></pre>
+
+<h3>Promote and demote items</h3>
+
+<p>The items are drawn in the order they are added to the cajal instance. That means, that the item that is added first will be on the bottom layer and the item added last on the top layer. To rearrange those layers and promote or demote different items you can use the following functions:</p>
+
+<ul>
+<li><code>up()</code>: Moves the item up one layer</li>
+<li><code>down()</code>: Moves the item down one layer</li>
+<li><code>top()</code>: Moves the item to the top (If another item is added afterwards, the new item will be on the top layer)</li>
+<li><code>bottom()</code>: Move the item to the bottom</li>
+</ul>
+
+<p>Example: Three overlapping circles and some rearrangement</p>
+
+<pre><code>var c = new cajal('mycanvas');
+
+var circle = new cajal.Circle(150, 150, 100);
+
+c.addItem('c1', circle.clone().setDrawOptions({
+    fill: 'red'
+}));
+c.addItem('c2', circle.clone().moveBy(100,0).setDrawOptions({
+    fill: 'green'
+}));
+c.addItem('c3', circle.clone().moveBy(50,100).setDrawOptions({
+    fill: 'blue'
+}));
+
+c.draw();
+</code></pre>
+
+<p>Now you have three circles (red, green and blue one) with the red on the bottom and the blue on the top. <code>c.getItem('c1').up()</code> will bring the red circle one layer up. So now the green one is on the bottom. I think that should be enough to get the concept.</p>
+
+<h3>Clear canvas</h3>
+
+<p>With the method <code>clear()</code> you clear the canvas.</p>
+
+<h3>Define global draw options</h3>
+
+<p>If you want all items drawn with the same draw options you can pass a literal object with the draw options as a parameter to the <code>draw()</code> method. Those draw options will overwrite the draw options of each item only for this draw call. Calling the draw method without a parameter will draw the items in their specific draw options again.
+See above for the different draw option variables.</p>
+
+<h3>Flags and settings</h3>
+
+<p>There are a few flags you can set globally for the cajal instance:</p>
+
+<ul>
+<li><code>autoClearCanvas</code>: Boolean weather the canvas is cleared automatically each <code>draw()</code> call [default value <em>true</em>]</li>
+<li><code>globalAlpha</code>: Double between 0 and 1 which defines the global alpha value applied to each item drawn</li>
+<li><code>globalCompositeOperation</code>: Describes how the items are drawn to the canvas <a href="https://developer.mozilla.org/samples/canvas-tutorial/6_1_canvas_composite.html">more information</a> [default value <em>source-over</em>]</li>
+</ul>
+
+<h2>Animations</h2>
+
+<p>So after knowing how to draw on the canvas we want to take a look on how to animate our elements. The cajal library has no default animations implemented, so that you must create animations by yourself. A animation is a normal function with some optional parameters.
+A basic animation function:</p>
+
+<pre><code>var foo = function (frame, duration) {
+    //move the item 'myItem' by 0.5px to the right, 0.3px to the bottom and rotate it by 1 degree counter-clockwise
+    this.getItem('myItem').moveBy(0.5,0.3).rotateBy(-1);
+}
+</code></pre>
+
+<p>Inside the animation function you can access the cajal instance the animation is running using <code>this</code>. That makes an animation independent from the canvas it is called on and you can reuse your animation functions on different canvas elements.
+This function can be triggered to start or stop by calling the function <code>trigger(animation, [duration])</code> and <code>stop(animation)</code>. The animation parameter in both functions is the animation function that we created.</p>
+
+<pre><code>//trigger the foo animation and set the lifetime to 500 frames
+c.trigger(foo, 500);
+</code></pre>
+
+<p>Now this function is called every frame (default framerate is set to 30) and after 500 calls/frames it will be stopped.
+The <code>duration</code> parameter is optional and leaving it blank will run the animation until you stop it manually.</p>
+
+<p>If you want to change the frame rate set the variable <code>loopFps</code> to your favourite value.</p>
+
+<h3>Easing functions</h3>
+
+<p>To get more natural movements cajal comes with some easing functions from <a href="http://www.robertpenner.com/">Robert Penner</a> which were adopted to work with cajal animations. Here is a complete list of all implemented easing functions:</p>
+
+<ul>
+<li><code>quadIn(d, f, t)</code></li>
+<li><code>quadIn(d, f, t)</code></li>
+<li><code>quadIn(d, f, t)</code></li>
+<li><code>expIn(d, f, t, p)</code></li>
+<li><code>expOut(d, f, t, p)</code></li>
+<li><code>expInOut(d, f, t, p)</code></li>
+<li><code>backIn(d, f, t, a)</code></li>
+<li><code>backOut(d, f, t, a)</code></li>
+<li><code>backInOut(d, f, t, a)</code></li>
+<li><code>bounceIn(d, f, t)</code></li>
+<li><code>bounceOut(d, f, t)</code></li>
+<li><code>bounceInOut(d, f, t)</code></li>
+<li><code>elasticIn(d, f, t, p)</code></li>
+<li><code>elasticOut(d, f, t, p)</code></li>
+<li><code>elasticInOut(d, f, t, p)</code></li>
+</ul>
+
+<p>Example: using expInOut with a power of 3 to move a rectangular by 300px on the x axis to the right</p>
+
+<pre><code>//define the animation function
+var bar = function (frame, duration) {
+    var dx = cajal.Ease.expInOut(300, frame, duration, 3);
+    this.getItem('myRect').moveBy(dx, 0);
+}
+
+//add a rectangular with 5px rounded corners
+c.addItem('myRect', new cajal.Rect(50, 30, 50, 50, 5).setDrawOptions({
+    fill: 'black'
+}));
+
+//trigger animation and set lifetime to 350 frames
+c.trigger(bar, 350);
+</code></pre>
+		</div>
+	</div>
+</div>
+<div style="clear:both;padding-bottom:20px;"></div>
+</body>
+</html>

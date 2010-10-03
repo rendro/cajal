@@ -1,0 +1,164 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+	<link rel="stylesheet" href="../style.css" type="text/css" />
+	<script type="text/javascript" src="../../cajal.js"></script>
+	<title>Examples: bar chart with cajal - canvas javascript library</title>
+</head>
+<body>
+<div id="wrapper">
+	<ol id="nav">
+		<li><a href="../index.html">Documentation</a></li>
+		<li><a href="../function-reference.html">Function Reference</a></li>
+		<li>
+			<a href="shapes.html" class='active'>Examples</a>
+			<ul>
+				<li><a href="shapes.html">Basic shapes</a></li>
+				<li><a href="animations.html">Animations</a></li>
+				<li><a href="bars.html">Bar chart</a></li>
+				<li><a href="particular.html" class='active'>Particle explosion</a></li>
+			</ul>
+		</li>
+	</ol>
+	<div id="content">
+		<h1>Bar chart</h1>
+		<div class="inner">
+		
+			<canvas id="canvas" height="300" width="600" style="background:#000"></canvas>
+			<script type="text/javascript">
+            var c = new cajal('canvas');
+            c.globalCompositeOperation = 'lighter';
+            
+            var emitter = function (f,t) {
+
+                //add new Particles
+                if (f < t/10) {
+                    var key = parseInt(this.items.length);
+                    var lastName = 'p0';
+                    if (key > 1) {
+                        lastName = this.items[--key].itemId;
+                    }
+                    for (var count=1; count<=60; count++) {
+                        var name = 'p' + (parseInt(lastName.substr(1))+count);
+                        this.addItem(name, new cajal.Circle(0,0,Math.round(Math.random()*7)).move(c.canvas.width/2,c.canvas.height/2).setDrawOptions({
+                            fill: 'rgba('+Math.round(Math.random()*255)+','+Math.round(Math.random()*50)+','+Math.round(Math.random()*255)+',' + Math.random() + ')',
+                            speed: {
+                                dx: ((Math.random()*2) - 1)*Math.random()*10,
+                                dy: ((Math.random()*2) - 1)*Math.random()*10
+                            },
+                            livecycle: 0
+                        }));
+                    }
+                }
+                //animate Particles
+                if (this.items.length > 0) {
+                    for (i in this.items) {
+                        if (this.items[i].itemId.match(/p([0-9]+)/g)) {
+                            //move particle
+                            this.items[i].item.moveBy(this.items[i].item.drawOptions.speed.dx, this.items[i].item.drawOptions.speed.dy);
+                            //raise livecycle
+                            this.items[i].item.drawOptions.livecycle++;
+
+                            //reduce speed on x/y-axis
+                            this.items[i].item.drawOptions.speed.dx *= 0.99;
+                            this.items[i].item.drawOptions.speed.dy += 0.1;
+
+                            //fade out particles 100 frames before end
+                            if (this.items[i].item.drawOptions.livecycle > t/4) {
+                                this.items[i].item.drawOptions.fill = this.items[i].item.drawOptions.fill.replace(/,([0-9\.]+)\)$/g,',' + Math.random() + ')');
+                            }
+                            //remove particles after 500 frames
+                            if (this.items[i].item.drawOptions.livecycle >= (t-t/2)) {
+                                this.items.splice(i,1);
+                            }
+                        }
+                    }
+                } else {
+                    this.stop(emitter);
+                }
+            }
+
+			</script><br/>
+			<a href="#" onclick="c.trigger(emitter,100);return false;">Show me some particles</a>
+			<h3>Code</h3>
+			<pre>
+&lt;canvas id="canvas" height="200" width="400"&gt;&lt;/canvas&gt;
+&lt;script type="text/javascript"&gt;
+var c = new cajal('canvas');
+c.globalCompositeOperation = 'lighter';
+
+var emitter = function (f,t) {
+
+    //add new Particles
+    if (f < t/10) {
+        var key = parseInt(this.items.length);
+        var lastName = 'p0';
+        if (key > 1) {
+            lastName = this.items[--key].itemId;
+        }
+        for (var count=1; count<=60; count++) {
+            var name = 'p' + (parseInt(lastName.substr(1))+count);
+            this.addItem(name, new cajal.Circle(0,0,Math.round(Math.random()*7))
+                .move(c.canvas.width/2,c.canvas.height/2)
+                .setDrawOptions({
+                    fill: 'rgba('
+                          + Math.round(Math.random()*255)
+                          + ','
+                          + Math.round(Math.random()*50)
+                          + ','
+                          + Math.round(Math.random()*255)
+                          + ','
+                          + Math.random()
+                          + ')',
+                    speed: {
+                        dx: ((Math.random()*2) - 1)*Math.random()*10,
+                        dy: ((Math.random()*2) - 1)*Math.random()*10
+                    },
+                    livecycle: 0
+                }));
+        }
+    }
+    //animate Particles
+    if (this.items.length > 0) {
+        for (i in this.items) {
+            if (this.items[i].itemId.match(/p([0-9]+)/g)) {
+                //move particle
+                this.items[i].item.moveBy(
+                    this.items[i].item.drawOptions.speed.dx,
+                    this.items[i].item.drawOptions.speed.dy
+                );
+                //raise livecycle
+                this.items[i].item.drawOptions.livecycle++;
+
+                //reduce speed on x/y-axis
+                this.items[i].item.drawOptions.speed.dx *= 0.99;
+                this.items[i].item.drawOptions.speed.dy += 0.1;
+
+                //fade out particles 100 frames before end
+                if (this.items[i].item.drawOptions.livecycle > t/4) {
+                	var fill = this.items[i].item.drawOptions.fill;
+                	fill = fill.replace(/,([0-9\.]+)\)$/g,','+Math.random()+')');
+                    this.items[i].item.drawOptions.fill = fill;
+                }
+                //remove particles after 500 frames
+                if (this.items[i].item.drawOptions.livecycle >= (t-t/2)) {
+                    this.items.splice(i,1);
+                }
+            }
+        }
+    } else {
+        this.stop(emitter);
+    }
+}
+
+&lt;/script&gt;&lt;br/&gt;
+&lt;a href="#" onclick="c.trigger(emitter,100);return false;"&gt;Show me some particles&lt;/a&gt;
+			</pre>
+
+		</div>
+	</div>
+</div>
+<div style="clear:both;padding-bottom:20px;"></div>
+</body>
+</html>

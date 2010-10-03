@@ -1,0 +1,147 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+	<link rel="stylesheet" href="../style.css" type="text/css" />
+	<script type="text/javascript" src="../../cajal.js"></script>
+	<title>Examples: bar chart with cajal - canvas javascript library</title>
+</head>
+<body>
+<div id="wrapper">
+	<ol id="nav">
+		<li><a href="../index.html">Documentation</a></li>
+		<li><a href="../function-reference.html">Function Reference</a></li>
+		<li>
+			<a href="shapes.html" class='active'>Examples</a>
+			<ul>
+				<li><a href="shapes.html">Basic shapes</a></li>
+				<li><a href="animations.html">Animations</a></li>
+				<li><a href="bars.html" class='active'>Bar chart</a></li>
+				<li><a href="particular.html">Particle explosion</a></li>
+			</ul>
+		</li>
+	</ol>
+	<div id="content">
+		<h1>Bar chart</h1>
+		<div class="inner">
+		
+			<canvas id="canvas" height="300" width="600"></canvas>
+			<script type="text/javascript">
+			var values = [];
+            for (var p=0; p<19;p++) {
+                values.push(Math.round(Math.random()*250));
+            }
+            
+            var c = new cajal('canvas');
+            
+            //chart title
+            c.addItem('headline',new cajal.Text(10, 30, 'Chart title').setDrawOptions({
+                font: '20px sans-serif',
+                fill: 'rgba(120,110,255,0.6)'
+            }));
+            
+            //grid lines
+            var line = new cajal.Path(0,0).to(c.canvas.width,0).setDrawOptions({stroke:'rgba(0,0,0,0.2)'});
+            for (var x=400; x>0; x-=50) {
+                c.addItem(x, new cajal.Path(-10, x).to(c.canvas.width+10,x).to(c.canvas.width+10,-10).to(-10,-10).setDrawOptions({stroke:'rgba(0,0,0,0.1)'}).moveBy(0,0.5));
+                c.addItem('t'+x, new cajal.Text(2, x-1, c.canvas.height-x).setDrawOptions({fill:'#999',font:'9px serif'}));
+            }
+            
+            var gradient = new cajal.LinearGradient(0, 0, 0, c.canvas.height).colorStop(0.5,'#175175').colorStop(1,'#000');
+
+            var bar = new cajal.Rect(0, 0, 20, c.canvas.height*3, 5).setDrawOptions({fill:gradient});
+            var text = new cajal.Text(0, c.canvas.height-2, '0');
+
+            for (var i in values) {
+                var a = parseInt(i) + 1;
+                c   .addItem('bar'+a, bar.clone().move(a*30,c.canvas.height))
+                    .addItem('text'+a,text.clone().move(a*30,c.canvas.height-2));
+            }
+            
+            var init = function (f,t) {
+                for (var i in values) {
+                    var a = parseInt(i) + 1;
+                    var pos = -cajal.Ease.expOut(parseInt(values[i]), f, t, 2);
+                    c.getItem('bar'+a).moveBy(0,pos);
+                    c.getItem('text'+a).moveBy(0,pos).text(Math.round(parseInt(values[i])*f/t)).setDrawOptions({
+                        fill: 'rgba(0,0,0,' + f/t + ')',
+                        font:'9px serif'
+                    });
+                }
+            }
+            c.trigger(init,150);
+
+			</script>
+			<h3>Code</h3>
+			<pre>
+&lt;canvas id="canvas" height="200" width="400"&gt;&lt;/canvas&gt;
+&lt;script type="text/javascript"&gt;
+var values = [];
+for (var p=0; p<19;p++) {
+    values.push(Math.round(Math.random()*250));
+}
+
+var c = new cajal('canvas');
+
+//chart title
+c.addItem('headline',new cajal.Text(10, 30, 'Chart title').setDrawOptions({
+    font: '20px sans-serif',
+    fill: 'rgba(120,110,255,0.6)'
+}));
+
+//grid lines
+var line = new cajal.Path(0,0)
+                    .to(c.canvas.width,0)
+                    .setDrawOptions({stroke:'rgba(0,0,0,0.2)'});
+
+for (var x=400; x>0; x-=50) {
+    c.addItem(x, new cajal.Path(-10, x)
+        .to(c.canvas.width+10,x)
+        .to(c.canvas.width+10,-10)
+        .to(-10,-10)
+        .setDrawOptions({stroke:'rgba(0,0,0,0.1)'}).moveBy(0,0.5));
+    c.addItem('t'+x, new cajal.Text(2, x-1, c.canvas.height-x).setDrawOptions({
+        fill:'#999',
+        font:'9px serif'
+    }));
+}
+
+var gradient = new cajal.LinearGradient(0, 0, 0, c.canvas.height)
+                        .colorStop(0.5,'#175175')
+                        .colorStop(1,'#000');
+
+var bar = new cajal.Rect(0, 0, 20, c.canvas.height*3, 5)
+                   .setDrawOptions({fill:gradient});
+
+var text = new cajal.Text(0, c.canvas.height-2, '0');
+
+for (var i in values) {
+    var a = parseInt(i) + 1;
+    c   .addItem('bar'+a, bar.clone().move(a*30,c.canvas.height))
+        .addItem('text'+a,text.clone().move(a*30,c.canvas.height-2));
+}
+
+var init = function (f,t) {
+    for (var i in values) {
+        var a = parseInt(i) + 1;
+        var pos = -cajal.Ease.expOut(parseInt(values[i]), f, t, 2);
+        c.getItem('bar'+a).moveBy(0,pos);
+        c.getItem('text'+a)
+         .moveBy(0,pos)
+         .text(Math.round(parseInt(values[i])*f/t))
+         .setDrawOptions({
+            fill: 'rgba(0,0,0,' + f/t + ')',
+            font:'9px serif'
+        });
+    }
+}
+c.trigger(init,150);
+&lt;/script&gt;
+			</pre>
+
+		</div>
+	</div>
+</div>
+<div style="clear:both;padding-bottom:20px;"></div>
+</body>
+</html>
