@@ -133,6 +133,19 @@
             this.canvas = document.getElementById( elementId );
             this.ctx = this.canvas.getContext('2d');
             this.clear();
+            
+            this.autoClearCanvas = true;
+            this.items = [];
+            this.isEmpty = true;
+            this.globalAlpha = 1;
+            this.loopAnimations = [];
+            this.loopAnimationFrames = [];
+            this.globalCompositeOperation = 'source-over';
+            this.loopFps = 30;
+	        this.loopAnimations = [];
+        	this.loopFrame = 0;
+    	    this.loopInterval = null;
+	        this.loopAnimationFrames = [];
         },
 
         /**
@@ -496,6 +509,7 @@
         /**
          * Get the canvas gradient object for drawing the gradient
          * @param context 2D rendering context
+         * @return the canvas gradient object
          */
         draw: function(context) {
             var gradient = context.createLinearGradient(this.properties.start.x, this.properties.start.y, this.properties.end.x, this.properties.end.y);
@@ -595,6 +609,7 @@
         /**
          * Hide item
          * Hidden items are not drawn to the canvas
+         * @return item instance
          */
         hide: function() {
             this.itemOptions.hidden = true;
@@ -603,6 +618,7 @@
 
         /**
          * Show item if hidden
+         * @return item instance
          */
         show: function() {
             this.itemOptions.hidden = false;
