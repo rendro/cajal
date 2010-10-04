@@ -34,7 +34,7 @@
 				this.getItem('rect').moveBy(0.5,0.5).rotateBy(1).scaleBy(0.01,0.002);
 			}
 			</script><br/>
-			<a href="#" onclick="c1.trigger(myAnimation,200); return false;">Trigger animation</a>
+			<a href="#" onclick="c1.startAnimation(myAnimation,200); return false;">Start animation</a>
 			<h3>Code</h3>
 			<pre>
 &lt;canvas id="anim1" height="200" width="400"&gt;&lt;/canvas&gt;
@@ -49,7 +49,7 @@
         this.getItem('rect').moveBy(0.5,0.5).rotateBy(1).scaleBy(0.01,0.002);
     }
 &lt;/script&gt;&lt;br/&gt;
-&lt;a href="#" onclick="c1.trigger(myAnimation,200); return false;"&gt;Trigger animation&lt;a&gt;
+&lt;a href="#" onclick="c1.startAnimation(myAnimation,200); return false;"&gt;Start animation&lt;a&gt;
 			</pre>
 			
 			<h2>Use easing functions</h2>
@@ -71,7 +71,7 @@
 				this.getItem('rect5').moveBy(cajal.Ease.expInOut(300,frame,duration,5),0);
 			}
 			</script><br/>
-			<a href="#" onclick="c2.trigger(easing,200); return false;">Trigger animation</a>
+			<a href="#" onclick="c2.startAnimation(easing,200); return false;">Start animation</a>
 			<h3>Code</h3>
 			<pre>
 &lt;canvas id="anim2" height="200" width="400"&gt;&lt;/canvas&gt;
@@ -92,7 +92,40 @@ var easing = function (frame, duration) {
     this.getItem('rect5').moveBy(cajal.Ease.expInOut(300,frame,duration,5),0);
 }
 &lt;/script&gt;&lt;br/&gt;
-&lt;a href="#" onclick="c1.trigger(easing,200); return false;"&gt;Trigger animation&lt;a&gt;
+&lt;a href="#" onclick="c1.startAnimation(easing,200); return false;"&gt;Start animation&lt;a&gt;
+			</pre>
+
+            <h2>Start and stop infinite animations</h2>
+			<canvas id="anim3" height="200" width="400"></canvas>
+			<script type="text/javascript">
+			var c3 = new cajal('anim3');
+			c3.addItem('item', new cajal.Polygon(200, 100, 5, 50).setDrawOptions({
+                fill  : 'black',
+                stroke: 'blue',
+                width : 4
+            })).draw();
+			var rotation = function () {
+				this.getItem('item').rotateBy(0.5);
+			}
+			</script><br/>
+			<a href="#" onclick="c3.startAnimation(rotation); return false;">Start animation</a> | 
+			<a href="#" onclick="c3.stopAnimation(rotation); return false;">Stop animation</a>
+			<h3>Code</h3>
+			<pre>
+&lt;canvas id="anim3" height="200" width="400"&gt;&lt;/canvas&gt;
+&lt;script type="text/javascript"&gt;
+var c3 = new cajal('anim3');
+c3.addItem('item', new cajal.Polygon(200, 100, 5, 50).setDrawOptions({
+    fill  : 'black',
+    stroke: 'blue',
+    width : 4
+})).draw();
+var rotation = function () {
+    this.getItem('item').rotateBy(0.5);
+}
+&lt;/script&gt;&lt;br/&gt;
+&lt;a href="#" onclick="c3.startAnimation(rotation); return false;"&gt;Start animation&lt;/a&gt; |
+&lt;a href="#" onclick="c3.stopAnimation(rotation); return false;"&gt;Stop animation&lt;/a&gt;
 			</pre>
 
 		</div>

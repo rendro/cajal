@@ -15,7 +15,7 @@
      * @return cajal instance
      */
     var cajal = this.cajal = function(elementId) {
-        cajal.prototype.init(elementId);
+        this.init(elementId);
     };
 
     /**
@@ -134,18 +134,10 @@
             this.ctx = this.canvas.getContext('2d');
             this.clear();
             
-            this.autoClearCanvas = true;
             this.items = [];
-            this.isEmpty = true;
-            this.globalAlpha = 1;
             this.loopAnimations = [];
             this.loopAnimationFrames = [];
-            this.globalCompositeOperation = 'source-over';
-            this.loopFps = 30;
-	        this.loopAnimations = [];
-        	this.loopFrame = 0;
-    	    this.loopInterval = null;
-	        this.loopAnimationFrames = [];
+            this.loopAnimationFrames = [];
         },
 
         /**
@@ -360,8 +352,8 @@
          * @param duration duration of the animation in frames
          * @return cajal instance
          */
-        trigger: function(animation,duration) {
-            this.loopAddAnimation(animation,duration);
+        startAnimation: function(animation, duration) {
+            this.loopAddAnimation(animation, duration);
             return this;
         },
 
@@ -370,7 +362,7 @@
          * @param animation callback function
          * @return cajal instance or false if animation does not exist in loop
          */
-        stop: function(animation) {
+        stopAnimation: function(animation) {
             for (i in this.loopAnimations) {
                 if (this.loopAnimations[ i ]) {
                     delete(this.loopAnimations[ i ]);

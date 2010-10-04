@@ -238,10 +238,10 @@ A basic animation function:
 	}
 
 Inside the animation function you can access the cajal instance the animation is running using `this`. That makes an animation independent from the canvas it is called on and you can reuse your animation functions on different canvas elements.
-This function can be triggered to start or stop by calling the function `trigger(animation, [duration])` and `stop(animation)`. The animation parameter in both functions is the animation function that we created.
+This function can be triggered to start or stop by calling the function `startAnimation(animation, [duration])` and `stopAnimation(animation)`. The animation parameter in both functions is the animation function that we created.
 
-	//trigger the foo animation and set the lifetime to 500 frames
-	c.trigger(foo, 500);
+	//start the foo animation and set the lifetime to 500 frames
+	c.startAnimation(foo, 500);
 
 Now this function is called every frame (default framerate is set to 30) and after 500 calls/frames it will be stopped.
 The `duration` parameter is optional and leaving it blank will run the animation until you stop it manually.
@@ -281,5 +281,5 @@ Example: using expInOut with a power of 3 to move a rectangular by 300px on the 
 		fill: 'black'
 	}));
 	
-	//trigger animation and set lifetime to 350 frames
-	c.trigger(bar, 350);
+	//start animation and set lifetime to 350 frames
+	c.startAnimation(bar, 350);

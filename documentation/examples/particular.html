@@ -25,7 +25,7 @@
 		<h1>Bar chart</h1>
 		<div class="inner">
 		
-			<canvas id="canvas" height="300" width="600" style="background:#000"></canvas>
+			<canvas id="canvas" height="300" width="620" style="background:#000"></canvas>
 			<script type="text/javascript">
             var c = new cajal('canvas');
             c.globalCompositeOperation = 'lighter';
@@ -75,12 +75,12 @@
                         }
                     }
                 } else {
-                    this.stop(emitter);
+                    this.stopAnimation(emitter);
                 }
             }
 
 			</script><br/>
-			<a href="#" onclick="c.trigger(emitter,100);return false;">Show me some particles</a>
+			<a href="#" onclick="c.startAnimation(emitter,100);return false;">Show me some particles</a>
 			<h3>Code</h3>
 			<pre>
 &lt;canvas id="canvas" height="200" width="400"&gt;&lt;/canvas&gt;
@@ -148,12 +148,12 @@ var emitter = function (f,t) {
             }
         }
     } else {
-        this.stop(emitter);
+        this.stopAnimation(emitter);
     }
 }
 
 &lt;/script&gt;&lt;br/&gt;
-&lt;a href="#" onclick="c.trigger(emitter,100);return false;"&gt;Show me some particles&lt;/a&gt;
+&lt;a href="#" onclick="c.startAnimation(emitter,100);return false;"&gt;Show me some particles&lt;/a&gt;
 			</pre>
 
 		</div>

@@ -295,10 +295,10 @@ A basic animation function:</p>
 </code></pre>
 
 <p>Inside the animation function you can access the cajal instance the animation is running using <code>this</code>. That makes an animation independent from the canvas it is called on and you can reuse your animation functions on different canvas elements.
-This function can be triggered to start or stop by calling the function <code>trigger(animation, [duration])</code> and <code>stop(animation)</code>. The animation parameter in both functions is the animation function that we created.</p>
+This function can be triggered to start or stop by calling the function <code>startAnimation(animation, [duration])</code> and <code>stopAnimation(animation)</code>. The animation parameter in both functions is the animation function that we created.</p>
 
-<pre><code>//trigger the foo animation and set the lifetime to 500 frames
-c.trigger(foo, 500);
+<pre><code>//start the foo animation and set the lifetime to 500 frames
+c.startAnimation(foo, 500);
 </code></pre>
 
 <p>Now this function is called every frame (default framerate is set to 30) and after 500 calls/frames it will be stopped.
@@ -341,8 +341,8 @@ c.addItem('myRect', new cajal.Rect(50, 30, 50, 50, 5).setDrawOptions({
     fill: 'black'
 }));
 
-//trigger animation and set lifetime to 350 frames
-c.trigger(bar, 350);
+//start animation and set lifetime to 350 frames
+c.startAnimation(bar, 350);
 </code></pre>
 		</div>
 	</div>
