@@ -27,8 +27,10 @@
 		
 			<canvas id="canvas" height="300" width="620" style="background:#000"></canvas>
 			<script type="text/javascript">
-            var c = new cajal('canvas');
-            c.globalCompositeOperation = 'lighter';
+            var c = new cajal('canvas', {
+                globalCompositeOperation: 'lighter',
+                globalAlpha: 0.8
+            });
             
             var emitter = function (f,t) {
 
@@ -85,8 +87,10 @@
 			<pre>
 &lt;canvas id="canvas" height="200" width="400"&gt;&lt;/canvas&gt;
 &lt;script type="text/javascript"&gt;
-var c = new cajal('canvas');
-c.globalCompositeOperation = 'lighter';
+var c = new cajal('canvas', {
+    globalCompositeOperation: 'lighter',
+    globalAlpha: 0.8
+});
 
 var emitter = function (f,t) {
 

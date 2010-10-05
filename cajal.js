@@ -14,8 +14,8 @@
      * @param elementId id of the canvas element that should be drawn on
      * @return cajal instance
      */
-    var cajal = this.cajal = function(elementId) {
-        this.init(elementId);
+    var cajal = this.cajal = function(elementId, options) {
+        this.init(elementId, options);
     };
 
     /**
@@ -128,54 +128,82 @@
         /**
          * Internal constructor to set up basic variables and clear the canvas
          * @param elementId id of the canvas element that should be drawn on
+         * @param options literal object with global settings (boolean autoClearCanvas, boolean isEmpty, double globalAlpha [between 0 and 1], string globalCompositeOperation, integer loopFps, integer loopFrame)
          */
-        init: function(elementId) {
+        init: function(elementId, options) {
+            /**
+             * canvas DOM Element
+             */
             this.canvas = document.getElementById( elementId );
+
+            /**
+             * canvas 2D rendering context
+             */
             this.ctx = this.canvas.getContext('2d');
-            this.clear();
-            
+
+            /**
+             * Array of all Items
+             * The Item object contains the itemId variable that must be unique and the item object itsself
+             */
             this.items = [];
+
+            /**
+             * Array with all current animations
+             */
             this.loopAnimations = [];
+            /**
+             * Array with frame numbers for each animation
+             */
             this.loopAnimationFrames = [];
-            this.loopAnimationFrames = [];
+
+            /**
+             * Cajal options
+             */
+            this.options = cajal.extend(this.defaultOptions, options);
+
+            /**
+             * Clear the complete canvas
+             */
+            this.clear();
+
         },
 
-        /**
-         * canvas DOM Element
-         */
-        canvas: null,
 
         /**
-         * canvas 2D rendering context
+         * Default options for cajal
          */
-        ctx: null,
+        defaultOptions: {
+            /**
+             * flag weather the canvas will be cleared before each call of the draw method
+             */
+            autoClearCanvas: true,
 
-        /**
-         * flag weather the canvas will be cleared before each call of the draw method
-         */
-        autoClearCanvas: true,
+            /**
+             * Flag if canvas is not empty. In that case it has to be cleared before drawing
+             */
+            isEmpty: true,
 
-        /**
-         * Array of all Items
-         * The Item object contains the itemId variable that must be unique and the item object itsself
-         */
-        items: [],
+            /**
+             * Global Alpha (will be applied to all objects drawn on the canvas)
+             */
+            globalAlpha: 1,
 
-        /**
-         * Flag if canvas is not empty. In that case it has to be cleared before drawing
-         */
-        isEmpty: true,
+            /**
+             * Global composite operation
+             * valid values: source-over, source-atop, source-in, source-out, destination-atop, destination-in, destination-out, destination-over, copy, darker, lighter, xor
+             */
+            globalCompositeOperation: 'source-over',
 
-        /**
-         * Global Alpha (will be applied to all objects drawn on the canvas)
-         */
-        globalAlpha: 1,
+            /**
+             * FPS for the animation loop
+             */
+            loopFps: 30,
 
-        /**
-         * Global composite operation
-         * valid values: source-over, source-atop, source-in, source-out, destination-atop, destination-in, destination-out, destination-over, copy, darker, lighter, xor
-         */
-        globalCompositeOperation: 'source-over',
+            /**
+             * Global frame number
+             */
+            loopFrame: 0
+        },
 
         /**
          * Adds an item to the item array
@@ -327,10 +355,10 @@
          * @return cajal instance
          */
         draw: function(options) {
-            if (this.isEmpty === false && this.autoClearCanvas === true) {
+            if (this.options.isEmpty === false && this.options.autoClearCanvas === true) {
                 this.clear();
             }
-            this.isEmpty = false;
+            this.options.isEmpty = false;
             for (i in this.items) {
                 this.items[i].item.draw(this, options);
             }
@@ -343,6 +371,7 @@
          */
         clear: function() {
             this.ctx.clearRect(0,0,this.canvas.width,this.canvas.height);
+            this.options.isEmpty = true;
             return this;
         },
 
@@ -373,29 +402,9 @@
         },
 
         /**
-         * FPS for the animation loop
-         */
-        loopFps: 30,
-        
-        /**
-         * Array with all current animations
-         */
-        loopAnimations: [],
-
-        /**
-         * Global frame number
-         */
-        loopFrame: 0,
-
-        /**
          * Interval reference
          */
         loopInterval: null,
-
-        /**
-         * Array with frame numbers for each animation
-         */
-        loopAnimationFrames: [],
 
         /**
          * Checks weather an animation already exists in the animation array
@@ -429,7 +438,7 @@
                     var obj = this;
                     this.loopInterval = setInterval(function(){
                         obj.loop();
-                    },Math.round(1000/this.loopFps));
+                    },Math.round(1000/this.options.loopFps));
                 }
 
             }
@@ -441,7 +450,7 @@
          * interval if no animations are left in the loop
          */
         loop: function() {
-            this.loopFrame++;
+            this.options.loopFrame++;
             for (i in this.loopAnimations) {
                 var animation = this.loopAnimations[i];
                 animation.frame++;
@@ -783,8 +792,8 @@
             var ctx = canvas.ctx;
             ctx.save();
             //globalAlpha and globalCompositeOperation
-            ctx.globalAlpha = canvas.globalAlpha;
-            ctx.globalCompositeOperation = canvas.globalCompositeOperation;
+            ctx.globalAlpha = canvas.options.globalAlpha;
+            ctx.globalCompositeOperation = canvas.options.globalCompositeOperation;
             ctx.beginPath();
 
             //dont draw if hidden

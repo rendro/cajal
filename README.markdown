@@ -17,6 +17,24 @@ To create a instance of the cajal library call the cajal constructor and pass th
     </script>
 
 
+### Global settings ###
+There are a few options you can set globally for the cajal instance by passing a literal object as a second parameter to the cajal constructor.
+
+    <canvas id="mycanvas" width="800" height="600"></canvas>
+    <script type="text/javascript">
+        var c = new cajal('mycanvas', {
+            globalAlpha: 0.5,
+            globalCompositeOperation: 'lighter',
+        });
+    </script>
+
+This literal object can have the following variables:
+
+* `autoClearCanvas`: Boolean weather the canvas is cleared automatically each `draw()` call [default value *true*]
+* `globalAlpha`: Double between 0 and 1 which defines the global alpha value applied to each item drawn
+* `globalCompositeOperation`: Describes how the items are drawn to the canvas [more information](https://developer.mozilla.org/samples/canvas-tutorial/6_1_canvas_composite.html) [default value *source-over*]
+* `loopFps`: Frame rate for animations (frames/sec)
+
 ##  The shapes  ##
 Each shape is an object that is independet from the canvas it is later drawn on. So you can draw the same shape (e.g. a circle) on several canvas elements.
 
@@ -220,14 +238,6 @@ If you want all items drawn with the same draw options you can pass a literal ob
 See above for the different draw option variables.
 
 
-### Flags and settings ###
-There are a few flags you can set globally for the cajal instance:
-
-* `autoClearCanvas`: Boolean weather the canvas is cleared automatically each `draw()` call [default value *true*]
-* `globalAlpha`: Double between 0 and 1 which defines the global alpha value applied to each item drawn
-* `globalCompositeOperation`: Describes how the items are drawn to the canvas [more information](https://developer.mozilla.org/samples/canvas-tutorial/6_1_canvas_composite.html) [default value *source-over*]
-
-
 ## Animations ##
 So after knowing how to draw on the canvas we want to take a look on how to animate our elements. The cajal library has no default animations implemented, so that you must create animations by yourself. A animation is a normal function with some optional parameters.
 A basic animation function:
@@ -245,8 +255,6 @@ This function can be triggered to start or stop by calling the function `startAn
 
 Now this function is called every frame (default framerate is set to 30) and after 500 calls/frames it will be stopped.
 The `duration` parameter is optional and leaving it blank will run the animation until you stop it manually.
-
-If you want to change the frame rate set the variable `loopFps` to your favourite value.
 
 
 ### Easing functions ###

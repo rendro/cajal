@@ -11,7 +11,7 @@
 		<li><a href="index.html" class='active'>Documentation</a></li>
 		<li><a href="function-reference.html">Function Reference</a></li>
 		<li>
-			<a href="examples">Examples</a>
+			<a href="examples/shapes.html">Examples</a>
 			<ul>
 				<li><a href="examples/shapes.html">Basic shapes</a></li>
 				<li><a href="examples/animations.html">Animations</a></li>
@@ -42,6 +42,28 @@
     var c = new cajal('mycanvas');
 &lt;/script&gt;
 </code></pre>
+
+<h3>Global settings</h3>
+
+<p>There are a few options you can set globally for the cajal instance by passing a literal object as a second parameter to the cajal constructor.</p>
+
+<pre><code>&lt;canvas id="mycanvas" width="800" height="600"&gt;&lt;/canvas&gt;
+&lt;script type="text/javascript"&gt;
+    var c = new cajal('mycanvas', {
+        globalAlpha: 0.5,
+        globalCompositeOperation: 'lighter',
+    });
+&lt;/script&gt;
+</code></pre>
+
+<p>This literal object can have the following variables:</p>
+
+<ul>
+<li><code>autoClearCanvas</code>: Boolean weather the canvas is cleared automatically each <code>draw()</code> call [default value <em>true</em>]</li>
+<li><code>globalAlpha</code>: Double between 0 and 1 which defines the global alpha value applied to each item drawn</li>
+<li><code>globalCompositeOperation</code>: Describes how the items are drawn to the canvas <a href="https://developer.mozilla.org/samples/canvas-tutorial/6_1_canvas_composite.html">more information</a> [default value <em>source-over</em>]</li>
+<li><code>loopFps</code>: Frame rate for animations (frames/sec)</li>
+</ul>
 
 <h2>The shapes</h2>
 
@@ -273,16 +295,6 @@ c.draw();
 <p>If you want all items drawn with the same draw options you can pass a literal object with the draw options as a parameter to the <code>draw()</code> method. Those draw options will overwrite the draw options of each item only for this draw call. Calling the draw method without a parameter will draw the items in their specific draw options again.
 See above for the different draw option variables.</p>
 
-<h3>Flags and settings</h3>
-
-<p>There are a few flags you can set globally for the cajal instance:</p>
-
-<ul>
-<li><code>autoClearCanvas</code>: Boolean weather the canvas is cleared automatically each <code>draw()</code> call [default value <em>true</em>]</li>
-<li><code>globalAlpha</code>: Double between 0 and 1 which defines the global alpha value applied to each item drawn</li>
-<li><code>globalCompositeOperation</code>: Describes how the items are drawn to the canvas <a href="https://developer.mozilla.org/samples/canvas-tutorial/6_1_canvas_composite.html">more information</a> [default value <em>source-over</em>]</li>
-</ul>
-
 <h2>Animations</h2>
 
 <p>So after knowing how to draw on the canvas we want to take a look on how to animate our elements. The cajal library has no default animations implemented, so that you must create animations by yourself. A animation is a normal function with some optional parameters.
@@ -303,8 +315,6 @@ c.startAnimation(foo, 500);
 
 <p>Now this function is called every frame (default framerate is set to 30) and after 500 calls/frames it will be stopped.
 The <code>duration</code> parameter is optional and leaving it blank will run the animation until you stop it manually.</p>
-
-<p>If you want to change the frame rate set the variable <code>loopFps</code> to your favourite value.</p>
 
 <h3>Easing functions</h3>
 
