@@ -9,11 +9,14 @@ Download the source and include the cajal.js file in the head section of your ht
 
 
 ## Getting an instance of cajal ##
-To create a instance of the cajal library call the cajal constructor and pass the id of your canvas element as an argument
+To create a instance of the cajal library call the cajal constructor and pass the id attribute or the DOM-object of your canvas element as an argument
 
     <canvas id="mycanvas" width="800" height="600"></canvas>
     <script type="text/javascript">
+        //passing the element id attribute
         var c = new cajal('mycanvas');
+        //in combination with jQuery
+        var c2 = new cajal($('#mycanvas').get(0));
     </script>
 
 

@@ -11,11 +11,11 @@
 (function() {
     /**
      * Constructor for a new cajal instance
-     * @param elementId id of the canvas element that should be drawn on
+     * @param element id of the canvas element or the DOM-object that should be drawn on
      * @return cajal instance
      */
-    var cajal = this.cajal = function(elementId, options) {
-        this.init(elementId, options);
+    var cajal = this.cajal = function(element, options) {
+        this.init(element, options);
     };
 
     /**
@@ -48,11 +48,11 @@
 
         for ( ; i < length; i++) {
             // Only deal with non-null/undefined values
-            if ((options = arguments[ i ]) !== null) {
+            if ((options = arguments[i]) !== null) {
                 // Extend the base object
                 for (name in options) {
-                    src = target[ name ];
-                    copy = options[ name ];
+                    src = target[name];
+                    copy = options[name];
 
                     // Prevent never-ending loop
                     if (target === copy) {
@@ -65,11 +65,11 @@
                             : cajal.isArray(copy) ? [] : {};
 
                         // Never move original objects, clone them
-                        target[ name ] = cajal.extend(deep, clone, copy);
+                        target[name] = cajal.extend(deep, clone, copy);
 
                     // Don't bring in undefined values
                     } else if (copy !== undefined) {
-                        target[ name ] = copy;
+                        target[name] = copy;
                     }
                 }
             }
@@ -153,19 +153,19 @@
 
         /**
          * Internal constructor to set up basic variables and clear the canvas
-         * @param elementId id of the canvas element that should be drawn on
+         * @param element id of the canvas element or DOM-object that should be drawn on
          * @param options literal object with global settings (boolean autoClearCanvas, boolean isEmpty, double globalAlpha [between 0 and 1], string globalCompositeOperation, integer loopFps, integer loopFrame)
          */
-        init: function(elementId, options) {
+        init: function(element, options) {
             /**
              * canvas DOM Element
              */
-            if (typeof(elementId) === 'string') {
-                //elementId represents the canvas id attribute
-                this.canvas = document.getElementById(elementId);
+            if (typeof(element) === 'string') {
+                //element represents the canvas id attribute
+                this.canvas = document.getElementById(element);
             } else {
-                //elementId represents the canvas DOM
-                this.canvas = elementId;
+                //element represents the canvas DOM
+                this.canvas = element;
             }
 
             /**
@@ -234,8 +234,8 @@
          */
         getItem: function(itemId) {
             for (i in this.items) {
-                if (this.items[ i ].itemId === itemId) {
-                    return this.items[ i ].item;
+                if (this.items[i].itemId === itemId) {
+                    return this.items[i].item;
                 }
             }
             return false;
@@ -249,8 +249,8 @@
          */
         setItem: function(itemId, item) {
             for (i in this.items) {
-                if (this.items[ i ].itemId === itemId) {
-                    this.items[ i ] = {
+                if (this.items[i].itemId === itemId) {
+                    this.items[i] = {
                         itemId: itemId,
                         item: item
                     };
@@ -283,7 +283,7 @@
          */
         getItemPosition: function(itemId) {
             for (i in this.items) {
-                if (this.items[ i ].itemId === itemId) {
+                if (this.items[i].itemId === itemId) {
                     return  parseInt(i);
                 }
             }
@@ -345,7 +345,7 @@
         bottom: function(itemId) {
             var i;
             if ((i = this.getItemPosition(itemId)) !== false) {
-                var item = this.items[ i ];
+                var item = this.items[i];
                 this.deleteItem(itemId);
                 this.items.splice(0, 0, item);
                 return this;
@@ -365,7 +365,7 @@
             }
             this.isEmpty = false;
             for (i in this.items) {
-                this.items[ i ].item.draw(this, options);
+                this.items[i].item.draw(this, options);
             }
             return this;
         },
@@ -398,8 +398,8 @@
          */
         stopAnimation: function(animation) {
             for (i in this.loopAnimations) {
-                if (this.loopAnimations[ i ]) {
-                    delete(this.loopAnimations[ i ]);
+                if (this.loopAnimations[i]) {
+                    delete(this.loopAnimations[i]);
                     return this;
                 }
             }
@@ -418,7 +418,7 @@
          */
         loopAnimationExists: function(animation) {
             for (i in this.loopAnimations) {
-                if (this.loopAnimations[ i ].callback === animation) {
+                if (this.loopAnimations[i].callback === animation) {
                     return true;
                 }
             }
@@ -433,9 +433,9 @@
         loopAddAnimation: function(animation, duration) {
             if (!this.loopAnimationExists(animation)) {
                 this.loopAnimations.push({
-                    callback:animation,
-                    duration:duration||-1,
-                    frame:0
+                    callback: animation,
+                    duration: duration || -1,
+                    frame: 0
                 });
 
                 //start loop if not running
@@ -443,7 +443,7 @@
                     var obj = this;
                     this.loopInterval = setInterval(function(){
                         obj.loop();
-                    },Math.round(1000/this.options.loopFps));
+                    }, Math.round(1000 / this.options.loopFps));
                 }
 
             }
@@ -457,22 +457,17 @@
         loop: function() {
             this.loopFrame++;
             for (i in this.loopAnimations) {
-                var animation = this.loopAnimations[ i ];
+                var animation = this.loopAnimations[i];
                 animation.frame++;
                 if (animation.duration > 0 && animation.frame > animation.duration) {
-                    delete(this.loopAnimations[ i ]);
+                    delete(this.loopAnimations[i]);
                 } else {
-                    var arguments = [];
-                    arguments.push(animation.frame);
-                    arguments.push(animation.duration);
-                    animation.callback.apply(this, arguments);
+                    animation.callback.apply(this, [animation.frame, animation.duration]);
                 }
             }
             this.draw();
             //stop loop if all animations are over
-            var i = false;
-            for (i in this.loopAnimations) {}
-            if (false === i) {
+            if (this.loopAnimations.length === 0) {
                 clearInterval(this.loopInterval);
                 this.loopInterval = null;
             }
@@ -492,9 +487,15 @@
      */
     cajal.LinearGradient = function(x1, y1, x2, y2) {
         this.properties = {
-            start       : {x:x1,y:y1},
-            end         : {x:x2,y:y2},
-            colorStops  : []
+            start: {
+                x: x1,
+                y: y1
+            },
+            end: {
+                x: x2,
+                y: y2
+            },
+            colorStops: []
         }
         return this;
     };
@@ -508,7 +509,10 @@
          * @return gradient instance
          */
         colorStop: function(pos, color) {
-            this.properties.colorStops.push({pos:pos,color:color});
+            this.properties.colorStops.push({
+                pos: pos,
+                color: color
+            });
             return this;
         },
 
@@ -520,7 +524,7 @@
         draw: function(context) {
             var gradient = context.createLinearGradient(this.properties.start.x, this.properties.start.y, this.properties.end.x, this.properties.end.y);
             for (i in this.properties.colorStops) {
-                gradient.addColorStop(this.properties.colorStops[ i ].pos, this.properties.colorStops[ i ].color);
+                gradient.addColorStop(this.properties.colorStops[i].pos, this.properties.colorStops[i].color);
             }
             return gradient;
         }
@@ -539,9 +543,17 @@
      */
     cajal.RadialGradient = function(x1, y1, r1, x2, y2, r2) {
         this.properties = {
-            start       : {x:x1, y:y1, r:r1},
-            end         : {x:x2, y:y2, r:r2},
-            colorStops  : []
+            start: {
+                x: x1,
+                y: y1,
+                r: r1
+            },
+            end: {
+                x: x2,
+                y: y2,
+                r: r2
+            },
+            colorStops: []
         }
         return this;
     };
@@ -553,7 +565,10 @@
          * @return gradient instance
          */
         colorStop: function(pos, color) {
-            this.properties.colorStops.push({pos:pos, color:color});
+            this.properties.colorStops.push({
+                pos: pos,
+                color: color
+            });
             return this;
         },
 
@@ -564,7 +579,7 @@
         draw: function(context) {
             var gradient = context.createRadialGradient(this.properties.start.x, this.properties.start.y, this.properties.start.r, this.properties.end.x, this.properties.end.y, this.properties.end.r);
             for (i in this.properties.colorStops) {
-                gradient.addColorStop(this.properties.colorStops[ i ].pos, this.properties.colorStops[ i ].color);
+                gradient.addColorStop(this.properties.colorStops[i].pos, this.properties.colorStops[i].color);
             }
             return gradient;
         }
@@ -575,27 +590,27 @@
      * Default values for the drawing options
      */
     var defaultDrawOptions = {
-            stroke      : null,
-            fill        : null,
-            width       : 1,
-            font        : '13px sans-serif',
-            lineCap     : 'butt', //butt,square,round
-            lineJoin    : 'miter', //bevel,miter,round
-            miterLimit  : 10,
-            shadowX     : 0,
-            shadowY     : 0,
-            shadowBlur  : 0,
-            shadow      : null
+            stroke: null,
+            fill: null,
+            width: 1,
+            font: '13px sans-serif',
+            lineCap: 'butt', //butt,square,round
+            lineJoin: 'miter', //bevel,miter,round
+            miterLimit: 10,
+            shadowX: 0,
+            shadowY: 0,
+            shadowBlur: 0,
+            shadow: null
         },
         /**
          * Default values for the item options
          */
         defaultItemOptions  = {
-            translate   : null,
-            scale       : null,
-            rotate      : null,
-            matrix      : null,
-            hidden      : false
+            translate: null,
+            scale: null,
+            rotate: null,
+            matrix: null,
+            hidden: false
         };
 
     /**
@@ -639,7 +654,14 @@
          */
         changeMatrix: function(m11, m12, m21, m22, dx, dy) {
              //identity
-            var m = {m11:1, m12:0, dx:0, m21:0, m22:1, dy:0};
+            var m = {
+                m11: 1,
+                m12: 0,
+                dx: 0,
+                m21: 0,
+                m22: 1,
+                dy: 0
+            };
             //override the identity if matrix is given
             if (this.itemOptions.matrix !== null) {
                 m = this.itemOptions.matrix;
@@ -816,7 +838,7 @@
                 if (typeof(options.fill) === 'object') {
                     ctx.fillStyle = options.fill.draw(ctx);
                 } else if (cajal.isFunction(options.fill)) {
-                    ctx.fillStyle = options.fill.apply(this, [ ctx ]);
+                    ctx.fillStyle = options.fill.apply(this, [ctx]);
                 } else {
                     ctx.fillStyle = options.fill;
                 }
@@ -826,14 +848,14 @@
                 if (typeof(options.stroke) === 'object') {
                     ctx.strokeStyle = options.stroke.draw(ctx);
                 } else if (cajal.isFunction(options.stroke)) {
-                    ctx.strokeStyle = options.stroke.apply(this, [ ctx ]);
+                    ctx.strokeStyle = options.stroke.apply(this, [ctx]);
                 } else {
                     ctx.strokeStyle = options.stroke;
                 }
-                ctx.lineWidth   = options.width;
-                ctx.lineCap     = options.lineCap;
-                ctx.lineJoin    = options.lineJoin;
-                ctx.miterLimit  = options.miterLimit;
+                ctx.lineWidth = options.width;
+                ctx.lineCap = options.lineCap;
+                ctx.lineJoin = options.lineJoin;
+                ctx.miterLimit = options.miterLimit;
             }
 
             if (options.shadow !== null) {
@@ -877,7 +899,7 @@
             }
             
             for (i in this.pointStack) {
-                var p = this.pointStack[ i ];
+                var p = this.pointStack[i];
 
                 switch (p.type) {
 
@@ -899,7 +921,7 @@
 
                     case 'circle':
                         ctx.moveTo(p.r, 0);
-                        ctx.arc(0, 0, p.r, 0, Math.PI*2, false);
+                        ctx.arc(0, 0, p.r, 0, Math.PI * 2, false);
                         break;
 
                     case 'rect':
@@ -908,10 +930,10 @@
                         
                     case 'rounded rect':
                         ctx.moveTo(p.r, 0);
-                        ctx.arcTo (p.w,  0 , p.w, p.r, p.r);
+                        ctx.arcTo (p.w, 0, p.w, p.r, p.r);
                         ctx.arcTo (p.w, p.h, p.r, p.h, p.r);
-                        ctx.arcTo ( 0 , p.h,  0 , p.r, p.r);
-                        ctx.arcTo ( 0 ,  0 , p.r,  0 , p.r);
+                        ctx.arcTo (0, p.h, 0, p.r, p.r);
+                        ctx.arcTo (0, 0, p.r, 0, p.r);
                         break;
 
                     case 'text':
@@ -955,8 +977,8 @@
         this.drawOptions = cajal.extend({}, defaultDrawOptions);
         this.itemOptions = cajal.extend({}, defaultItemOptions);
         this.pointStack = [{
-            type : 'circle',
-            r    : r
+            type: 'circle',
+            r: r
         }];
         this.move(x, y);
     }
@@ -967,7 +989,10 @@
          */
         center: function() {
             var p = this.pointStack[0];
-            return {x:p.x, y:p.y};
+            return {
+                x: p.x,
+                y: p.y
+            };
         }
     });
 
@@ -986,14 +1011,14 @@
         this.drawOptions = cajal.extend({}, defaultDrawOptions);
         this.itemOptions = cajal.extend({}, defaultItemOptions);
         var p = {
-            type : 'rect',
-            w    : w,
-            h    : h
+            type: 'rect',
+            w: w,
+            h: h
         };
         if (r !== undefined) { //rounded rect
             p = cajal.extend(p, {
-                type : 'rounded rect',
-                r    : r
+                type: 'rounded rect',
+                r: r
             });
         }
         this.move(x, y);
@@ -1007,8 +1032,8 @@
         center: function() {
             var p = this.pointStack[0];
             return {
-                x: p.w/2,
-                y: p.h/2
+                x: p.w / 2,
+                y: p.h / 2
             };
         },
         /**
@@ -1035,8 +1060,8 @@
         this.drawOptions = cajal.extend({}, defaultDrawOptions);
         this.itemOptions = cajal.extend({}, defaultItemOptions);
         this.offset = {
-            x    : x||0,
-            y    : y||0
+            x: x || 0,
+            y: y || 0
         }
         this.pointStack = [{type: 'start'}];
         this.move(x, y);
@@ -1057,8 +1082,8 @@
         line: function(x, y) {
             var p = {
                 type: 'point',
-                x   : x - this.offset.x,
-                y   : y - this.offset.y
+                x: x - this.offset.x,
+                y: y - this.offset.y
             };
             this.pointStack.push(p);
             return this;
@@ -1081,8 +1106,8 @@
         close: function() {
             this.pointStack.push({
                 type: 'point',
-                x   : 0,
-                y   : 0
+                x: 0,
+                y: 0
             });
             return this;
         },
@@ -1097,11 +1122,11 @@
          */
         quadraticCurve: function(x, y, cx, cy) {
             var p = {
-                type : 'quadratic',
-                x    :  x - this.offset.x,
-                y    :  y - this.offset.y,
-                cx   : cx - this.offset.x,
-                cy   : cy - this.offset.y
+                type: 'quadratic',
+                x:  x - this.offset.x,
+                y:  y - this.offset.y,
+                cx: cx - this.offset.x,
+                cy: cy - this.offset.y
             }
             this.pointStack.push(p);
             return this;
@@ -1119,13 +1144,13 @@
          */
         bezierCurve: function(x, y, c1x, c1y, c2x, c2y) {
             var p = {
-                type : 'bezier',
-                x    :   x - this.offset.x,
-                y    :   y - this.offset.y,
-                c1x  : c1x - this.offset.x,
-                c1y  : c1y - this.offset.y,
-                c2x  : c2x - this.offset.x,
-                c2y  : c2y - this.offset.y
+                type: 'bezier',
+                x: x - this.offset.x,
+                y: y - this.offset.y,
+                c1x: c1x - this.offset.x,
+                c1y: c1y - this.offset.y,
+                c2x: c2x - this.offset.x,
+                c2y: c2y - this.offset.y
             }
             this.pointStack.push(p);
             return this;
@@ -1143,7 +1168,7 @@
                 y: 0
             };
             for (var i = 0; i < this.pointStack.length; i++) {
-                var p = this.pointStack[ i ];
+                var p = this.pointStack[i];
                 
                 switch (p.type) {
                     case 'point':
@@ -1168,8 +1193,8 @@
                 }
             }
             return {
-                x: polygon.x/polygon.i,
-                y: polygon.y/polygon.i
+                x: polygon.x / polygon.i,
+                y: polygon.y / polygon.i
             };
         }
     });
@@ -1198,7 +1223,7 @@
          * @return text item instance
          */
         append: function(text) {
-            this.pointStack[0].text += text;
+            this.pointStack[0].text += ("" + text);
             return this;
         },
 
@@ -1208,7 +1233,7 @@
          * @return text item instance
          */
         prepend: function(text) {
-            this.pointStack[0].text = text + this.pointStack[0].text;
+            this.pointStack[0].text = "" + text + this.pointStack[0].text;
             return this;
         },
 
@@ -1218,7 +1243,7 @@
          * @return text item instance
          */
         text: function(text) {
-            this.pointStack[0].text = text;
+            this.pointStack[0].text = "" + text;
             return this;
         },
 
@@ -1232,7 +1257,7 @@
             var size = ctx.measureText(this.pointStack[0].text);
             ctx.restore();
             return {
-                x: size.width/2,
+                x: size.width / 2,
                 y: 0
             };
         }
@@ -1260,7 +1285,10 @@
          * @return point object of the center
          */
         center: function() {
-            return {x:0,y:0};
+            return {
+                x: 0,
+                y: 0
+            };
         },
 
         /**
@@ -1271,12 +1299,12 @@
          */
         setPoints: function(n, r) {
             this.pointStack = [];
-            var angle = Math.PI*2/n;
+            var angle = Math.PI * 2 / n;
             for (var i = 0; i <= n; i++) {
                 this.pointStack.push({
-                    type:   'point',
-                    x   : r * Math.cos(i*angle),
-                    y   : r * Math.sin(i*angle)
+                    type: 'point',
+                    x: r * Math.cos(i * angle),
+                    y: r * Math.sin(i * angle)
                 });
             }
             return this;
@@ -1296,8 +1324,8 @@
          * @return change of the value for frame f
          */
         quadIn: function(d, f, t) {
-            f/=t;
-            return 2*f*d/t;
+            f /= t;
+            return 2 * f * d / t;
         },
         
         /**
@@ -1308,8 +1336,8 @@
          * @return change of the value for frame f
          */
         quadOut: function(d, f, t) {
-            f/=t;
-            return -2*(f-1)*d/t;
+            f /= t;
+            return -2 * (f - 1) * d / t;
         },
 
         /**
@@ -1320,10 +1348,10 @@
          * @return change of the value for frame f
          */
         quadInOut: function(d, f, t) {
-            f/=t/2;
-            if (f < 1) return 2*f*d/t;
+            f /= t / 2;
+            if (f < 1) return 2 * f * d / t;
             f--;
-            return -2*(f-1)*d/t;
+            return -2 * (f - 1) * d / t;
         },
 
         /**
@@ -1335,9 +1363,9 @@
          * @return change of the value for frame f
          */
         expIn: function(d, f, t, p) {
-            p=p||3;
-            f/=t;
-            return p*Math.pow(f, p-1)*d/t;
+            p = p || 3;
+            f /= t;
+            return p * Math.pow(f, p - 1) * d / t;
         },
 
         /**
@@ -1361,7 +1389,7 @@
          * @return change of the value for frame f
          */
         expInOut: function(d, f, t, p) {
-            f/=t/2;
+            f /= t / 2;
             if (f < 1) return this.expIn(d, f*t, t, p);
             f--;
             return this.expOut(d, f*t, t, p);
@@ -1377,7 +1405,7 @@
          */
         backIn: function(d, f, t, a) {
             a = a || 1.70158;
-            f/=t;
+            f /= t;
             return f*(3*a*f+3*f-2*a)*d/t;
         },
 
@@ -1393,7 +1421,7 @@
             a = a || 1.70158;
             f /= t;
             f -= 1;
-            return f*(3*a*f+3*f+2*a)*d/t;
+            return f * (3 * a * f + 3 * f + 2 * a) * d / t;
         },
 
         /**
@@ -1406,10 +1434,10 @@
          */
         backInOut: function(d, f, t, a) {
             a = a || 1.70158 * 1.525;
-            f /= t/2;
-            if (f < 1) return f*(3*a*f+3*f-2*a)*d/t;
+            f /= t / 2;
+            if (f < 1) return f * (3 * a * f + 3 * f - 2 * a) * d / t;
             f -= 2;
-            return f*(3*a*f+3*f+2*a)*d/t;
+            return f * (3 * a * f + 3 * f + 2 * a) * d / t;
         },
 
         /**
@@ -1433,13 +1461,13 @@
         bounceOut: function(d, f, t) {
             f/=t;
             if (f < (1/2.75)) {
-                return (7.5625*2*f)*d/t;
+                return (7.5625 * 2 * f) * d / t;
             } else if (f < (2/2.75)) {
-                return (7.5625*2*(f-(1.5/2.75)))*d/t;
+                return (7.5625 * 2 * (f - (1.5 / 2.75))) * d / t;
             } else if (f < (2.5/2.75)) {
-                return (7.5625*2*(f-(2.25/2.75)))*d/t;
+                return (7.5625 * 2 * (f - (2.25 / 2.75))) * d / t;
             } else {
-                return (7.5625*2*(f-(2.625/2.75)))*d/t;
+                return (7.5625 * 2 * (f - (2.625 / 2.75))) * d / t;
             }
         },
 
@@ -1464,11 +1492,11 @@
          * @return change of the value for frame f
          */
         elasticIn: function(d, f, t, p) {
-            f/=t;
+            f /= t;
             p = p || 3;
             var pi = Math.PI;
-            var T = 1/(p+.25);
-            return d/t * (2/9) * Math.pow(f, 3.5) * Math.sin(f*2*pi/T) + d/t * Math.pow(f, 4.5) * Math.cos(f*2*pi/T) * (2*pi/T);
+            var T = 1 / (p + .25);
+            return d / t * (2 / 9) * Math.pow(f, 3.5) * Math.sin(f * 2 * pi / T) + d / t * Math.pow(f, 4.5) * Math.cos(f * 2 * pi / T) * (2 * pi / T);
         },
 
         /**

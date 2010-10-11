@@ -35,11 +35,14 @@
 
 <h2>Getting an instance of cajal</h2>
 
-<p>To create a instance of the cajal library call the cajal constructor and pass the id of your canvas element as an argument</p>
+<p>To create a instance of the cajal library call the cajal constructor and pass the id attribute or the DOM-object of your canvas element as an argument</p>
 
 <pre><code>&lt;canvas id="mycanvas" width="800" height="600"&gt;&lt;/canvas&gt;
 &lt;script type="text/javascript"&gt;
+    //passing the element id attribute
     var c = new cajal('mycanvas');
+    //in combination with jQuery
+    var c2 = new cajal($('#mycanvas').get(0));
 &lt;/script&gt;
 </code></pre>
 
