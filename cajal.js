@@ -60,12 +60,12 @@
                     }
 
                     // Recurse if we're merging object literal values or arrays
-                    if (deep && copy && ( cajal.isPlainObject(copy) || cajal.isArray(copy) )) {
-                        var clone = src && ( cajal.isPlainObject(src) || cajal.isArray(src) ) ? src
+                    if (deep && copy && (cajal.isPlainObject(copy) || cajal.isArray(copy))) {
+                        var clone = src && (cajal.isPlainObject(src) || cajal.isArray(src)) ? src
                             : cajal.isArray(copy) ? [] : {};
 
                         // Never move original objects, clone them
-                        target[ name ] = cajal.extend( deep, clone, copy );
+                        target[ name ] = cajal.extend(deep, clone, copy);
 
                     // Don't bring in undefined values
                     } else if (copy !== undefined) {
@@ -116,11 +116,37 @@
             // if last one is own, then all properties are own.
 
             var key;
-            for ( key in obj) {}
+            for (key in obj) {}
 
-            return key === undefined || Object.prototype.hasOwnProperty.call( obj, key );
+            return key === undefined || Object.prototype.hasOwnProperty.call(obj, key);
         }
     });
+
+    /**
+     * Default options for cajal
+     */
+    var defaultOptions = {
+        /**
+         * flag weather the canvas will be cleared before each call of the draw method
+         */
+        autoClearCanvas: true,
+
+        /**
+         * Global Alpha (will be applied to all objects drawn on the canvas)
+         */
+        globalAlpha: 1,
+
+        /**
+         * Global composite operation
+         * valid values: source-over, source-atop, source-in, source-out, destination-atop, destination-in, destination-out, destination-over, copy, darker, lighter, xor
+         */
+        globalCompositeOperation: 'source-over',
+
+        /**
+         * FPS for the animation loop
+         */
+        loopFps: 30
+    };
 
     //extend the cajal instance by basic functions
     cajal.extend(cajal.prototype, {
@@ -134,7 +160,13 @@
             /**
              * canvas DOM Element
              */
-            this.canvas = document.getElementById( elementId );
+            if (typeof(elementId) === 'string') {
+                //elementId represents the canvas id attribute
+                this.canvas = document.getElementById(elementId);
+            } else {
+                //elementId represents the canvas DOM
+                this.canvas = elementId;
+            }
 
             /**
              * canvas 2D rendering context
@@ -157,52 +189,25 @@
             this.loopAnimationFrames = [];
 
             /**
+             * Global frame number
+             */
+            this.loopFrame = 0;
+
+            /**
              * Cajal options
              */
-            this.options = cajal.extend(this.defaultOptions, options);
+            this.options = cajal.extend({}, defaultOptions, options);
+
+            /**
+             * Flag if canvas is not empty. In that case it has to be cleared before drawing
+             */
+            this.isEmpty = true;
 
             /**
              * Clear the complete canvas
              */
             this.clear();
 
-        },
-
-
-        /**
-         * Default options for cajal
-         */
-        defaultOptions: {
-            /**
-             * flag weather the canvas will be cleared before each call of the draw method
-             */
-            autoClearCanvas: true,
-
-            /**
-             * Flag if canvas is not empty. In that case it has to be cleared before drawing
-             */
-            isEmpty: true,
-
-            /**
-             * Global Alpha (will be applied to all objects drawn on the canvas)
-             */
-            globalAlpha: 1,
-
-            /**
-             * Global composite operation
-             * valid values: source-over, source-atop, source-in, source-out, destination-atop, destination-in, destination-out, destination-over, copy, darker, lighter, xor
-             */
-            globalCompositeOperation: 'source-over',
-
-            /**
-             * FPS for the animation loop
-             */
-            loopFps: 30,
-
-            /**
-             * Global frame number
-             */
-            loopFrame: 0
         },
 
         /**
@@ -229,8 +234,8 @@
          */
         getItem: function(itemId) {
             for (i in this.items) {
-                if (this.items[i].itemId === itemId) {
-                    return this.items[i].item;
+                if (this.items[ i ].itemId === itemId) {
+                    return this.items[ i ].item;
                 }
             }
             return false;
@@ -244,8 +249,8 @@
          */
         setItem: function(itemId, item) {
             for (i in this.items) {
-                if (this.items[i].itemId === itemId) {
-                    this.items[i] = {
+                if (this.items[ i ].itemId === itemId) {
+                    this.items[ i ] = {
                         itemId: itemId,
                         item: item
                     };
@@ -295,7 +300,7 @@
             if ((i = this.getItemPosition(itemId)) !== false) {
                 var item = this.items[i++];
                 this.deleteItem(itemId);
-                this.items.splice(i,0,item);
+                this.items.splice(i, 0, item);
                 return this;
             }
             return false;
@@ -311,7 +316,7 @@
             if ((i = this.getItemPosition(itemId)) !== false) {
                 var item = this.items[i--];
                 this.deleteItem(itemId);
-                this.items.splice(i,0,item);
+                this.items.splice(i, 0, item);
                 return this;
             }
             return false;
@@ -326,7 +331,7 @@
             var i;
             if ((i = this.getItemPosition(itemId)) !== false) {
                 var item = this.getItem(itemId);
-                this.deleteItem(itemId).addItem(itemId,item);
+                this.deleteItem(itemId).addItem(itemId, item);
                 return this;
             }
             return false;
@@ -340,9 +345,9 @@
         bottom: function(itemId) {
             var i;
             if ((i = this.getItemPosition(itemId)) !== false) {
-                var item = this.items[i];
+                var item = this.items[ i ];
                 this.deleteItem(itemId);
-                this.items.splice(0,0,item);
+                this.items.splice(0, 0, item);
                 return this;
             }
             return false;
@@ -355,12 +360,12 @@
          * @return cajal instance
          */
         draw: function(options) {
-            if (this.options.isEmpty === false && this.options.autoClearCanvas === true) {
+            if (this.isEmpty === false && this.options.autoClearCanvas === true) {
                 this.clear();
             }
-            this.options.isEmpty = false;
+            this.isEmpty = false;
             for (i in this.items) {
-                this.items[i].item.draw(this, options);
+                this.items[ i ].item.draw(this, options);
             }
             return this;
         },
@@ -370,8 +375,8 @@
          * @return cajal instance
          */
         clear: function() {
-            this.ctx.clearRect(0,0,this.canvas.width,this.canvas.height);
-            this.options.isEmpty = true;
+            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            this.isEmpty = true;
             return this;
         },
 
@@ -413,7 +418,7 @@
          */
         loopAnimationExists: function(animation) {
             for (i in this.loopAnimations) {
-                if (this.loopAnimations[i].callback === animation) {
+                if (this.loopAnimations[ i ].callback === animation) {
                     return true;
                 }
             }
@@ -450,17 +455,17 @@
          * interval if no animations are left in the loop
          */
         loop: function() {
-            this.options.loopFrame++;
+            this.loopFrame++;
             for (i in this.loopAnimations) {
-                var animation = this.loopAnimations[i];
+                var animation = this.loopAnimations[ i ];
                 animation.frame++;
                 if (animation.duration > 0 && animation.frame > animation.duration) {
-                    delete(this.loopAnimations[i]);
+                    delete(this.loopAnimations[ i ]);
                 } else {
                     var arguments = [];
                     arguments.push(animation.frame);
                     arguments.push(animation.duration);
-                    animation.callback.apply(this,arguments);
+                    animation.callback.apply(this, arguments);
                 }
             }
             this.draw();
@@ -495,7 +500,7 @@
     };
 
     //extend the linear gradient object by methods
-    cajal.extend(cajal.LinearGradient.prototype,{
+    cajal.extend(cajal.LinearGradient.prototype, {
         /**
          * add a color stop to the gradient
          * @param pos float number between 0 and 1 where the color is located on the gradient
@@ -515,7 +520,7 @@
         draw: function(context) {
             var gradient = context.createLinearGradient(this.properties.start.x, this.properties.start.y, this.properties.end.x, this.properties.end.y);
             for (i in this.properties.colorStops) {
-                gradient.addColorStop(this.properties.colorStops[i].pos, this.properties.colorStops[i].color);
+                gradient.addColorStop(this.properties.colorStops[ i ].pos, this.properties.colorStops[ i ].color);
             }
             return gradient;
         }
@@ -534,13 +539,13 @@
      */
     cajal.RadialGradient = function(x1, y1, r1, x2, y2, r2) {
         this.properties = {
-            start       : {x:x1,y:y1,r:r1},
-            end         : {x:x2,y:y2,r:r2},
+            start       : {x:x1, y:y1, r:r1},
+            end         : {x:x2, y:y2, r:r2},
             colorStops  : []
         }
         return this;
     };
-    cajal.extend(cajal.RadialGradient.prototype,{
+    cajal.extend(cajal.RadialGradient.prototype, {
         /**
          * add a color stop to the gradient
          * @param pos float number between 0 and 1 where the color is located on the gradient
@@ -548,7 +553,7 @@
          * @return gradient instance
          */
         colorStop: function(pos, color) {
-            this.properties.colorStops.push({pos:pos,color:color});
+            this.properties.colorStops.push({pos:pos, color:color});
             return this;
         },
 
@@ -559,7 +564,7 @@
         draw: function(context) {
             var gradient = context.createRadialGradient(this.properties.start.x, this.properties.start.y, this.properties.start.r, this.properties.end.x, this.properties.end.y, this.properties.end.r);
             for (i in this.properties.colorStops) {
-                gradient.addColorStop(this.properties.colorStops[i].pos, this.properties.colorStops[i].color);
+                gradient.addColorStop(this.properties.colorStops[ i ].pos, this.properties.colorStops[ i ].color);
             }
             return gradient;
         }
@@ -634,7 +639,7 @@
          */
         changeMatrix: function(m11, m12, m21, m22, dx, dy) {
              //identity
-            var m = {m11:1,m12:0,dx:0,m21:0,m22:1,dy:0};
+            var m = {m11:1, m12:0, dx:0, m21:0, m22:1, dy:0};
             //override the identity if matrix is given
             if (this.itemOptions.matrix !== null) {
                 m = this.itemOptions.matrix;
@@ -778,7 +783,7 @@
          * @return item instance
          */
         setDrawOptions: function(options) {
-            cajal.extend(this.drawOptions,options);
+            cajal.extend(this.drawOptions, options);
             return this;
         },
 
@@ -802,7 +807,7 @@
             }
 
             if (options !== undefined) {
-                options = cajal.extend({},this.drawOptions,options);
+                options = cajal.extend({}, this.drawOptions, options);
             } else {
                 options = this.drawOptions;
             }
@@ -811,7 +816,7 @@
                 if (typeof(options.fill) === 'object') {
                     ctx.fillStyle = options.fill.draw(ctx);
                 } else if (cajal.isFunction(options.fill)) {
-                    ctx.fillStyle = options.fill.apply(this,[ctx]);
+                    ctx.fillStyle = options.fill.apply(this, [ ctx ]);
                 } else {
                     ctx.fillStyle = options.fill;
                 }
@@ -821,7 +826,7 @@
                 if (typeof(options.stroke) === 'object') {
                     ctx.strokeStyle = options.stroke.draw(ctx);
                 } else if (cajal.isFunction(options.stroke)) {
-                    ctx.strokeStyle = options.stroke.apply(this,[ctx]);
+                    ctx.strokeStyle = options.stroke.apply(this, [ ctx ]);
                 } else {
                     ctx.strokeStyle = options.stroke;
                 }
@@ -838,13 +843,13 @@
                 ctx.shadowColor = options.shadow;
             }
 
-            ctx.setTransform(1,0,0,1,0,0);
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
 
             //handle matrix changes
             //matrix changes
             if (this.itemOptions.matrix !== undefined && this.itemOptions.matrix !== null) {
                 var m = this.itemOptions.matrix;
-                ctx.setTransform(m.m11,m.m12,m.m21,m.m22,m.dx,m.dy);
+                ctx.setTransform(m.m11, m.m12, m.m21, m.m22, m.dx, m.dy);
             }
             //center of object
             var center = this.center(ctx)
@@ -855,29 +860,29 @@
             // rotate round center of object
             if (this.itemOptions.rotate !== undefined && this.itemOptions.rotate !== null) {
                 //translate to the center of the object
-                ctx.translate(center.x,center.y);
+                ctx.translate(center.x, center.y);
                 //rotate
                 ctx.rotate(this.itemOptions.rotate);
                 //translate back
-                ctx.translate(-center.x,-center.y);
+                ctx.translate(-center.x, -center.y);
             }
             //scale form center of object
             if (this.itemOptions.scale !== undefined && this.itemOptions.scale !== null) {
                 //translate to the center of the object
-                ctx.translate(center.x,center.y);
+                ctx.translate(center.x, center.y);
                 //scale
                 ctx.scale(this.itemOptions.scale.dx, this.itemOptions.scale.dy);
                 //translate back
-                ctx.translate(-center.x,-center.y);
+                ctx.translate(-center.x, -center.y);
             }
             
             for (i in this.pointStack) {
-                var p = this.pointStack[i];
+                var p = this.pointStack[ i ];
 
                 switch (p.type) {
 
                     case 'start':
-                        ctx.moveTo(0,0);
+                        ctx.moveTo(0, 0);
                         break;
 
                     case 'point':
@@ -893,7 +898,7 @@
                         break;
 
                     case 'circle':
-                        ctx.moveTo(p.r,0);
+                        ctx.moveTo(p.r, 0);
                         ctx.arc(0, 0, p.r, 0, Math.PI*2, false);
                         break;
 
@@ -902,11 +907,11 @@
                         break;
                         
                     case 'rounded rect':
-                        ctx.moveTo( p.r, 0);
-                        ctx.arcTo ( p.w,  0 , p.w, p.r, p.r );
-                        ctx.arcTo ( p.w, p.h, p.r, p.h, p.r );
-                        ctx.arcTo (  0 , p.h,  0 , p.r, p.r );
-                        ctx.arcTo (  0 ,  0 , p.r,  0 , p.r );
+                        ctx.moveTo(p.r, 0);
+                        ctx.arcTo (p.w,  0 , p.w, p.r, p.r);
+                        ctx.arcTo (p.w, p.h, p.r, p.h, p.r);
+                        ctx.arcTo ( 0 , p.h,  0 , p.r, p.r);
+                        ctx.arcTo ( 0 ,  0 , p.r,  0 , p.r);
                         break;
 
                     case 'text':
@@ -947,13 +952,13 @@
      * @return circle item instance
      */
     cajal.Circle = function(x, y, r) {
-        this.drawOptions = cajal.extend({},defaultDrawOptions);
-        this.itemOptions = cajal.extend({},defaultItemOptions);
+        this.drawOptions = cajal.extend({}, defaultDrawOptions);
+        this.itemOptions = cajal.extend({}, defaultItemOptions);
         this.pointStack = [{
             type : 'circle',
             r    : r
         }];
-        this.move(x,y);
+        this.move(x, y);
     }
     cajal.extend(cajal.Circle.prototype, Item, {
         /**
@@ -962,7 +967,7 @@
          */
         center: function() {
             var p = this.pointStack[0];
-            return {x:p.x,y:p.y};
+            return {x:p.x, y:p.y};
         }
     });
 
@@ -978,20 +983,20 @@
      */
     cajal.Rect = function(x, y, w, h, r) {
         this.pointStack = [];
-        this.drawOptions = cajal.extend({},defaultDrawOptions);
-        this.itemOptions = cajal.extend({},defaultItemOptions);
+        this.drawOptions = cajal.extend({}, defaultDrawOptions);
+        this.itemOptions = cajal.extend({}, defaultItemOptions);
         var p = {
             type : 'rect',
             w    : w,
             h    : h
         };
         if (r !== undefined) { //rounded rect
-            p = cajal.extend(p,{
+            p = cajal.extend(p, {
                 type : 'rounded rect',
                 r    : r
             });
         }
-        this.move(x,y);
+        this.move(x, y);
         this.pointStack.push(p);
     }
     cajal.extend(cajal.Rect.prototype, Item, {
@@ -1027,14 +1032,14 @@
      * @return path item instance
      */
     cajal.Path = function(x, y) {
-        this.drawOptions = cajal.extend({},defaultDrawOptions);
-        this.itemOptions = cajal.extend({},defaultItemOptions);
+        this.drawOptions = cajal.extend({}, defaultDrawOptions);
+        this.itemOptions = cajal.extend({}, defaultItemOptions);
         this.offset = {
             x    : x||0,
             y    : y||0
         }
         this.pointStack = [{type: 'start'}];
-        this.move(x,y);
+        this.move(x, y);
     }
     cajal.extend(cajal.Path.prototype, Item, {
 
@@ -1044,7 +1049,7 @@
         pointStack: [],
 
         /**
-         * Create a line to (x,y)
+         * Create a line to (x, y)
          * @param x position of the end point on the x-axis in pixel
          * @param y position of the end point on the y-axis in pixel
          * @return path item instance
@@ -1060,7 +1065,7 @@
         },
 
         /**
-         * Create a line to (x,y)
+         * Create a line to (x, y)
          * @param x position of the end point on the x-axis in pixel
          * @param y position of the end point on the y-axis in pixel
          * @return path item instance
@@ -1083,7 +1088,7 @@
         },
 
         /**
-         * Create a quadratic bezier curve to (x,y) with the control point (cx,cy)
+         * Create a quadratic bezier curve to (x, y) with the control point (cx, cy)
          * @param x position of the end point on the x-axis in pixel
          * @param y position of the end point on the y-axis in pixel
          * @param cx position of the control point on the x-axis in pixel
@@ -1103,7 +1108,7 @@
         },
 
         /**
-         * Create a bezier curve to (x,y) with the control points (c1x,c1y) and (c2x,c2y)
+         * Create a bezier curve to (x, y) with the control points (c1x, c1y) and (c2x, c2y)
          * @param x position of the end point on the x-axis in pixel
          * @param y position of the end point on the y-axis in pixel
          * @param c1x position of the first control point on the x-axis in pixel
@@ -1177,15 +1182,15 @@
      * @return text item instance
      */
     cajal.Text = function(x, y, text) {
-        this.drawOptions = cajal.extend({},defaultDrawOptions);
-        this.itemOptions = cajal.extend({},defaultItemOptions);
-        this.move(x,y);
+        this.drawOptions = cajal.extend({}, defaultDrawOptions);
+        this.itemOptions = cajal.extend({}, defaultItemOptions);
+        this.move(x, y);
         this.pointStack = [{
             type: 'text',
             text: text
         }];
     };
-    cajal.extend(cajal.Text.prototype,Item,{
+    cajal.extend(cajal.Text.prototype, Item, {
 
         /**
          * Append text to the current text
@@ -1242,13 +1247,13 @@
      * @return polygon item instance
      */
     cajal.Polygon = function(x, y, n, r) {
-        this.drawOptions = cajal.extend({},defaultDrawOptions);
-        this.itemOptions = cajal.extend({},defaultItemOptions);
+        this.drawOptions = cajal.extend({}, defaultDrawOptions);
+        this.itemOptions = cajal.extend({}, defaultItemOptions);
         this.pointStack = [];
-        this.move(x,y);
-        this.setPoints(n,r);
+        this.move(x, y);
+        this.setPoints(n, r);
     }
-    cajal.extend(cajal.Polygon.prototype,Item,{
+    cajal.extend(cajal.Polygon.prototype, Item, {
 
         /**
          * Get the center of the item for rotation
@@ -1332,7 +1337,7 @@
         expIn: function(d, f, t, p) {
             p=p||3;
             f/=t;
-            return p*Math.pow(f,p-1)*d/t;
+            return p*Math.pow(f, p-1)*d/t;
         },
 
         /**
@@ -1344,7 +1349,7 @@
          * @return change of the value for frame f
          */
         expOut: function(d, f, t, p) {
-            return this.expIn(d,t-f,t,p);
+            return this.expIn(d, t-f, t, p);
         },
 
         /**
@@ -1357,9 +1362,9 @@
          */
         expInOut: function(d, f, t, p) {
             f/=t/2;
-            if (f < 1) return this.expIn(d,f*t,t,p);
+            if (f < 1) return this.expIn(d, f*t, t, p);
             f--;
-            return this.expOut(d,f*t,t,p);
+            return this.expOut(d, f*t, t, p);
         },
 
         /**
@@ -1463,7 +1468,7 @@
             p = p || 3;
             var pi = Math.PI;
             var T = 1/(p+.25);
-            return d/t * (2/9) * Math.pow(f,3.5) * Math.sin(f*2*pi/T) + d/t * Math.pow(f,4.5) * Math.cos(f*2*pi/T) * (2*pi/T);
+            return d/t * (2/9) * Math.pow(f, 3.5) * Math.sin(f*2*pi/T) + d/t * Math.pow(f, 4.5) * Math.cos(f*2*pi/T) * (2*pi/T);
         },
 
         /**
@@ -1475,7 +1480,7 @@
          * @return change of the value for frame f
          */
         elasticOut: function(d, f, t, p) {
-            return this.elasticIn(d,t-f,t,p);
+            return this.elasticIn(d, t-f, t, p);
         },
 
         /**
