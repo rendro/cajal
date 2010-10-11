@@ -62,16 +62,17 @@
                             //raise livecycle
                             this.items[i].item.drawOptions.livecycle++;
 
-                            //reduce speed on x/y-axis
+                            //reduce speed on x-axis
                             this.items[i].item.drawOptions.speed.dx *= 0.99;
+                            //gravity on y axis
                             this.items[i].item.drawOptions.speed.dy += 0.1;
 
-                            //fade out particles 100 frames before end
+                            //animate opcity in the last 3/4 of animation
                             if (this.items[i].item.drawOptions.livecycle > t/4) {
                                 this.items[i].item.drawOptions.fill = this.items[i].item.drawOptions.fill.replace(/,([0-9\.]+)\)$/g,',' + Math.random() + ')');
                             }
-                            //remove particles after 500 frames
-                            if (this.items[i].item.drawOptions.livecycle >= (t-t/2)) {
+                            //remove particles after 9/10 of animation
+                            if (this.items[i].item.drawOptions.livecycle >= (t-t/10)) {
                                 this.items.splice(i,1);
                             }
                         }
@@ -135,17 +136,18 @@ var emitter = function (f,t) {
                 //raise livecycle
                 this.items[i].item.drawOptions.livecycle++;
 
-                //reduce speed on x/y-axis
+                //reduce speed on x-axis
                 this.items[i].item.drawOptions.speed.dx *= 0.99;
+                //gravity on y axis
                 this.items[i].item.drawOptions.speed.dy += 0.1;
 
-                //fade out particles 100 frames before end
+                //animate opcity in the last 3/4 of animation
                 if (this.items[i].item.drawOptions.livecycle > t/4) {
                 	var fill = this.items[i].item.drawOptions.fill;
                 	fill = fill.replace(/,([0-9\.]+)\)$/g,','+Math.random()+')');
                     this.items[i].item.drawOptions.fill = fill;
                 }
-                //remove particles after 500 frames
+                //remove particles after 9/10 of animation
                 if (this.items[i].item.drawOptions.livecycle >= (t-t/2)) {
                     this.items.splice(i,1);
                 }
