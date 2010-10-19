@@ -24,7 +24,7 @@
 	<div id="content">
 		<h1>Animations</h1>
 		<div class="inner">
-		
+
 			<h2>Move, rotate and scale</h2>
 			<canvas id="anim1" height="200" width="400"></canvas>
 			<script type="text/javascript">
@@ -44,14 +44,14 @@
     	fill  : 'black',
     	stroke: 'blue',
     	width : 10})).draw();
-    
+
     var myAnimation = function () {
         this.getItem('rect').moveBy(0.5,0.5).rotateBy(1).scaleBy(0.01,0.002);
     }
 &lt;/script&gt;&lt;br/&gt;
 &lt;a href="#" onclick="c1.startAnimation(myAnimation,200); return false;"&gt;Start animation&lt;a&gt;
 			</pre>
-			
+
 			<h2>Use easing functions</h2>
 			<canvas id="anim2" height="200" width="400"></canvas>
 			<script type="text/javascript">
@@ -108,7 +108,7 @@ var easing = function (frame, duration) {
 				this.getItem('item').rotateBy(0.5);
 			}
 			</script><br/>
-			<a href="#" onclick="c3.startAnimation(rotation); return false;">Start animation</a> | 
+			<a href="#" onclick="c3.startAnimation(rotation); return false;">Start animation</a> |
 			<a href="#" onclick="c3.stopAnimation(rotation); return false;">Stop animation</a>
 			<h3>Code</h3>
 			<pre>

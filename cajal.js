@@ -3,8 +3,8 @@
  * on the canvas element as specified in the html5 standard.
  * Being completely object orientated you can draw the same item objects an animations
  * to several cajal instances, each linked with a different canvas element.
- * 
- * 
+ *
+ *
  * @author Robert Fleischmann
  * @version 1.0.1
  */
@@ -471,8 +471,8 @@
                 clearInterval(this.loopInterval);
                 this.loopInterval = null;
             }
-            
-        }        
+
+        }
 
     });
 
@@ -897,7 +897,7 @@
                 //translate back
                 ctx.translate(-center.x, -center.y);
             }
-            
+
             for (i in this.pointStack) {
                 var p = this.pointStack[i];
 
@@ -927,7 +927,7 @@
                     case 'rect':
                         ctx.rect(0, 0, p.w, p.h);
                         break;
-                        
+
                     case 'rounded rect':
                         ctx.moveTo(p.r, 0);
                         ctx.arcTo (p.w, 0, p.w, p.r, p.r);
@@ -1169,7 +1169,7 @@
             };
             for (var i = 0; i < this.pointStack.length; i++) {
                 var p = this.pointStack[i];
-                
+
                 switch (p.type) {
                     case 'point':
                         polygon.i++;
@@ -1315,7 +1315,7 @@
      * Easing functions for more dynamic animations
      */
     cajal.Ease = {
-        
+
         /**
          * Quadratic ease in
          * @param d total amount that should be changed over time
@@ -1327,7 +1327,7 @@
             f /= t;
             return 2 * f * d / t;
         },
-        
+
         /**
          * Quadratic ease out
          * @param d total amount that should be changed over time
