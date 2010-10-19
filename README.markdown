@@ -177,7 +177,7 @@ Example: fill the circle created above blue and move by 100px right and 50px dow
     });
 
     //draw again to see the changes
-   
+
     c.draw()
 
 
@@ -215,9 +215,9 @@ The items are drawn in the order they are added to the cajal instance. That mean
 Example: Three overlapping circles and some rearrangement
 
 	var c = new cajal('mycanvas');
-	
+
 	var circle = new cajal.Circle(150, 150, 100);
-	
+
 	c.addItem('c1', circle.clone().setDrawOptions({
 		fill: 'red'
 	}));
@@ -227,9 +227,9 @@ Example: Three overlapping circles and some rearrangement
 	c.addItem('c3', circle.clone().moveBy(50,100).setDrawOptions({
 		fill: 'blue'
 	}));
-	
+
 	c.draw();
-	
+
 Now you have three circles (red, green and blue one) with the red on the bottom and the blue on the top. `c.getItem('c1').up()` will bring the red circle one layer up. So now the green one is on the bottom. I think that should be enough to get the concept.
 
 
@@ -286,11 +286,11 @@ Example: using expInOut with a power of 3 to move a rectangular by 300px on the 
 		var dx = cajal.Ease.expInOut(300, frame, duration, 3);
 		this.getItem('myRect').moveBy(dx, 0);
 	}
-	
+
 	//add a rectangular with 5px rounded corners
 	c.addItem('myRect', new cajal.Rect(50, 30, 50, 50, 5).setDrawOptions({
 		fill: 'black'
 	}));
-	
+
 	//start animation and set lifetime to 350 frames
 	c.startAnimation(bar, 350);
