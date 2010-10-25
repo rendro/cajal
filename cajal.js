@@ -398,7 +398,7 @@
          */
         stopAnimation: function(animation) {
             for (i in this.loopAnimations) {
-                if (this.loopAnimations[i] === animation) {
+                if (this.loopAnimations[i].callback === animation) {
                     delete(this.loopAnimations[i]);
                     return this;
                 }
