@@ -69,7 +69,7 @@
 			<canvas id="path" height="200" width="400"></canvas>
 			<script type="text/javascript">
 			var path = new cajal('path');
-			path.addItem('p1', new cajal.Path(50,50).quadraticCurve(100,50,50,80).to(80,120).to(20,80)).draw({fill: 'black', stroke:'blue', width: 10});
+			path.addItem('p1', new cajal.Path(50,50).quadraticCurve(100,50,50,80).to(80,120).to(20,80).close()).draw({fill: 'black', stroke:'blue', width: 10});
 			</script>
 			<h3>Code</h3>
 			<pre>

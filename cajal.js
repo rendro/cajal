@@ -809,19 +809,12 @@
             return this;
         },
 
-        /**
-         * Draw routine for the items
-         * Each item is drawn as path to the canvas
-         * @param canvas cajal instance
-         * @param options draw options for this draw call
-         */
-        draw: function(canvas, options) {
+        prepare: function (canvas, options) {
             var ctx = canvas.ctx;
             ctx.save();
             //globalAlpha and globalCompositeOperation
             ctx.globalAlpha = canvas.options.globalAlpha;
             ctx.globalCompositeOperation = canvas.options.globalCompositeOperation;
-            ctx.beginPath();
 
             //dont draw if hidden
             if (this.itemOptions.hidden === true) {
@@ -898,62 +891,13 @@
                 ctx.translate(-center.x, -center.y);
             }
 
-            for (i in this.pointStack) {
-                var p = this.pointStack[i];
+            ctx.beginPath();
 
-                switch (p.type) {
+            return options;
+        },
 
-                    case 'start':
-                        ctx.moveTo(0, 0);
-                        break;
-
-                    case 'point':
-                        ctx.lineTo(p.x, p.y);
-                        break;
-
-                    case 'quadratic':
-                        ctx.quadraticCurveTo(p.cx, p.cy, p.x, p.y);
-                        break;
-
-                    case 'bezier':
-                        ctx.bezierCurveTo(p.c1x, p.c1y, p.c2x, p.c2y, p.x, p.y);
-                        break;
-
-                    case 'circle':
-                        ctx.moveTo(p.r, 0);
-                        ctx.arc(0, 0, p.r, 0, Math.PI * 2, false);
-                        break;
-
-                    case 'rect':
-                        ctx.rect(0, 0, p.w, p.h);
-                        break;
-
-                    case 'rounded rect':
-                        ctx.moveTo(p.r, 0);
-                        ctx.arcTo (p.w, 0, p.w, p.r, p.r);
-                        ctx.arcTo (p.w, p.h, p.r, p.h, p.r);
-                        ctx.arcTo (0, p.h, 0, p.r, p.r);
-                        ctx.arcTo (0, 0, p.r, 0, p.r);
-                        break;
-
-                    case 'text':
-                        ctx.font = options.font;
-                        if (options.stroke !== null) {
-                            ctx.strokeText (p.text, 0, 0);
-                        }
-                        if (options.fill !== null) {
-                            ctx.fillText(p.text, 0, 0);
-                        }
-                        break;
-
-                    default:
-                        //error
-                        throw Error('unknown shape: ' + p.type);
-                        break;
-                }
-            }
-            ctx.closePath();
-
+        finalize: function (canvas, options) {
+            var ctx = canvas.ctx;
             if (options.stroke !== null) {
                 ctx.stroke();
             }
@@ -976,10 +920,7 @@
     cajal.Circle = function(x, y, r) {
         this.drawOptions = cajal.extend({}, defaultDrawOptions);
         this.itemOptions = cajal.extend({}, defaultItemOptions);
-        this.pointStack = [{
-            type: 'circle',
-            r: r
-        }];
+        this.radius = r || 30;
         this.move(x, y);
     }
     cajal.extend(cajal.Circle.prototype, Item, {
@@ -988,12 +929,29 @@
          * @return point object of the center
          */
         center: function() {
-            var p = this.pointStack[0];
             return {
-                x: p.x,
-                y: p.y
+                x: 0,
+                y: 0
             };
+        },
+        
+        /**
+         * Draw routine for the items
+         * Each item is drawn as path to the canvas
+         * @param canvas cajal instance
+         * @param options draw options for this draw call
+         */
+        draw: function(canvas, options) {
+            var ctx = canvas.ctx;
+            options = this.prepare(canvas, options);
+            
+            ctx.moveTo(this.radius, 0);
+            ctx.arc(0, 0, this.radius, 0, Math.PI * 2, false);
+            ctx.closePath();
+
+            this.finalize(canvas, options);
         }
+
     });
 
     /**
@@ -1007,22 +965,16 @@
      * @return rectangle item instance
      */
     cajal.Rect = function(x, y, w, h, r) {
-        this.pointStack = [];
         this.drawOptions = cajal.extend({}, defaultDrawOptions);
         this.itemOptions = cajal.extend({}, defaultItemOptions);
-        var p = {
-            type: 'rect',
+        this.rect = {
             w: w,
             h: h
         };
         if (r !== undefined) { //rounded rect
-            p = cajal.extend(p, {
-                type: 'rounded rect',
-                r: r
-            });
+            this.rect.r = r;
         }
         this.move(x, y);
-        this.pointStack.push(p);
     }
     cajal.extend(cajal.Rect.prototype, Item, {
         /**
@@ -1030,23 +982,45 @@
          * @return point object of the center
          */
         center: function() {
-            var p = this.pointStack[0];
             return {
-                x: p.w / 2,
-                y: p.h / 2
+                x: this.rect.w / 2,
+                y: this.rect.h / 2
             };
         },
         /**
          * Get the height of the rectangle
          */
         height: function() {
-            return this.pointStack[0].h;
+            return this.rect.h;
         },
         /**
          * Get the width of the rectangle
          */
         width: function() {
-            return this.pointStack[0].w;
+            return this.rect.w;
+        },
+        /**
+         * Draw routine for the items
+         * Each item is drawn as path to the canvas
+         * @param canvas cajal instance
+         * @param options draw options for this draw call
+         */
+        draw: function(canvas, options) {
+            var ctx = canvas.ctx;
+            options = this.prepare(canvas, options);
+
+            if (this.rect.r !== undefined) {
+                ctx.moveTo(this.rect.r, 0);
+                ctx.arcTo (this.rect.w, 0, this.rect.w, this.rect.r, this.rect.r);
+                ctx.arcTo (this.rect.w, this.rect.h, this.rect.r, this.rect.h, this.rect.r);
+                ctx.arcTo (0, this.rect.h, 0, this.rect.r, this.rect.r);
+                ctx.arcTo (0, 0, this.rect.r, 0, this.rect.r);
+            } else {
+                ctx.rect(0, 0, this.rect.w, this.rect.h);
+            }
+            ctx.closePath();
+
+            this.finalize(canvas, options);
         }
     });
 
@@ -1059,6 +1033,7 @@
     cajal.Path = function(x, y) {
         this.drawOptions = cajal.extend({}, defaultDrawOptions);
         this.itemOptions = cajal.extend({}, defaultItemOptions);
+        this.isClosed = false;
         this.offset = {
             x: x || 0,
             y: y || 0
@@ -1104,11 +1079,7 @@
          * @return path item instance
          */
         close: function() {
-            this.pointStack.push({
-                type: 'point',
-                x: 0,
-                y: 0
-            });
+            this.isClosed = true;
             return this;
         },
 
@@ -1196,6 +1167,46 @@
                 x: polygon.x / polygon.i,
                 y: polygon.y / polygon.i
             };
+        },
+
+        /**
+         * Draw routine for the items
+         * Each item is drawn as path to the canvas
+         * @param canvas cajal instance
+         * @param options draw options for this draw call
+         */
+        draw: function(canvas, options) {
+            var ctx = canvas.ctx;
+            options = this.prepare(canvas, options);
+
+            for (i in this.pointStack) {
+                var p = this.pointStack[i];
+
+                switch (p.type) {
+
+                    case 'start':
+                        ctx.moveTo(0, 0);
+                        break;
+
+                    case 'point':
+                        ctx.lineTo(p.x, p.y);
+                        break;
+
+                    case 'quadratic':
+                        ctx.quadraticCurveTo(p.cx, p.cy, p.x, p.y);
+                        break;
+
+                    case 'bezier':
+                        ctx.bezierCurveTo(p.c1x, p.c1y, p.c2x, p.c2y, p.x, p.y);
+                        break;
+                }
+            }
+
+            if (this.isClosed) {
+                ctx.closePath();
+            }
+
+            this.finalize(canvas, options);
         }
     });
 
@@ -1210,10 +1221,7 @@
         this.drawOptions = cajal.extend({}, defaultDrawOptions);
         this.itemOptions = cajal.extend({}, defaultItemOptions);
         this.move(x, y);
-        this.pointStack = [{
-            type: 'text',
-            text: text
-        }];
+        this.text = text;
     };
     cajal.extend(cajal.Text.prototype, Item, {
 
@@ -1223,7 +1231,7 @@
          * @return text item instance
          */
         append: function(text) {
-            this.pointStack[0].text += ("" + text);
+            this.text += ("" + text);
             return this;
         },
 
@@ -1233,7 +1241,7 @@
          * @return text item instance
          */
         prepend: function(text) {
-            this.pointStack[0].text = "" + text + this.pointStack[0].text;
+            this.text = "" + text + this.pointStack[0].text;
             return this;
         },
 
@@ -1243,7 +1251,7 @@
          * @return text item instance
          */
         text: function(text) {
-            this.pointStack[0].text = "" + text;
+            this.text = "" + text;
             return this;
         },
 
@@ -1254,12 +1262,33 @@
         center: function(ctx) {
             ctx.save();
             ctx.font = this.drawOptions.font;
-            var size = ctx.measureText(this.pointStack[0].text);
+            var size = ctx.measureText(this.text);
             ctx.restore();
             return {
                 x: size.width / 2,
                 y: 0
             };
+        },
+
+        /**
+         * Draw routine for the items
+         * Each item is drawn as path to the canvas
+         * @param canvas cajal instance
+         * @param options draw options for this draw call
+         */
+        draw: function(canvas, options) {
+            var ctx = canvas.ctx;
+            options = this.prepare(canvas, options);
+
+            ctx.font = options.font;
+            if (options.stroke !== null) {
+                ctx.strokeText (this.text, 0, 0);
+            }
+            if (options.fill !== null) {
+                ctx.fillText(this.text, 0, 0);
+            }
+            ctx.closePath();
+            this.finalize(canvas, options);
         }
     });
 
@@ -1300,14 +1329,31 @@
         setPoints: function(n, r) {
             this.pointStack = [];
             var angle = Math.PI * 2 / n;
-            for (var i = 0; i <= n; i++) {
+            for (var i = 0; i < n; i++) {
                 this.pointStack.push({
-                    type: 'point',
                     x: r * Math.cos(i * angle),
                     y: r * Math.sin(i * angle)
                 });
             }
             return this;
+        },
+
+        /**
+         * Draw routine for the items
+         * Each item is drawn as path to the canvas
+         * @param canvas cajal instance
+         * @param options draw options for this draw call
+         */
+        draw: function(canvas, options) {
+            var ctx = canvas.ctx;
+            options = this.prepare(canvas, options);
+
+            for (i in this.pointStack) {
+                var p = this.pointStack[i];
+                ctx.lineTo(p.x, p.y);
+            }
+            ctx.closePath();
+            this.finalize(canvas, options);
         }
     });
 
