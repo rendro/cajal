@@ -35,7 +35,7 @@
             var c = new cajal('canvas');
 
             //chart title
-            c.addItem('headline',new cajal.Text(10, 30, 'Chart title').setDrawOptions({
+            c.add('headline',new cajal.Text(10, 30, 'Chart title').setDrawOptions({
                 font: '20px sans-serif',
                 fill: 'rgba(120,110,255,0.6)'
             }));
@@ -43,8 +43,8 @@
             //grid lines
             var line = new cajal.Path(0,0).to(c.canvas.width,0).setDrawOptions({stroke:'rgba(0,0,0,0.2)'});
             for (var x=400; x>0; x-=50) {
-                c.addItem(x, new cajal.Path(-10, x).to(c.canvas.width+10,x).to(c.canvas.width+10,-10).to(-10,-10).setDrawOptions({stroke:'rgba(0,0,0,0.1)'}).moveBy(0,0.5));
-                c.addItem('t'+x, new cajal.Text(2, x-1, c.canvas.height-x).setDrawOptions({fill:'#999',font:'9px serif'}));
+                c.add(x, new cajal.Path(-10, x).to(c.canvas.width+10,x).to(c.canvas.width+10,-10).to(-10,-10).setDrawOptions({stroke:'rgba(0,0,0,0.1)'}).moveBy(0,0.5));
+                c.add('t'+x, new cajal.Text(2, x-1, c.canvas.height-x).setDrawOptions({fill:'#999',font:'9px serif'}));
             }
 
             var gradient = new cajal.LinearGradient(0, 0, 0, c.canvas.height).colorStop(0.5,'#175175').colorStop(1,'#000');
@@ -54,22 +54,22 @@
 
             for (var i in values) {
                 var a = parseInt(i) + 1;
-                c   .addItem('bar'+a, bar.clone().move(a*30,c.canvas.height))
-                    .addItem('text'+a,text.clone().move(a*30,c.canvas.height-2));
+                c   .add('bar'+a, bar.clone().move(a*30,c.canvas.height))
+                    .add('text'+a,text.clone().move(a*30,c.canvas.height-2));
             }
 
             var init = function (f,t) {
                 for (var i in values) {
                     var a = parseInt(i) + 1;
                     var pos = -cajal.Ease.expOut(parseInt(values[i]), f, t, 2);
-                    c.getItem('bar'+a).moveBy(0,pos);
-                    c.getItem('text'+a).moveBy(0,pos).text(Math.round(parseInt(values[i])*f/t)).setDrawOptions({
+                    c.get('bar'+a).moveBy(0,pos);
+                    c.get('text'+a).moveBy(0,pos).text(Math.round(parseInt(values[i])*f/t)).setDrawOptions({
                         fill: 'rgba(0,0,0,' + f/t + ')',
                         font:'9px serif'
                     });
                 }
             }
-            c.startAnimation(init,150);
+            c.animate(init,150);
 
 			</script>
 			<h3>Code</h3>
@@ -84,7 +84,7 @@ for (var p=0; p<19;p++) {
 var c = new cajal('canvas');
 
 //chart title
-c.addItem('headline',new cajal.Text(10, 30, 'Chart title').setDrawOptions({
+c.add('headline',new cajal.Text(10, 30, 'Chart title').setDrawOptions({
     font: '20px sans-serif',
     fill: 'rgba(120,110,255,0.6)'
 }));
@@ -95,12 +95,12 @@ var line = new cajal.Path(0,0)
                     .setDrawOptions({stroke:'rgba(0,0,0,0.2)'});
 
 for (var x=400; x>0; x-=50) {
-    c.addItem(x, new cajal.Path(-10, x)
+    c.add(x, new cajal.Path(-10, x)
         .to(c.canvas.width+10,x)
         .to(c.canvas.width+10,-10)
         .to(-10,-10)
         .setDrawOptions({stroke:'rgba(0,0,0,0.1)'}).moveBy(0,0.5));
-    c.addItem('t'+x, new cajal.Text(2, x-1, c.canvas.height-x).setDrawOptions({
+    c.add('t'+x, new cajal.Text(2, x-1, c.canvas.height-x).setDrawOptions({
         fill:'#999',
         font:'9px serif'
     }));
@@ -117,16 +117,16 @@ var text = new cajal.Text(0, c.canvas.height-2, '0');
 
 for (var i in values) {
     var a = parseInt(i) + 1;
-    c   .addItem('bar'+a, bar.clone().move(a*30,c.canvas.height))
-        .addItem('text'+a,text.clone().move(a*30,c.canvas.height-2));
+    c   .add('bar'+a, bar.clone().move(a*30,c.canvas.height))
+        .add('text'+a,text.clone().move(a*30,c.canvas.height-2));
 }
 
 var init = function (f,t) {
     for (var i in values) {
         var a = parseInt(i) + 1;
         var pos = -cajal.Ease.expOut(parseInt(values[i]), f, t, 2);
-        c.getItem('bar'+a).moveBy(0,pos);
-        c.getItem('text'+a)
+        c.get('bar'+a).moveBy(0,pos);
+        c.get('text'+a)
          .moveBy(0,pos)
          .text(Math.round(parseInt(values[i])*f/t))
          .setDrawOptions({

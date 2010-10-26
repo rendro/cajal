@@ -196,7 +196,7 @@ Example: create a poygon with 5 edges and a radius of 50px</p>
 
 <h3>Add items</h3>
 
-<p>Then you can add items with the method <code>addItem(itemId, item)</code>. The parameter <code>itemId</code> is the name of the item that you can define as you like. The second parameter is the item object.</p>
+<p>Then you can add items with the method <code>add(itemId, item)</code>. The parameter <code>itemId</code> is the name of the item that you can define as you like. The second parameter is the item object.</p>
 
 <p>Example: drawing a circle</p>
 
@@ -211,7 +211,7 @@ var circle = cajal.Circle(30,40,100).setDrawOptions({
 });
 
 //add the item to the cajal instance
-c.addItem('myCircle', circle);
+c.add('myCircle', circle);
 
 //draw all items (in that case only the circle
 c.draw();
@@ -219,11 +219,11 @@ c.draw();
 
 <h3>Get item for manipulation</h3>
 
-<p>If you want to manipulate your item after adding it to the cajal instance call <code>getItem(itemId)</code></p>
+<p>If you want to manipulate your item after adding it to the cajal instance call <code>get(itemId)</code></p>
 
 <p>Example: fill the circle created above blue and move by 100px right and 50px down</p>
 
-<pre><code>c.getItem('myCircle').move(100, 50).setDrawOptions({
+<pre><code>c.get('myCircle').move(100, 50).setDrawOptions({
     fill: 'blue'
 });
 
@@ -234,11 +234,11 @@ c.draw()
 
 <h3>Overwrite an existing item</h3>
 
-<p>If you want to overwrite the circle created above use <code>setItem(itemid, newItem)</code>.</p>
+<p>If you want to overwrite the circle created above use <code>set(itemid, newItem)</code>.</p>
 
 <p>Example: Replace the circle with a rectangular</p>
 
-<pre><code>c.setItem('myCircle', new cajal.Rect(30, 40, 100, 200).setDrawOptions({
+<pre><code>c.set('myCircle', new cajal.Rect(30, 40, 100, 200).setDrawOptions({
     fill   : 'blue',
     stroke : 'white',
     width  : 3
@@ -250,11 +250,11 @@ c.draw();
 
 <h3>Remove items</h3>
 
-<p>You can remove an item from the canvas with <code>deleteItem(itemId)</code> where <code>itemId</code> is your name for the item used in the <code>addItem</code> method</p>
+<p>You can remove an item from the canvas with <code>remove(itemId)</code> where <code>itemId</code> is your name for the item used in the <code>add</code> method</p>
 
 <p>Example: removing the circle created above</p>
 
-<pre><code>c.deleteItem('myCircle');
+<pre><code>c.remove('myCircle');
 </code></pre>
 
 <h3>Promote and demote items</h3>
@@ -274,20 +274,20 @@ c.draw();
 
 var circle = new cajal.Circle(150, 150, 100);
 
-c.addItem('c1', circle.clone().setDrawOptions({
+c.add('c1', circle.clone().setDrawOptions({
     fill: 'red'
 }));
-c.addItem('c2', circle.clone().moveBy(100,0).setDrawOptions({
+c.add('c2', circle.clone().moveBy(100,0).setDrawOptions({
     fill: 'green'
 }));
-c.addItem('c3', circle.clone().moveBy(50,100).setDrawOptions({
+c.add('c3', circle.clone().moveBy(50,100).setDrawOptions({
     fill: 'blue'
 }));
 
 c.draw();
 </code></pre>
 
-<p>Now you have three circles (red, green and blue one) with the red on the bottom and the blue on the top. <code>c.getItem('c1').up()</code> will bring the red circle one layer up. So now the green one is on the bottom. I think that should be enough to get the concept.</p>
+<p>Now you have three circles (red, green and blue one) with the red on the bottom and the blue on the top. <code>c.get('c1').up()</code> will bring the red circle one layer up. So now the green one is on the bottom. I think that should be enough to get the concept.</p>
 
 <h3>Clear canvas</h3>
 
@@ -304,16 +304,17 @@ See above for the different draw option variables.</p>
 A basic animation function:</p>
 
 <pre><code>var foo = function (frame, duration) {
-    //move the item 'myItem' by 0.5px to the right, 0.3px to the bottom and rotate it by 1 degree counter-clockwise
-    this.getItem('myItem').moveBy(0.5,0.3).rotateBy(-1);
+    //move the item 'myItem' by 0.5px to the right,
+    //0.3px to the bottom and rotate it by 1 degree counter-clockwise
+    this.get('myItem').moveBy(0.5,0.3).rotateBy(-1);
 }
 </code></pre>
 
 <p>Inside the animation function you can access the cajal instance the animation is running using <code>this</code>. That makes an animation independent from the canvas it is called on and you can reuse your animation functions on different canvas elements.
-This function can be triggered to start or stop by calling the function <code>startAnimation(animation, [duration])</code> and <code>stopAnimation(animation)</code>. The animation parameter in both functions is the animation function that we created.</p>
+This function can be triggered to start or stop by calling the function <code>animate(animation, [duration])</code> and <code>stop(animation)</code>. The animation parameter in both functions is the animation function that we created.</p>
 
 <pre><code>//start the foo animation and set the lifetime to 500 frames
-c.startAnimation(foo, 500);
+c.animate(foo, 500);
 </code></pre>
 
 <p>Now this function is called every frame (default framerate is set to 30) and after 500 calls/frames it will be stopped.
@@ -346,16 +347,16 @@ The <code>duration</code> parameter is optional and leaving it blank will run th
 <pre><code>//define the animation function
 var bar = function (frame, duration) {
     var dx = cajal.Ease.expInOut(300, frame, duration, 3);
-    this.getItem('myRect').moveBy(dx, 0);
+    this.get('myRect').moveBy(dx, 0);
 }
 
 //add a rectangular with 5px rounded corners
-c.addItem('myRect', new cajal.Rect(50, 30, 50, 50, 5).setDrawOptions({
+c.add('myRect', new cajal.Rect(50, 30, 50, 50, 5).setDrawOptions({
     fill: 'black'
 }));
 
 //start animation and set lifetime to 350 frames
-c.startAnimation(bar, 350);
+c.animate(bar, 350);
 </code></pre>
 		</div>
 	</div>

@@ -216,8 +216,8 @@
          * @param item item object
          * @return cajal instance or false if itemId already exists or param item is no object
          */
-        addItem: function(itemId, item) {
-            if (this.getItem(itemId) === false && typeof(item) === 'object') {   //no duplicate itemId and item must be an object
+        add: function(itemId, item) {
+            if (this.get(itemId) === false && typeof(item) === 'object') {   //no duplicate itemId and item must be an object
                 this.items.push({
                     itemId: itemId,
                     item: item
@@ -232,7 +232,7 @@
          * @param itemId item id of the specific item
          * @return the item with specific itemId or false
          */
-        getItem: function(itemId) {
+        get: function(itemId) {
             for (i in this.items) {
                 if (this.items[i].itemId === itemId) {
                     return this.items[i].item;
@@ -247,7 +247,7 @@
          * @param item new item object
          * @return cajal instance or false if itemId does not exist
          */
-        setItem: function(itemId, item) {
+        set: function(itemId, item) {
             for (i in this.items) {
                 if (this.items[i].itemId === itemId) {
                     this.items[i] = {
@@ -265,8 +265,8 @@
          * @param itemId item id of the item
          * @return cajal instance on success or false if item does not exist
          */
-        deleteItem: function(itemId) {
-            var i = this.getItemPosition(itemId);
+        remove: function(itemId) {
+            var i = this.getIndex(itemId);
             if (false !== i) {
                 var rest = this.items.slice(i+1);
                 this.items.length = i;
@@ -281,7 +281,7 @@
          * @param itemId item id of the item
          * @return key of the item or false if item does not exist
          */
-        getItemPosition: function(itemId) {
+        getIndex: function(itemId) {
             for (i in this.items) {
                 if (this.items[i].itemId === itemId) {
                     return  parseInt(i);
@@ -297,7 +297,7 @@
          */
         up: function(itemId) {
             var i;
-            if ((i = this.getItemPosition(itemId)) !== false) {
+            if ((i = this.getIndex(itemId)) !== false) {
                 var item = this.items[i++];
                 this.deleteItem(itemId);
                 this.items.splice(i, 0, item);
@@ -313,7 +313,7 @@
          */
         down: function(itemId) {
             var i;
-            if ((i = this.getItemPosition(itemId)) !== false) {
+            if ((i = this.getIndex(itemId)) !== false) {
                 var item = this.items[i--];
                 this.deleteItem(itemId);
                 this.items.splice(i, 0, item);
@@ -329,9 +329,9 @@
          */
         top: function(itemId) {
             var i;
-            if ((i = this.getItemPosition(itemId)) !== false) {
-                var item = this.getItem(itemId);
-                this.deleteItem(itemId).addItem(itemId, item);
+            if ((i = this.getIndex(itemId)) !== false) {
+                var item = this.get(itemId);
+                this.deleteItem(itemId).add(itemId, item);
                 return this;
             }
             return false;
@@ -344,7 +344,7 @@
          */
         bottom: function(itemId) {
             var i;
-            if ((i = this.getItemPosition(itemId)) !== false) {
+            if ((i = this.getIndex(itemId)) !== false) {
                 var item = this.items[i];
                 this.deleteItem(itemId);
                 this.items.splice(0, 0, item);
@@ -386,7 +386,7 @@
          * @param duration duration of the animation in frames
          * @return cajal instance
          */
-        startAnimation: function(animation, duration) {
+        animate: function(animation, duration) {
             this.loopAddAnimation(animation, duration);
             return this;
         },
@@ -396,7 +396,7 @@
          * @param animation callback function
          * @return cajal instance or false if animation does not exist in loop
          */
-        stopAnimation: function(animation) {
+        stop: function(animation) {
             for (i in this.loopAnimations) {
                 if (this.loopAnimations[i].callback === animation) {
                     delete(this.loopAnimations[i]);
@@ -1221,7 +1221,7 @@
         this.drawOptions = cajal.extend({}, defaultDrawOptions);
         this.itemOptions = cajal.extend({}, defaultItemOptions);
         this.move(x, y);
-        this.text = text;
+        this.t = text;
     };
     cajal.extend(cajal.Text.prototype, Item, {
 
@@ -1231,7 +1231,7 @@
          * @return text item instance
          */
         append: function(text) {
-            this.text += ("" + text);
+            this.t += ("" + text);
             return this;
         },
 
@@ -1241,7 +1241,7 @@
          * @return text item instance
          */
         prepend: function(text) {
-            this.text = "" + text + this.pointStack[0].text;
+            this.t = "" + text + this.t;
             return this;
         },
 
@@ -1251,7 +1251,7 @@
          * @return text item instance
          */
         text: function(text) {
-            this.text = "" + text;
+            this.t = "" + text;
             return this;
         },
 
@@ -1262,7 +1262,7 @@
         center: function(ctx) {
             ctx.save();
             ctx.font = this.drawOptions.font;
-            var size = ctx.measureText(this.text);
+            var size = ctx.measureText(this.t);
             ctx.restore();
             return {
                 x: size.width / 2,
@@ -1282,10 +1282,10 @@
 
             ctx.font = options.font;
             if (options.stroke !== null) {
-                ctx.strokeText (this.text, 0, 0);
+                ctx.strokeText (this.t, 0, 0);
             }
             if (options.fill !== null) {
-                ctx.fillText(this.text, 0, 0);
+                ctx.fillText(this.t, 0, 0);
             }
             ctx.closePath();
             this.finalize(canvas, options);

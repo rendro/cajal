@@ -43,7 +43,7 @@
                     }
                     for (var count=1; count<=60; count++) {
                         var name = 'p' + (parseInt(lastName.substr(1))+count);
-                        this.addItem(name, new cajal.Circle(0,0,Math.round(Math.random()*7)).move(c.canvas.width/2,c.canvas.height/2).setDrawOptions({
+                        this.add(name, new cajal.Circle(0,0,Math.round(Math.random()*7)).move(c.canvas.width/2,c.canvas.height/2).setDrawOptions({
                             fill: 'rgba('+Math.round(Math.random()*255)+','+Math.round(Math.random()*50)+','+Math.round(Math.random()*255)+',' + Math.random() + ')',
                             speed: {
                                 dx: ((Math.random()*2) - 1)*Math.random()*10,
@@ -78,12 +78,12 @@
                         }
                     }
                 } else {
-                    this.stopAnimation(emitter);
+                    this.stop(emitter);
                 }
             }
 
 			</script><br/>
-			<a href="#" onclick="c.startAnimation(emitter,100);return false;">Show me some particles</a>
+			<a href="#" onclick="c.animate(emitter,100);return false;">Show me some particles</a>
 			<h3>Code</h3>
 			<pre>
 &lt;canvas id="canvas" height="200" width="400"&gt;&lt;/canvas&gt;
@@ -104,7 +104,7 @@ var emitter = function (f,t) {
         }
         for (var count=1; count<=60; count++) {
             var name = 'p' + (parseInt(lastName.substr(1))+count);
-            this.addItem(name, new cajal.Circle(0,0,Math.round(Math.random()*7))
+            this.add(name, new cajal.Circle(0,0,Math.round(Math.random()*7))
                 .move(c.canvas.width/2,c.canvas.height/2)
                 .setDrawOptions({
                     fill: 'rgba('
