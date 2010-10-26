@@ -146,7 +146,7 @@ First of all you need an instance of cajal with for the canvas element that you 
 
 
 ### Add items ###
-Then you can add items with the method `addItem(itemId, item)`. The parameter `itemId` is the name of the item that you can define as you like. The second parameter is the item object.
+Then you can add items with the method `add(itemId, item)`. The parameter `itemId` is the name of the item that you can define as you like. The second parameter is the item object.
 
 Example: drawing a circle
 
@@ -161,18 +161,18 @@ Example: drawing a circle
     });
 
     //add the item to the cajal instance
-    c.addItem('myCircle', circle);
+    c.add('myCircle', circle);
 
     //draw all items (in that case only the circle
     c.draw();
 
 
 ### Get item for manipulation ###
-If you want to manipulate your item after adding it to the cajal instance call `getItem(itemId)`
+If you want to manipulate your item after adding it to the cajal instance call `get(itemId)`
 
 Example: fill the circle created above blue and move by 100px right and 50px down
 
-    c.getItem('myCircle').move(100, 50).setDrawOptions({
+    c.get('myCircle').move(100, 50).setDrawOptions({
         fill: 'blue'
     });
 
@@ -182,11 +182,11 @@ Example: fill the circle created above blue and move by 100px right and 50px dow
 
 
 ### Overwrite an existing item ###
-If you want to overwrite the circle created above use `setItem(itemid, newItem)`.
+If you want to overwrite the circle created above use `set(itemid, newItem)`.
 
 Example: Replace the circle with a rectangular
 
-    c.setItem('myCircle', new cajal.Rect(30, 40, 100, 200).setDrawOptions({
+    c.set('myCircle', new cajal.Rect(30, 40, 100, 200).setDrawOptions({
         fill   : 'blue',
         stroke : 'white',
         width  : 3
@@ -197,11 +197,11 @@ Example: Replace the circle with a rectangular
 
 
 ### Remove items ###
-You can remove an item from the canvas with `deleteItem(itemId)` where `itemId` is your name for the item used in the `addItem` method
+You can remove an item from the canvas with `remove(itemId)` where `itemId` is your name for the item used in the `add` method
 
 Example: removing the circle created above
 
-    c.deleteItem('myCircle');
+    c.remove('myCircle');
 
 
 ### Promote and demote items ####
@@ -218,19 +218,19 @@ Example: Three overlapping circles and some rearrangement
 
 	var circle = new cajal.Circle(150, 150, 100);
 
-	c.addItem('c1', circle.clone().setDrawOptions({
+	c.add('c1', circle.clone().setDrawOptions({
 		fill: 'red'
 	}));
-	c.addItem('c2', circle.clone().moveBy(100,0).setDrawOptions({
+	c.add('c2', circle.clone().moveBy(100,0).setDrawOptions({
 		fill: 'green'
 	}));
-	c.addItem('c3', circle.clone().moveBy(50,100).setDrawOptions({
+	c.add('c3', circle.clone().moveBy(50,100).setDrawOptions({
 		fill: 'blue'
 	}));
 
 	c.draw();
 
-Now you have three circles (red, green and blue one) with the red on the bottom and the blue on the top. `c.getItem('c1').up()` will bring the red circle one layer up. So now the green one is on the bottom. I think that should be enough to get the concept.
+Now you have three circles (red, green and blue one) with the red on the bottom and the blue on the top. `c.get('c1').up()` will bring the red circle one layer up. So now the green one is on the bottom. I think that should be enough to get the concept.
 
 
 ### Clear canvas ###
@@ -247,14 +247,14 @@ A basic animation function:
 
 	var foo = function (frame, duration) {
 		//move the item 'myItem' by 0.5px to the right, 0.3px to the bottom and rotate it by 1 degree counter-clockwise
-		this.getItem('myItem').moveBy(0.5,0.3).rotateBy(-1);
+		this.get('myItem').moveBy(0.5,0.3).rotateBy(-1);
 	}
 
 Inside the animation function you can access the cajal instance the animation is running using `this`. That makes an animation independent from the canvas it is called on and you can reuse your animation functions on different canvas elements.
-This function can be triggered to start or stop by calling the function `startAnimation(animation, [duration])` and `stopAnimation(animation)`. The animation parameter in both functions is the animation function that we created.
+This function can be triggered to start or stop by calling the function `animate(animation, [duration])` and `stop(animation)`. The animation parameter in both functions is the animation function that we created.
 
 	//start the foo animation and set the lifetime to 500 frames
-	c.startAnimation(foo, 500);
+	c.animate(foo, 500);
 
 Now this function is called every frame (default framerate is set to 30) and after 500 calls/frames it will be stopped.
 The `duration` parameter is optional and leaving it blank will run the animation until you stop it manually.
@@ -284,13 +284,13 @@ Example: using expInOut with a power of 3 to move a rectangular by 300px on the 
 	//define the animation function
 	var bar = function (frame, duration) {
 		var dx = cajal.Ease.expInOut(300, frame, duration, 3);
-		this.getItem('myRect').moveBy(dx, 0);
+		this.get('myRect').moveBy(dx, 0);
 	}
 
 	//add a rectangular with 5px rounded corners
-	c.addItem('myRect', new cajal.Rect(50, 30, 50, 50, 5).setDrawOptions({
+	c.add('myRect', new cajal.Rect(50, 30, 50, 50, 5).setDrawOptions({
 		fill: 'black'
 	}));
 
 	//start animation and set lifetime to 350 frames
-	c.startAnimation(bar, 350);
+	c.animate(bar, 350);
