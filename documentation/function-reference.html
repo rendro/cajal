@@ -74,7 +74,7 @@
 				<p>Adds an item to the item array</p>
 				<h3>Parameter</h3>
 				<ul>
-					<li><code>itemId</code>: Name of the item (unique value)</li>
+					<li><code>itemId</code>: Name of the item (unique value) [optional]</li>
 					<li><code>item</code>: item object</li>
 				</ul>
 				<h3>Return value</h3>
@@ -94,21 +94,6 @@
 				<h3>Return value</h3>
 				<ul>
 					<li>the item with specific itemId or false</li>
-				</ul>
-			</div>
-
-            <div class="function set">
-				<a name="set"></a>
-				<h2>cajal.set ( itemId, item )</h2>
-				<p>Override item with specific itemId</p>
-				<h3>Parameter</h3>
-				<ul>
-					<li><code>itemId</code>: item id of specific item</li>
-					<li><code>item</code>: new item object</li>
-				</ul>
-				<h3>Return value</h3>
-				<ul>
-					<li>cajal instance or false if itemId does not exist</li>
 				</ul>
 			</div>
 
@@ -502,9 +487,9 @@
 				</ul>
 			</div>
 
-			<div class="function item setDrawOptions">
-				<a name="setDrawOptions"></a>
-				<h2>item.setDrawOptions ( options ) </h2>
+			<div class="function item options">
+				<a name="options"></a>
+				<h2>item.options ( options ) </h2>
 				<p>Set draw options for the item</p>
 				<h3>Parameter</h3>
 				<ul>

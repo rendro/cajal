@@ -119,6 +119,15 @@
             for (key in obj) {}
 
             return key === undefined || Object.prototype.hasOwnProperty.call(obj, key);
+        },
+
+        uniqid: function () {
+            var chars = '0123456789abcdefghijklmnopqurstuvwxyzABCDEFGHIJKLMNOPQURSTUVWXYZ';
+            var id = '';
+            for (var i=0; i<32; i++) {
+                id += chars.substr(Math.floor(Math.random()*62),1);
+            }
+            return id;
         }
     });
 
@@ -216,15 +225,23 @@
          * @param item item object
          * @return cajal instance or false if itemId already exists or param item is no object
          */
-        add: function(itemId, item) {
-            if (this.get(itemId) === false && typeof(item) === 'object') {   //no duplicate itemId and item must be an object
+        add: function() {
+            var item;
+            if (typeof(arguments[0]) === 'object' && arguments.length === 1) {
+                this.items.push({
+                    item: arguments[0]
+                });
+            } else if (typeof(arguments[1]) === 'object' && arguments.length === 2) {
+                var itemId = "" + arguments[0];
+                if (this.get(itemId)) {
+                    this.remover(itemId)
+                }
                 this.items.push({
                     itemId: itemId,
-                    item: item
+                    item: arguments[1]
                 });
-                return this;
             }
-            return false;
+            return this;
         },
 
         /**
@@ -242,31 +259,12 @@
         },
 
         /**
-         * Override item with specific itemId
-         * @param itemId item id of specific item
-         * @param item new item object
-         * @return cajal instance or false if itemId does not exist
-         */
-        set: function(itemId, item) {
-            for (i in this.items) {
-                if (this.items[i].itemId === itemId) {
-                    this.items[i] = {
-                        itemId: itemId,
-                        item: item
-                    };
-                    return this;
-                }
-            }
-            return false;
-        },
-
-        /**
          * Delete item from item array
          * @param itemId item id of the item
          * @return cajal instance on success or false if item does not exist
          */
         remove: function(itemId) {
-            var i = this.getIndex(itemId);
+            var i = this.index(itemId);
             if (false !== i) {
                 var rest = this.items.slice(i+1);
                 this.items.length = i;
@@ -281,7 +279,7 @@
          * @param itemId item id of the item
          * @return key of the item or false if item does not exist
          */
-        getIndex: function(itemId) {
+        index: function(itemId) {
             for (i in this.items) {
                 if (this.items[i].itemId === itemId) {
                     return  parseInt(i);
@@ -297,7 +295,7 @@
          */
         up: function(itemId) {
             var i;
-            if ((i = this.getIndex(itemId)) !== false) {
+            if ((i = this.index(itemId)) !== false) {
                 var item = this.items[i++];
                 this.deleteItem(itemId);
                 this.items.splice(i, 0, item);
@@ -313,7 +311,7 @@
          */
         down: function(itemId) {
             var i;
-            if ((i = this.getIndex(itemId)) !== false) {
+            if ((i = this.index(itemId)) !== false) {
                 var item = this.items[i--];
                 this.deleteItem(itemId);
                 this.items.splice(i, 0, item);
@@ -329,7 +327,7 @@
          */
         top: function(itemId) {
             var i;
-            if ((i = this.getIndex(itemId)) !== false) {
+            if ((i = this.index(itemId)) !== false) {
                 var item = this.get(itemId);
                 this.deleteItem(itemId).add(itemId, item);
                 return this;
@@ -344,7 +342,7 @@
          */
         bottom: function(itemId) {
             var i;
-            if ((i = this.getIndex(itemId)) !== false) {
+            if ((i = this.index(itemId)) !== false) {
                 var item = this.items[i];
                 this.deleteItem(itemId);
                 this.items.splice(0, 0, item);
@@ -804,7 +802,7 @@
          * @param options literal object of the options
          * @return item instance
          */
-        setDrawOptions: function(options) {
+        options: function(options) {
             cajal.extend(this.drawOptions, options);
             return this;
         },

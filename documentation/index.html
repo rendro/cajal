@@ -169,7 +169,7 @@ Example: create a poygon with 5 edges and a radius of 50px</p>
 <li><code>moveBy(dx, dy)</code>: Move the item by the given offset</li>
 <li><code>scale(dx, dy)</code>: Scale the item to a given size <code>item.scale(1.2, 1.2)</code> will scale your item to 120% of its initial size</li>
 <li><code>scaleBy(dx, dy)</code>: Scale the item by a given size <code>item.scale(1.5, 1.5)</code> will scale your item to 150% of its current size</li>
-<li><code>setDrawOptions(options)</code>: Set draw options for this item as described in the chapter below</li>
+<li><code>options(options)</code>: Set draw options for this item as described in the chapter below</li>
 </ul>
 
 <h3>Draw options</h3>
@@ -196,7 +196,10 @@ Example: create a poygon with 5 edges and a radius of 50px</p>
 
 <h3>Add items</h3>
 
-<p>Then you can add items with the method <code>add(itemId, item)</code>. The parameter <code>itemId</code> is the name of the item that you can define as you like. The second parameter is the item object.</p>
+<p>Then you can add items with the method <code>add()</code>. There are two ways to use this method. You can either pass the item as one argument, or you pass an itemId and the item as two arguments.
+If you want to change the item you need to specify a name (itemId) for it, so that you can access the item with the get-Method afterwards. In the case of a more simple usage, you can pass only the item object, but you will not be able to change this item afterwards.</p>
+
+<p>If you an item with the given itemId already exists, it will be overwritten.</p>
 
 <p>Example: drawing a circle</p>
 
@@ -204,13 +207,13 @@ Example: create a poygon with 5 edges and a radius of 50px</p>
 var c = cajal('mycanvas');
 
 //create a black circle with a white 2px stroke
-var circle = cajal.Circle(30,40,100).setDrawOptions({
+var circle = cajal.Circle(30,40,100).options({
     fill   : 'black',
     stroke : 'white',
     width  : 2
 });
 
-//add the item to the cajal instance
+//add the item to the cajal instance with a name
 c.add('myCircle', circle);
 
 //draw all items (in that case only the circle
@@ -223,29 +226,13 @@ c.draw();
 
 <p>Example: fill the circle created above blue and move by 100px right and 50px down</p>
 
-<pre><code>c.get('myCircle').move(100, 50).setDrawOptions({
+<pre><code>c.get('myCircle').move(100, 50).options({
     fill: 'blue'
 });
 
 //draw again to see the changes
 
 c.draw()
-</code></pre>
-
-<h3>Overwrite an existing item</h3>
-
-<p>If you want to overwrite the circle created above use <code>set(itemid, newItem)</code>.</p>
-
-<p>Example: Replace the circle with a rectangular</p>
-
-<pre><code>c.set('myCircle', new cajal.Rect(30, 40, 100, 200).setDrawOptions({
-    fill   : 'blue',
-    stroke : 'white',
-    width  : 3
-}));
-
-//draw again to see changes
-c.draw();
 </code></pre>
 
 <h3>Remove items</h3>
@@ -274,13 +261,13 @@ c.draw();
 
 var circle = new cajal.Circle(150, 150, 100);
 
-c.add('c1', circle.clone().setDrawOptions({
+c.add('c1', circle.clone().options({
     fill: 'red'
 }));
-c.add('c2', circle.clone().moveBy(100,0).setDrawOptions({
+c.add('c2', circle.clone().moveBy(100,0).options({
     fill: 'green'
 }));
-c.add('c3', circle.clone().moveBy(50,100).setDrawOptions({
+c.add('c3', circle.clone().moveBy(50,100).options({
     fill: 'blue'
 }));
 
@@ -351,7 +338,7 @@ var bar = function (frame, duration) {
 }
 
 //add a rectangular with 5px rounded corners
-c.add('myRect', new cajal.Rect(50, 30, 50, 50, 5).setDrawOptions({
+c.add('myRect', new cajal.Rect(50, 30, 50, 50, 5).options({
     fill: 'black'
 }));
 

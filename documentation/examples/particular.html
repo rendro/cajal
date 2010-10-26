@@ -36,14 +36,8 @@
 
                 //add new Particles
                 if (f < t/10) {
-                    var key = parseInt(this.items.length);
-                    var lastName = 'p0';
-                    if (key > 1) {
-                        lastName = this.items[--key].itemId;
-                    }
                     for (var count=1; count<=60; count++) {
-                        var name = 'p' + (parseInt(lastName.substr(1))+count);
-                        this.add(name, new cajal.Circle(0,0,Math.round(Math.random()*7)).move(c.canvas.width/2,c.canvas.height/2).setDrawOptions({
+                        this.add('particle_'+ cajal.uniqid(), new cajal.Circle(0,0,Math.round(Math.random()*7)).move(c.canvas.width/2,c.canvas.height/2).options({
                             fill: 'rgba('+Math.round(Math.random()*255)+','+Math.round(Math.random()*50)+','+Math.round(Math.random()*255)+',' + Math.random() + ')',
                             speed: {
                                 dx: ((Math.random()*2) - 1)*Math.random()*10,
@@ -56,7 +50,7 @@
                 //animate Particles
                 if (this.items.length > 0) {
                     for (i in this.items) {
-                        if (this.items[i].itemId.match(/p([0-9]+)/g)) {
+                        if (this.items[i].itemId.match(/particle_([a-zA-Z0-9]{32})/g)) {
                             //move particle
                             this.items[i].item.moveBy(this.items[i].item.drawOptions.speed.dx, this.items[i].item.drawOptions.speed.dy);
                             //raise livecycle
@@ -97,42 +91,23 @@ var emitter = function (f,t) {
 
     //add new Particles
     if (f < t/10) {
-        var key = parseInt(this.items.length);
-        var lastName = 'p0';
-        if (key > 1) {
-            lastName = this.items[--key].itemId;
-        }
         for (var count=1; count<=60; count++) {
-            var name = 'p' + (parseInt(lastName.substr(1))+count);
-            this.add(name, new cajal.Circle(0,0,Math.round(Math.random()*7))
-                .move(c.canvas.width/2,c.canvas.height/2)
-                .setDrawOptions({
-                    fill: 'rgba('
-                          + Math.round(Math.random()*255)
-                          + ','
-                          + Math.round(Math.random()*50)
-                          + ','
-                          + Math.round(Math.random()*255)
-                          + ','
-                          + Math.random()
-                          + ')',
-                    speed: {
-                        dx: ((Math.random()*2) - 1)*Math.random()*10,
-                        dy: ((Math.random()*2) - 1)*Math.random()*10
-                    },
-                    livecycle: 0
-                }));
+            this.add('particle_'+ cajal.uniqid(), new cajal.Circle(0,0,Math.round(Math.random()*7)).move(c.canvas.width/2,c.canvas.height/2).options({
+                fill: 'rgba('+Math.round(Math.random()*255)+','+Math.round(Math.random()*50)+','+Math.round(Math.random()*255)+',' + Math.random() + ')',
+                speed: {
+                    dx: ((Math.random()*2) - 1)*Math.random()*10,
+                    dy: ((Math.random()*2) - 1)*Math.random()*10
+                },
+                livecycle: 0
+            }));
         }
     }
     //animate Particles
     if (this.items.length > 0) {
         for (i in this.items) {
-            if (this.items[i].itemId.match(/p([0-9]+)/g)) {
+            if (this.items[i].itemId.match(/particle_([a-zA-Z0-9]{32})/g)) {
                 //move particle
-                this.items[i].item.moveBy(
-                    this.items[i].item.drawOptions.speed.dx,
-                    this.items[i].item.drawOptions.speed.dy
-                );
+                this.items[i].item.moveBy(this.items[i].item.drawOptions.speed.dx, this.items[i].item.drawOptions.speed.dy);
                 //raise livecycle
                 this.items[i].item.drawOptions.livecycle++;
 
@@ -143,18 +118,16 @@ var emitter = function (f,t) {
 
                 //animate opcity in the last 3/4 of animation
                 if (this.items[i].item.drawOptions.livecycle > t/4) {
-                	var fill = this.items[i].item.drawOptions.fill;
-                	fill = fill.replace(/,([0-9\.]+)\)$/g,','+Math.random()+')');
-                    this.items[i].item.drawOptions.fill = fill;
+                    this.items[i].item.drawOptions.fill = this.items[i].item.drawOptions.fill.replace(/,([0-9\.]+)\)$/g,',' + Math.random() + ')');
                 }
                 //remove particles after 9/10 of animation
-                if (this.items[i].item.drawOptions.livecycle >= (t-t/2)) {
+                if (this.items[i].item.drawOptions.livecycle >= (t-t/10)) {
                     this.items.splice(i,1);
                 }
             }
         }
     } else {
-        this.stopAnimation(emitter);
+        this.stop(emitter);
     }
 }
 

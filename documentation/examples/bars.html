@@ -35,21 +35,21 @@
             var c = new cajal('canvas');
 
             //chart title
-            c.add('headline',new cajal.Text(10, 30, 'Chart title').setDrawOptions({
+            c.add('headline',new cajal.Text(10, 30, 'Chart title').options({
                 font: '20px sans-serif',
                 fill: 'rgba(120,110,255,0.6)'
             }));
 
             //grid lines
-            var line = new cajal.Path(0,0).to(c.canvas.width,0).setDrawOptions({stroke:'rgba(0,0,0,0.2)'});
+            var line = new cajal.Path(0,0).to(c.canvas.width,0).options({stroke:'rgba(0,0,0,0.2)'});
             for (var x=400; x>0; x-=50) {
-                c.add(x, new cajal.Path(-10, x).to(c.canvas.width+10,x).to(c.canvas.width+10,-10).to(-10,-10).setDrawOptions({stroke:'rgba(0,0,0,0.1)'}).moveBy(0,0.5));
-                c.add('t'+x, new cajal.Text(2, x-1, c.canvas.height-x).setDrawOptions({fill:'#999',font:'9px serif'}));
+                c.add(x, new cajal.Path(-10, x).to(c.canvas.width+10,x).to(c.canvas.width+10,-10).to(-10,-10).options({stroke:'rgba(0,0,0,0.1)'}).moveBy(0,0.5));
+                c.add('t'+x, new cajal.Text(2, x-1, c.canvas.height-x).options({fill:'#999',font:'9px serif'}));
             }
 
             var gradient = new cajal.LinearGradient(0, 0, 0, c.canvas.height).colorStop(0.5,'#175175').colorStop(1,'#000');
 
-            var bar = new cajal.Rect(0, 0, 20, c.canvas.height*3, 5).setDrawOptions({fill:gradient});
+            var bar = new cajal.Rect(0, 0, 20, c.canvas.height*3, 5).options({fill:gradient});
             var text = new cajal.Text(0, c.canvas.height-2, '0');
 
             for (var i in values) {
@@ -63,7 +63,7 @@
                     var a = parseInt(i) + 1;
                     var pos = -cajal.Ease.expOut(parseInt(values[i]), f, t, 2);
                     c.get('bar'+a).moveBy(0,pos);
-                    c.get('text'+a).moveBy(0,pos).text(Math.round(parseInt(values[i])*f/t)).setDrawOptions({
+                    c.get('text'+a).moveBy(0,pos).text(Math.round(parseInt(values[i])*f/t)).options({
                         fill: 'rgba(0,0,0,' + f/t + ')',
                         font:'9px serif'
                     });
@@ -84,7 +84,7 @@ for (var p=0; p<19;p++) {
 var c = new cajal('canvas');
 
 //chart title
-c.add('headline',new cajal.Text(10, 30, 'Chart title').setDrawOptions({
+c.add('headline',new cajal.Text(10, 30, 'Chart title').options({
     font: '20px sans-serif',
     fill: 'rgba(120,110,255,0.6)'
 }));
@@ -92,15 +92,15 @@ c.add('headline',new cajal.Text(10, 30, 'Chart title').setDrawOptions({
 //grid lines
 var line = new cajal.Path(0,0)
                     .to(c.canvas.width,0)
-                    .setDrawOptions({stroke:'rgba(0,0,0,0.2)'});
+                    .options({stroke:'rgba(0,0,0,0.2)'});
 
 for (var x=400; x>0; x-=50) {
     c.add(x, new cajal.Path(-10, x)
         .to(c.canvas.width+10,x)
         .to(c.canvas.width+10,-10)
         .to(-10,-10)
-        .setDrawOptions({stroke:'rgba(0,0,0,0.1)'}).moveBy(0,0.5));
-    c.add('t'+x, new cajal.Text(2, x-1, c.canvas.height-x).setDrawOptions({
+        .options({stroke:'rgba(0,0,0,0.1)'}).moveBy(0,0.5));
+    c.add('t'+x, new cajal.Text(2, x-1, c.canvas.height-x).options({
         fill:'#999',
         font:'9px serif'
     }));
@@ -111,7 +111,7 @@ var gradient = new cajal.LinearGradient(0, 0, 0, c.canvas.height)
                         .colorStop(1,'#000');
 
 var bar = new cajal.Rect(0, 0, 20, c.canvas.height*3, 5)
-                   .setDrawOptions({fill:gradient});
+                   .options({fill:gradient});
 
 var text = new cajal.Text(0, c.canvas.height-2, '0');
 
@@ -129,7 +129,7 @@ var init = function (f,t) {
         c.get('text'+a)
          .moveBy(0,pos)
          .text(Math.round(parseInt(values[i])*f/t))
-         .setDrawOptions({
+         .options({
             fill: 'rgba(0,0,0,' + f/t + ')',
             font:'9px serif'
         });

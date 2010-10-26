@@ -122,7 +122,7 @@ There are a bunch of methods that you can call on each item object to modify it.
 * `moveBy(dx, dy)`: Move the item by the given offset
 * `scale(dx, dy)`: Scale the item to a given size `item.scale(1.2, 1.2)` will scale your item to 120% of its initial size
 * `scaleBy(dx, dy)`: Scale the item by a given size `item.scale(1.5, 1.5)` will scale your item to 150% of its current size
-* `setDrawOptions(options)`: Set draw options for this item as described in the chapter below
+* `options(options)`: Set draw options for this item as described in the chapter below
 
 
 ### Draw options ###
@@ -146,7 +146,9 @@ First of all you need an instance of cajal with for the canvas element that you 
 
 
 ### Add items ###
-Then you can add items with the method `add(itemId, item)`. The parameter `itemId` is the name of the item that you can define as you like. The second parameter is the item object.
+Then you can add items with the method `add()`. There are two ways to use this method. You can either pass the item as one argument, or you pass an itemId and the item as two arguments.
+If you want to change the item you need to specify a name (itemId) for it, so that you can access the item with the get-Method afterwards. In the case of a more simple usage, you can pass only the item object, but you will not be able to change this item afterwards.
+If you an item with the given itemId already exists, it will be overwritten.
 
 Example: drawing a circle
 
@@ -154,13 +156,13 @@ Example: drawing a circle
     var c = cajal('mycanvas');
 
     //create a black circle with a white 2px stroke
-    var circle = cajal.Circle(30,40,100).setDrawOptions({
+    var circle = cajal.Circle(30,40,100).options({
         fill   : 'black',
         stroke : 'white',
         width  : 2
     });
 
-    //add the item to the cajal instance
+    //add the item to the cajal instance with a name
     c.add('myCircle', circle);
 
     //draw all items (in that case only the circle
@@ -172,7 +174,7 @@ If you want to manipulate your item after adding it to the cajal instance call `
 
 Example: fill the circle created above blue and move by 100px right and 50px down
 
-    c.get('myCircle').move(100, 50).setDrawOptions({
+    c.get('myCircle').move(100, 50).options({
         fill: 'blue'
     });
 
@@ -186,7 +188,7 @@ If you want to overwrite the circle created above use `set(itemid, newItem)`.
 
 Example: Replace the circle with a rectangular
 
-    c.set('myCircle', new cajal.Rect(30, 40, 100, 200).setDrawOptions({
+    c.set('myCircle', new cajal.Rect(30, 40, 100, 200).options({
         fill   : 'blue',
         stroke : 'white',
         width  : 3
@@ -218,13 +220,13 @@ Example: Three overlapping circles and some rearrangement
 
 	var circle = new cajal.Circle(150, 150, 100);
 
-	c.add('c1', circle.clone().setDrawOptions({
+	c.add('c1', circle.clone().options({
 		fill: 'red'
 	}));
-	c.add('c2', circle.clone().moveBy(100,0).setDrawOptions({
+	c.add('c2', circle.clone().moveBy(100,0).options({
 		fill: 'green'
 	}));
-	c.add('c3', circle.clone().moveBy(50,100).setDrawOptions({
+	c.add('c3', circle.clone().moveBy(50,100).options({
 		fill: 'blue'
 	}));
 
@@ -288,7 +290,7 @@ Example: using expInOut with a power of 3 to move a rectangular by 300px on the 
 	}
 
 	//add a rectangular with 5px rounded corners
-	c.add('myRect', new cajal.Rect(50, 30, 50, 50, 5).setDrawOptions({
+	c.add('myRect', new cajal.Rect(50, 30, 50, 50, 5).options({
 		fill: 'black'
 	}));
 

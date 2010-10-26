@@ -29,7 +29,7 @@
 			<canvas id="anim1" height="200" width="400"></canvas>
 			<script type="text/javascript">
 			var c1 = new cajal('anim1');
-			c1.add('rect', new cajal.Rect(20, 20, 50,50).setDrawOptions({fill: 'black', stroke:'blue', width: 10})).draw();
+			c1.add('rect', new cajal.Rect(20, 20, 50,50).options({fill: 'black', stroke:'blue', width: 10})).draw();
 			var myAnimation = function () {
 				this.get('rect').moveBy(0.5,0.5).rotateBy(1).scaleBy(0.01,0.002);
 			}
@@ -40,7 +40,7 @@
 &lt;canvas id="anim1" height="200" width="400"&gt;&lt;/canvas&gt;
 &lt;script type="text/javascript"&gt;
     var c1 = new cajal('anim1');
-    c1.add('rect', new cajal.Rect(20, 20, 50,50).setDrawOptions({
+    c1.add('rect', new cajal.Rect(20, 20, 50,50).options({
     	fill  : 'black',
     	stroke: 'blue',
     	width : 10})).draw();
@@ -57,11 +57,11 @@
 			<script type="text/javascript">
 			var c2 = new cajal('anim2');
 			var options = {fill: 'black', stroke:'blue', width: 4};
-			c2.add('rect', new cajal.Rect(20, 20, 15, 15).setDrawOptions(options))
-			  .add('rect2', new cajal.Rect(20, 50, 15, 15).setDrawOptions(options))
-			  .add('rect3', new cajal.Rect(20, 80, 15, 15).setDrawOptions(options))
-			  .add('rect4', new cajal.Rect(20, 110, 15, 15).setDrawOptions(options))
-			  .add('rect5', new cajal.Rect(20, 140, 15, 15).setDrawOptions(options))
+			c2.add('rect', new cajal.Rect(20, 20, 15, 15).options(options))
+			  .add('rect2', new cajal.Rect(20, 50, 15, 15).options(options))
+			  .add('rect3', new cajal.Rect(20, 80, 15, 15).options(options))
+			  .add('rect4', new cajal.Rect(20, 110, 15, 15).options(options))
+			  .add('rect5', new cajal.Rect(20, 140, 15, 15).options(options))
 			  .draw();
 			var easing = function (frame, duration) {
 				this.get('rect').moveBy(300/duration,0);
@@ -78,11 +78,11 @@
 &lt;script type="text/javascript"&gt;
 var c2 = new cajal('anim2');
 var options = {fill: 'black', stroke:'blue', width: 4};
-c2.add('rect', new cajal.Rect(20, 20, 15, 15).setDrawOptions(options))
-  .add('rect2', new cajal.Rect(20, 50, 15, 15).setDrawOptions(options))
-  .add('rect3', new cajal.Rect(20, 80, 15, 15).setDrawOptions(options))
-  .add('rect4', new cajal.Rect(20, 110, 15, 15).setDrawOptions(options))
-  .add('rect5', new cajal.Rect(20, 140, 15, 15).setDrawOptions(options))
+c2.add('rect', new cajal.Rect(20, 20, 15, 15).options(options))
+  .add('rect2', new cajal.Rect(20, 50, 15, 15).options(options))
+  .add('rect3', new cajal.Rect(20, 80, 15, 15).options(options))
+  .add('rect4', new cajal.Rect(20, 110, 15, 15).options(options))
+  .add('rect5', new cajal.Rect(20, 140, 15, 15).options(options))
   .draw();
 var easing = function (frame, duration) {
     this.get('rect').moveBy(300/duration,0);
@@ -99,7 +99,7 @@ var easing = function (frame, duration) {
 			<canvas id="anim3" height="200" width="400"></canvas>
 			<script type="text/javascript">
 			var c3 = new cajal('anim3');
-			c3.add('item', new cajal.Polygon(200, 100, 5, 50).setDrawOptions({
+			c3.add('item', new cajal.Polygon(200, 100, 5, 50).options({
                 fill  : 'black',
                 stroke: 'blue',
                 width : 4
@@ -115,7 +115,7 @@ var easing = function (frame, duration) {
 &lt;canvas id="anim3" height="200" width="400"&gt;&lt;/canvas&gt;
 &lt;script type="text/javascript"&gt;
 var c3 = new cajal('anim3');
-c3.add('item', new cajal.Polygon(200, 100, 5, 50).setDrawOptions({
+c3.add('item', new cajal.Polygon(200, 100, 5, 50).options({
     fill  : 'black',
     stroke: 'blue',
     width : 4

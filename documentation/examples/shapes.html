@@ -29,14 +29,14 @@
 			<canvas id="circle" height="200" width="400"></canvas>
 			<script type="text/javascript">
 			var circle = new cajal('circle');
-			circle.add('c1', new cajal.Circle(200, 100, 50)).draw({fill: 'black', stroke:'blue', width: 10});
+			circle.add(new cajal.Circle(200, 100, 50)).draw({fill: 'black', stroke:'blue', width: 10});
 			</script>
 			<h3>Code</h3>
 			<pre>
 &lt;canvas id="circle" height="200" width="400"&gt;&lt;/canvas&gt;
 &lt;script type="text/javascript"&gt;
     var circle = new cajal('circle');
-    circle.add('c1', new cajal.Circle(200, 100, 50)).draw({
+    circle.add(new cajal.Circle(200, 100, 50)).draw({
         fill  : 'black',
         stroke: 'blue',
         width : 10
@@ -48,15 +48,15 @@
 			<canvas id="rect" height="200" width="400"></canvas>
 			<script type="text/javascript">
 			var rect = new cajal('rect');
-			rect.add('r1', new cajal.Rect(50, 50, 60, 80)).add('r2', new cajal.Rect(200,50,60,80,15)).draw({fill: 'black', stroke:'blue', width: 10});
+			rect.add(new cajal.Rect(50, 50, 60, 80)).add(new cajal.Rect(200,50,60,80,15)).draw({fill: 'black', stroke:'blue', width: 10});
 			</script>
 			<h3>Code</h3>
 			<pre>
 &lt;canvas id="rect" height="200" width="400"&gt;&lt;/canvas&gt;
 &lt;script type="text/javascript"&gt;
     var rect = new cajal('rect');
-    rect.add('r1', new cajal.Rect(50, 50, 60, 80))
-        .add('r2', new cajal.Rect(200, 50, 60, 80, 15))
+    rect.add(new cajal.Rect(50, 50, 60, 80))
+        .add(new cajal.Rect(200, 50, 60, 80, 15))
         .draw({
         fill  : 'black',
         stroke: 'blue',
@@ -69,14 +69,14 @@
 			<canvas id="path" height="200" width="400"></canvas>
 			<script type="text/javascript">
 			var path = new cajal('path');
-			path.add('p1', new cajal.Path(50,50).quadraticCurve(100,50,50,80).to(80,120).to(20,80).close()).draw({fill: 'black', stroke:'blue', width: 10});
+			path.add(new cajal.Path(50,50).quadraticCurve(100,50,50,80).to(80,120).to(20,80).close()).draw({fill: 'black', stroke:'blue', width: 10});
 			</script>
 			<h3>Code</h3>
 			<pre>
 &lt;canvas id="path" height="200" width="400"&gt;&lt;/canvas&gt;
 &lt;script type="text/javascript"&gt;
     var path = new cajal('path');
-    path.add('p1', new cajal.Path(50, 50).quadraticCurve(100, 50, 50, 80)
+    path.add(new cajal.Path(50, 50).quadraticCurve(100, 50, 50, 80)
                                              .to(80, 120)
                                              .to(20, 80)))
         .draw({
@@ -91,14 +91,14 @@
 			<canvas id="text" height="200" width="400"></canvas>
 			<script type="text/javascript">
 			var text = new cajal('text');
-			text.add('t1', new cajal.Text(50, 150, "cajal")).draw({fill: 'black', font: '90px sans-serif'});
+			text.add(new cajal.Text(50, 150, "cajal")).draw({fill: 'black', font: '90px sans-serif'});
 			</script>
 			<h3>Code</h3>
 			<pre>
 &lt;canvas id="text" height="200" width="400"&gt;&lt;/canvas&gt;
 &lt;script type="text/javascript"&gt;
     var text = new cajal('text');
-    text.add('t1', new cajal.Text(50, 150, "cajal"))
+    text.add(new cajal.Text(50, 150, "cajal"))
         .draw({
             fill  : 'black',
             font  : '90px sans-serif'
@@ -110,14 +110,14 @@
 			<canvas id="poly" height="200" width="400"></canvas>
 			<script type="text/javascript">
 			var poly = new cajal('poly');
-			poly.add('poly', new cajal.Polygon(200, 100, 5, 80)).draw({fill: 'black', stroke: 'blue', width: 10});
+			poly.add(new cajal.Polygon(200, 100, 5, 80)).draw({fill: 'black', stroke: 'blue', width: 10});
 			</script>
 			<h3>Polygon</h3>
 			<pre>
 &lt;canvas id="poly" height="200" width="400"&gt;&lt;/canvas&gt;
 &lt;script type="text/javascript"&gt;
     var poly = new cajal('poly');
-    poly.add('poly', new cajal.Polygon(200, 100, 5, 80))
+    poly.add(new cajal.Polygon(200, 100, 5, 80))
         .draw({
             fill  : 'black',
             stroke: 'blue',
