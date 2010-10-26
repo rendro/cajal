@@ -920,7 +920,7 @@
     cajal.Circle = function(x, y, r) {
         this.drawOptions = cajal.extend({}, defaultDrawOptions);
         this.itemOptions = cajal.extend({}, defaultItemOptions);
-        this.radius = r || 30;
+        this.radius = r;
         this.move(x, y);
     }
     cajal.extend(cajal.Circle.prototype, Item, {
