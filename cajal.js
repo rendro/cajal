@@ -234,7 +234,7 @@
             } else if (typeof(arguments[1]) === 'object' && arguments.length === 2) {
                 var itemId = "" + arguments[0];
                 if (this.get(itemId)) {
-                    this.remover(itemId)
+                    this.remove(itemId)
                 }
                 this.items.push({
                     itemId: itemId,
