@@ -391,17 +391,27 @@
 
         /**
          * Stops animation
-         * @param animation callback function
-         * @return cajal instance or false if animation does not exist in loop
+         * @param animation callback function or true for stopping all animatinos
+         * @return cajal instance
          */
         stop: function(animation) {
+            if (animation === true) {
+                this.loopAnimations = [];
+            }
             for (i in this.loopAnimations) {
                 if (this.loopAnimations[i].callback === animation) {
-                    delete(this.loopAnimations[i]);
-                    return this;
+                    if (this.loopAnimations.length === 1) {
+                        this.loopAnimations = [];
+                    } else {
+                        delete(this.loopAnimations[i]);
+                    }
                 }
             }
-            return false;
+            if (this.loopAnimations.length === 0) {
+                clearInterval(this.loopInterval);
+                this.loopInterval = null;
+            }
+            return this;
         },
 
         /**
@@ -934,8 +944,7 @@
         },
         
         /**
-         * Draw routine for the items
-         * Each item is drawn as path to the canvas
+         * Draw routine for the item
          * @param canvas cajal instance
          * @param options draw options for this draw call
          */
@@ -998,8 +1007,7 @@
             return this.rect.w;
         },
         /**
-         * Draw routine for the items
-         * Each item is drawn as path to the canvas
+         * Draw routine for the item
          * @param canvas cajal instance
          * @param options draw options for this draw call
          */
@@ -1168,8 +1176,7 @@
         },
 
         /**
-         * Draw routine for the items
-         * Each item is drawn as path to the canvas
+         * Draw routine for the item
          * @param canvas cajal instance
          * @param options draw options for this draw call
          */
@@ -1269,8 +1276,7 @@
         },
 
         /**
-         * Draw routine for the items
-         * Each item is drawn as path to the canvas
+         * Draw routine for the item
          * @param canvas cajal instance
          * @param options draw options for this draw call
          */
@@ -1337,8 +1343,7 @@
         },
 
         /**
-         * Draw routine for the items
-         * Each item is drawn as path to the canvas
+         * Draw routine for the item
          * @param canvas cajal instance
          * @param options draw options for this draw call
          */
@@ -1354,6 +1359,114 @@
             this.finalize(canvas, options);
         }
     });
+
+    /**
+     * Create a circular segment
+     * @param x position in pixel
+     * @param y position in pixel
+     * @param r radius of the circle
+     * @param angle angle of the segment
+     * @return circle item instance
+     */
+    cajal.Segment = function(x, y, r, angle) {
+        this.drawOptions = cajal.extend({}, defaultDrawOptions);
+        this.itemOptions = cajal.extend({}, defaultItemOptions);
+        this.p = {
+            radius: r,
+            angle: angle
+        };
+        this.move(x, y);
+    }
+    cajal.extend(cajal.Segment.prototype, Item, {
+        /**
+         * Get the center of the item for rotation
+         * @return point object of the center
+         */
+        center: function() {
+            return {
+                x: 0,
+                y: 0
+            };
+        },
+        
+        /**
+         * Draw routine for the item
+         * @param canvas cajal instance
+         * @param options draw options for this draw call
+         */
+        draw: function(canvas, options) {
+            var ctx = canvas.ctx;
+            options = this.prepare(canvas, options);
+            
+            ctx.moveTo(this.p.radius, 0);
+            var angle = this.p.angle%360 * (Math.PI / 180);
+            ctx.arc(0, 0, this.p.radius, 0, angle, false);
+
+            this.finalize(canvas, options);
+        }
+
+    });
+    
+    /**
+     * Create a circular segment
+     * @param x position in pixel
+     * @param y position in pixel
+     * @param r radius of the circle
+     * @param angle angle of the segment
+     * @return circle item instance
+     */
+    cajal.Segment = function(x, y, r, angle) {
+        this.drawOptions = cajal.extend({}, defaultDrawOptions);
+        this.itemOptions = cajal.extend({}, defaultItemOptions);
+        this.p = {
+            radius: r,
+            angle: angle
+        };
+        this.isClosed = false;
+        this.move(x, y);
+    }
+    cajal.extend(cajal.Segment.prototype, Item, {
+        /**
+         * Get the center of the item for rotation
+         * @return point object of the center
+         */
+        center: function() {
+            return {
+                x: 0,
+                y: 0
+            };
+        },
+        
+        /**
+         * Close the path
+         * @return path item instance
+         */
+        close: function () {
+            this.isClosed = true;
+            return this;
+        },
+        
+        /**
+         * Draw routine for the item
+         * @param canvas cajal instance
+         * @param options draw options for this draw call
+         */
+        draw: function(canvas, options) {
+            var ctx = canvas.ctx;
+            options = this.prepare(canvas, options);
+            
+            ctx.moveTo(this.p.radius, 0);
+            var angle = this.p.angle%360 * (Math.PI / 180);
+            ctx.arc(0, 0, this.p.radius, 0, angle, false);
+            if (this.isClosed) {
+                ctx.closePath();
+            }
+
+            this.finalize(canvas, options);
+        }
+
+    });
+
 
     /**
      * Easing functions for more dynamic animations
