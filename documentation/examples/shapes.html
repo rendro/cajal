@@ -113,7 +113,7 @@
 			var poly = new cajal('poly');
 			poly.add(new cajal.Polygon(200, 100, 5, 80)).draw({fill: 'black', stroke: 'blue', width: 10});
 			</script>
-			<h3>Polygon</h3>
+			<h3>Code</h3>
 			<pre>
 &lt;canvas id="poly" height="200" width="400"&gt;&lt;/canvas&gt;
 &lt;script type="text/javascript"&gt;
@@ -126,7 +126,26 @@
     });
 &lt;/script&gt;
 			</pre>
-
+            
+            <h2>Circular Segment</h2>
+			<canvas id="segment" height="200" width="400"></canvas>
+			<script type="text/javascript">
+			var seg = new cajal('segment');
+			seg.add(new cajal.Segment(200, 100, 50, 120).close()).draw({fill: 'black', stroke: 'blue', width: 10});
+			</script>
+			<h3>Code</h3>
+			<pre>
+&lt;canvas id="segment" height="200" width="400"&gt;&lt;/canvas&gt;
+&lt;script type="text/javascript"&gt;
+    var seg = new cajal('segment');
+    seg.add(new cajal.Segment(200, 100, 50, 120).close())
+        .draw({
+            fill  : 'black',
+            stroke: 'blue',
+            width : 10
+    });
+&lt;/script&gt;
+			</pre>
 
 
 		</div>

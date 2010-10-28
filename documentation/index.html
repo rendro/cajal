@@ -154,6 +154,17 @@ Example: create a poygon with 5 edges and a radius of 50px</p>
 <li><code>center()</code>: The return value is a literal object with the x and the y coordinates of the center. (For example: <code>{ x: 50, y: 80}</code>)</li>
 </ul>
 
+<h3>Circular segment</h3>
+
+<p>A Circular segment is the part of a circle defined by a radius and an angle, which is extremely useful if you want to create a pie chart.
+You can create that circular segment with the method <code>cajal.Segment(x, y, r, angle)</code></p>
+
+<h4>Item specific methods</h4>
+
+<ul>
+<li><code>close()</code>: Close the path by connecting the both end points of the segment with a line</li>
+</ul>
+
 <h3>Methods for every item</h3>
 
 <p>There are a bunch of methods that you can call on each item object to modify it.</p>
@@ -198,9 +209,8 @@ Example: create a poygon with 5 edges and a radius of 50px</p>
 <h3>Add items</h3>
 
 <p>Then you can add items with the method <code>add()</code>. There are two ways to use this method. You can either pass the item as one argument, or you pass an itemId and the item as two arguments.
-If you want to change the item you need to specify a name (itemId) for it, so that you can access the item with the get-Method afterwards. In the case of a more simple usage, you can pass only the item object, but you will not be able to change this item afterwards.</p>
-
-<p>If you an item with the given itemId already exists, it will be overwritten.</p>
+If you want to change the item you need to specify a name (itemId) for it, so that you can access the item with the get-Method afterwards. In the case of a more simple usage, you can pass only the item object, but you will not be able to change this item afterwards.
+If you an item with the given itemId already exists, it will be overwritten.</p>
 
 <p>Example: drawing a circle</p>
 
@@ -234,6 +244,22 @@ c.draw();
 //draw again to see the changes
 
 c.draw()
+</code></pre>
+
+<h3>Overwrite an existing item</h3>
+
+<p>If you want to overwrite the circle created above use <code>set(itemid, newItem)</code>.</p>
+
+<p>Example: Replace the circle with a rectangular</p>
+
+<pre><code>c.set('myCircle', new cajal.Rect(30, 40, 100, 200).options({
+    fill   : 'blue',
+    stroke : 'white',
+    width  : 3
+}));
+
+//draw again to see changes
+c.draw();
 </code></pre>
 
 <h3>Remove items</h3>
@@ -292,8 +318,7 @@ See above for the different draw option variables.</p>
 A basic animation function:</p>
 
 <pre><code>var foo = function (frame, duration) {
-    //move the item 'myItem' by 0.5px to the right,
-    //0.3px to the bottom and rotate it by 1 degree counter-clockwise
+    //move the item 'myItem' by 0.5px to the right, 0.3px to the bottom and rotate it by 1 degree counter-clockwise
     this.get('myItem').moveBy(0.5,0.3).rotateBy(-1);
 }
 </code></pre>

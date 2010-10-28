@@ -108,6 +108,14 @@ Example: create a poygon with 5 edges and a radius of 50px
 * `center()`: The return value is a literal object with the x and the y coordinates of the center. (For example: `{ x: 50, y: 80}`)
 
 
+### Circular segment ###
+A Circular segment is the part of a circle defined by a radius and an angle, which is extremely useful if you want to create a pie chart.
+You can create that circular segment with the method `cajal.Segment(x, y, r, angle)`
+
+#### Item specific methods ####
+* `close()`: Close the path by connecting the both end points of the segment with a line
+
+
 ### Methods for every item ###
 There are a bunch of methods that you can call on each item object to modify it.
 
