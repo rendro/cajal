@@ -245,13 +245,14 @@
         },
 
         /**
-         * Get the item with specific itemId or false
+         * Get the item with specific itemId
          * @param itemId item id of the specific item
          * @return the item with specific itemId or false
          */
         get: function(itemId) {
             for (i in this.items) {
                 if (this.items[i].itemId === itemId) {
+                    console.log(this.items[i].item);
                     return this.items[i].item;
                 }
             }
@@ -260,11 +261,11 @@
 
         /**
          * Delete item from item array
-         * @param itemId item id of the item
+         * @param item item id of the item or the item object
          * @return cajal instance on success or false if item does not exist
          */
-        remove: function(itemId) {
-            var i = this.index(itemId);
+        remove: function(item) {
+            var i = this.index(item);
             if (false !== i) {
                 var rest = this.items.slice(i+1);
                 this.items.length = i;
@@ -276,13 +277,19 @@
 
         /**
          * Get the key of the item in the item array
-         * @param itemId item id of the item
+         * @param item item id of the item or the item object
          * @return key of the item or false if item does not exist
          */
-        index: function(itemId) {
+        index: function(item) {
             for (i in this.items) {
-                if (this.items[i].itemId === itemId) {
-                    return  parseInt(i);
+                if (typeof(item) === 'object') {
+                    if (this.items[i].item === item) {
+                        return  parseInt(i);
+                    }
+                } else {
+                    if (this.items[i].itemId === item) {
+                        return  parseInt(i);
+                    }
                 }
             }
             return false;
@@ -290,15 +297,15 @@
 
         /**
          * Move item one layer up
-         * @param itemId item id of the item
+         * @param item item id of the item or the item object
          * @return cajal instance on success or false
          */
-        up: function(itemId) {
+        up: function(item) {
             var i;
-            if ((i = this.index(itemId)) !== false) {
-                var item = this.items[i++];
-                this.deleteItem(itemId);
-                this.items.splice(i, 0, item);
+            if ((i = this.index(item)) !== false) {
+                var cur = this.items[i++];
+                this.remove(item);
+                this.items.splice(i, 0, cur);
                 return this;
             }
             return false;
@@ -306,15 +313,18 @@
 
         /**
          * Move item one layer down
-         * @param itemId item id of the item
+         * @param item item id of the item or the item object
          * @return cajal instance on success or false
          */
-        down: function(itemId) {
+        down: function(item) {
             var i;
-            if ((i = this.index(itemId)) !== false) {
-                var item = this.items[i--];
-                this.deleteItem(itemId);
-                this.items.splice(i, 0, item);
+            if ((i = this.index(item)) !== false) {
+                if (i === 0) {
+                    return this;
+                }
+                var cur = this.items[i--];
+                this.remove(item);
+                this.items.splice(i, 0, cur);
                 return this;
             }
             return false;
@@ -322,14 +332,15 @@
 
         /**
          * Move item on the top
-         * @param itemId item id of the item
+         * @param item item id of the item or the item object
          * @return cajal instance on success or false
          */
-        top: function(itemId) {
+        top: function(item) {
             var i;
-            if ((i = this.index(itemId)) !== false) {
-                var item = this.get(itemId);
-                this.deleteItem(itemId).add(itemId, item);
+            if ((i = this.index(item)) !== false) {
+                var cur = this.items[i];
+                this.remove(item);
+                this.items.push(cur);
                 return this;
             }
             return false;
@@ -337,15 +348,15 @@
 
         /**
          * Move item to the bottom
-         * @param itemId item id of the item
+         * @param item item id of the item or the item object
          * @return cajal instance on success or false
          */
-        bottom: function(itemId) {
+        bottom: function(item) {
             var i;
-            if ((i = this.index(itemId)) !== false) {
-                var item = this.items[i];
-                this.deleteItem(itemId);
-                this.items.splice(0, 0, item);
+            if ((i = this.index(item)) !== false) {
+                var cur = this.items[i];
+                this.remove(item);
+                this.items.splice(0, 0, cur);
                 return this;
             }
             return false;

@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+	<link rel="stylesheet" href="../style.css" type="text/css" />
+	<script type="text/javascript" src="../../cajal.js"></script>
+	<title>Examples: Layer management with cajal - canvas javascript library</title>
+</head>
+<body>
+<div id="wrapper">
+	<ol id="nav">
+		<li><a href="../index.html">Documentation</a></li>
+		<li><a href="../function-reference.html">Function Reference</a></li>
+		<li>
+			<a href="shapes.html" class='active'>Examples</a>
+			<ul>
+				<li><a href="shapes.html">Basic shapes</a></li>
+                <li><a href="promote-demote.html" class='active'>Layer management</a></li>
+				<li><a href="animations.html">Animations</a></li>
+				<li><a href="bars.html">Bar chart</a></li>
+				<li><a href="particular.html">Particle explosion</a></li>
+                <li><a href="clock.html">Clock</a></li>
+			</ul>
+		</li>
+	</ol>
+	<div id="content">
+		<h1>Layer management</h1>
+		<div class="inner">
+
+			<canvas id="canvas" height="300" width="620"></canvas>
+			<script type="text/javascript">
+            var c = new cajal('canvas');
+            
+            var shape = new cajal.Rect(100,100,50,50);
+            c.add('red', shape.clone().options({fill:'red'}))
+             .add('green', shape.clone().moveBy(5,30).options({fill:'green'}))
+             .add('blue', shape.clone().moveBy(30,5).options({fill:'blue'}))
+             .draw();
+
+            var up = function (item) {
+                c.up(item).draw();
+                return false;
+            }
+            var down = function (item) {
+                c.down(item).draw();
+                return false;
+            }
+            var top = function (item) {
+                c.top(item).draw();
+                return false;
+            }
+            var bottom = function (item) {
+                c.bottom(item).draw();
+                return false;
+            }
+			</script><br/>
+            <a href="#" onclick="return up('red');">red Up</a> |
+            <a href="#" onclick="return down('red');">red Down</a> |
+            <a href="#" onclick="return top('red');">red Top</a> |
+            <a href="#" onclick="return bottom('red');">red Bottom</a><br/>
+            <a href="#" onclick="return up('green');">green Up</a> |
+            <a href="#" onclick="return down('green');">green Down</a> |
+            <a href="#" onclick="return top('green');">green Top</a> |
+            <a href="#" onclick="return bottom('green');">green Bottom</a><br/>
+            <a href="#" onclick="return up('blue');">blue Up</a> |
+            <a href="#" onclick="return down('blue');">blue Down</a> |
+            <a href="#" onclick="return top('blue');">blue Top</a> |
+            <a href="#" onclick="return bottom('blue');">blue Bottom</a>
+			<h3>Code</h3>
+			<pre>
+&lt;canvas id="canvas" height="200" width="400" style="background: rgba(0,0,0,0.8);"&gt;&lt;/canvas&gt;
+&lt;script type="text/javascript"&gt;
+var c = new cajal('canvas');
+
+var shape = new cajal.Rect(100,100,50,50);
+c.add('red', shape.clone().options({fill:'red'}))
+ .add('green', shape.clone().moveBy(5,30).options({fill:'green'}))
+ .add('blue', shape.clone().moveBy(30,5).options({fill:'blue'}))
+ .draw();
+
+var up = function (item) {
+    c.up(item).draw();
+    return false;
+}
+var down = function (item) {
+    c.down(item).draw();
+    return false;
+}
+var top = function (item) {
+    c.top(item).draw();
+    return false;
+}
+var bottom = function (item) {
+    c.bottom(item).draw();
+    return false;
+}
+&lt;/script&gt;&lt;br/&gt;
+&lt;a href="#" onclick="return up('red');"&gt;red Up&lt;/a&gt; |
+&lt;a href="#" onclick="return down('red');"&gt;red Down&lt;/a&gt; |
+&lt;a href="#" onclick="return top('red');"&gt;red Top&lt;/a&gt; |
+&lt;a href="#" onclick="return bottom('red');"&gt;red Bottom&lt;/a&gt;&lt;br/&gt;
+&lt;a href="#" onclick="return up('green');"&gt;green Up&lt;/a&gt; |
+&lt;a href="#" onclick="return down('green');"&gt;green Down&lt;/a&gt; |
+&lt;a href="#" onclick="return top('green');"&gt;green Top&lt;/a&gt; |
+&lt;a href="#" onclick="return bottom('green');"&gt;green Bottom&lt;/a&gt;&lt;br/&gt;
+&lt;a href="#" onclick="return up('blue');"&gt;blue Up&lt;/a&gt; |
+&lt;a href="#" onclick="return down('blue');"&gt;blue Down&lt;/a&gt; |
+&lt;a href="#" onclick="return top('blue');"&gt;blue Top&lt;/a&gt; |
+&lt;a href="#" onclick="return bottom('blue');"&gt;blue Bottom&lt;/a&gt;
+			</pre>
+
+		</div>
+	</div>
+</div>
+<div style="clear:both;padding-bottom:20px;"></div>
+</body>
+</html>
