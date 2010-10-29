@@ -77,9 +77,9 @@
                     shadowBlur: 3
                 };
 
-                var sec = new cajal.Segment(center.x, center.y, 29, 6 * date.getSeconds()).options(drawOptions).rotate(-90).scale(0.6,3);
-                var min = new cajal.Segment(center.x, center.y, 22, 6 * date.getMinutes()).options(drawOptions).rotate(-90).scale(0.6,3);
-                var h =   new cajal.Segment(center.x, center.y, 15, 30 * date.getHours()).options(drawOptions).rotate(-90).scale(0.6,3);
+                var sec = new cajal.CircleSegment(center.x, center.y, 29, 6 * date.getSeconds()).options(drawOptions).rotate(-90).scale(0.6,3);
+                var min = new cajal.CircleSegment(center.x, center.y, 22, 6 * date.getMinutes()).options(drawOptions).rotate(-90).scale(0.6,3);
+                var h =   new cajal.CircleSegment(center.x, center.y, 15, 30 * date.getHours()).options(drawOptions).rotate(-90).scale(0.6,3);
 
                 var ap = 'AM';
                 if (date.getHours() >= 12) {
