@@ -57,7 +57,7 @@
 
             var animSec = function (f,t) {
                 c.get('sec').p.angle += 6/c.options.loopFps;
-                if (Math.floor(c.get('sec').p.angle%360) === 0) {
+                if (c.get('sec').p.angle >= 360) {
                     var date = new Date();
                     c.get('sec').p.angle = 6 * date.getSeconds();
                     this.animate(animMin,'2s');
