@@ -252,7 +252,6 @@
         get: function(itemId) {
             for (i in this.items) {
                 if (this.items[i].itemId === itemId) {
-                    console.log(this.items[i].item);
                     return this.items[i].item;
                 }
             }
@@ -396,10 +395,10 @@
          * @return cajal instance
          */
         animate: function(animation, duration) {
-            var rfxnum = /^([\d+.\-]+)([smhf]?)$/;
+            var rfxnum = /^([\d+.]+)([smhf]{1})$/;
             var parts = rfxnum.exec(duration);
             if (parts) {
-                var time = parseInt(parts[1]),
+                var time = parseFloat(parts[1]),
                     unit = parts[2];
                 switch (unit) {
 
@@ -415,7 +414,7 @@
                         time *= this.options.loopFps * 3600;
                         break;
                 }
-                duration = time;
+                duration = parseInt(time);
             } else {
                 duration = parseInt(duration);
             }
