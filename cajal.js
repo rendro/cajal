@@ -385,7 +385,43 @@
          * @return cajal instance
          */
         animate: function(animation, duration) {
-            this.loopAddAnimation(animation, duration);
+            var rfxnum = /^([\d+.\-]+)([smhf]?)$/;
+            var parts = rfxnum.exec(duration);
+            if (parts) {
+                var time = parseInt(parts[1]),
+                    unit = parts[2];
+                switch (unit) {
+
+                    case 's':
+                        time *= this.options.loopFps;
+                        break;
+
+                    case 'm':
+                        time *= this.options.loopFps * 60;
+                        break;
+
+                    case 'h':
+                        time *= this.options.loopFps * 3600;
+                        break;
+                }
+                duration = time;
+            } else {
+                duration = parseInt(duration);
+            }
+            
+            this.loopAnimations.push({
+                callback: animation,
+                duration: duration || -1,
+                frame: 0
+            });
+
+            //start loop if not running
+            if (this.loopInterval === null) {
+                var obj = this;
+                this.loopInterval = setInterval(function(){
+                    obj.loop();
+                }, Math.round(1000 / this.options.loopFps));
+            }
             return this;
         },
 
@@ -418,44 +454,6 @@
          * Interval reference
          */
         loopInterval: null,
-
-        /**
-         * Checks weather an animation already exists in the animation array
-         * @param animation callback function
-         * @return true on success or false
-         */
-        loopAnimationExists: function(animation) {
-            for (i in this.loopAnimations) {
-                if (this.loopAnimations[i].callback === animation) {
-                    return true;
-                }
-            }
-            return false;
-        },
-
-        /**
-         * Add animation to the animation loop and start the loop if it is not started yet
-         * @param animation callback function
-         * @param duration duration for this animation
-         */
-        loopAddAnimation: function(animation, duration) {
-            if (!this.loopAnimationExists(animation)) {
-                this.loopAnimations.push({
-                    callback: animation,
-                    duration: duration || -1,
-                    frame: 0
-                });
-
-                //start loop if not running
-                if (this.loopInterval === null) {
-                    var obj = this;
-                    this.loopInterval = setInterval(function(){
-                        obj.loop();
-                    }, Math.round(1000 / this.options.loopFps));
-                }
-
-            }
-        },
 
         /**
          * Loop routine that calls each animation callback, increments the frame number,
@@ -1149,6 +1147,7 @@
                 var p = this.pointStack[i];
 
                 switch (p.type) {
+
                     case 'point':
                         polygon.i++;
                         polygon.x += p.x;
