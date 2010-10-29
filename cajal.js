@@ -395,6 +395,7 @@
          * @return cajal instance
          */
         animate: function(animation, duration) {
+            duration = duration || -1;
             var rfxnum = /^([\d+.]+)([smhf]{1})$/;
             var parts = rfxnum.exec(duration);
             if (parts) {

@@ -50,7 +50,7 @@
                     var date = new Date();
                     c.get('min').p.angle = 6 * date.getMinutes();
                     if (c.get('min').p.angle === 0) {
-                        this.animate(animHour,c.options.loopFps*2);
+                        this.animate(animHour,'2s');
                     }
                 }
             }
@@ -60,7 +60,7 @@
                 if (Math.floor(c.get('sec').p.angle%360) === 0) {
                     var date = new Date();
                     c.get('sec').p.angle = 6 * date.getSeconds();
-                    this.animate(animMin,c.options.loopFps*2);
+                    this.animate(animMin,'2s');
                 }
             }
 
@@ -126,7 +126,7 @@ var animMin = function (f,t) {
         var date = new Date();
         c.get('min').p.angle = 6 * date.getMinutes();
         if (c.get('min').p.angle === 0) {
-            this.animate(animHour,c.options.loopFps*2);
+            this.animate(animHour,'2s');
         }
     }
 }
@@ -136,7 +136,7 @@ var animSec = function (f,t) {
     if (Math.floor(c.get('sec').p.angle%360) === 0) {
         var date = new Date();
         c.get('sec').p.angle = 6 * date.getSeconds();
-        this.animate(animMin,c.options.loopFps*2);
+        this.animate(animMin,'2s');
     }
 }
 
