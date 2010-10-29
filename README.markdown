@@ -108,12 +108,22 @@ Example: create a poygon with 5 edges and a radius of 50px
 * `center()`: The return value is a literal object with the x and the y coordinates of the center. (For example: `{ x: 50, y: 80}`)
 
 
-### Circular segment ###
-A Circular segment is the part of a circle defined by a radius and an angle, which is extremely useful if you want to create a pie chart.
-You can create that circular segment with the method `cajal.Segment(x, y, r, angle)`
+### Circle sector ###
+A circle sector (circular sector) is the part of a circle defined by a radius and an angle, that you can find in a pie chart for example.
+You can create that circle sector with the method `cajal.CircleSector(x, y, r, angle)`
+Example: create a circle sector with an angle of 120 Degrees a radius of 50
+
+    var csec = cajal.CircleSector(20, 30, 50, 120);
+
+### Circle segment ###
+A circle segment (circular segment) is a part of a circle defined by a radius and an angle. Compared with the circle sector, a segment does not contain the inner part of a circle. It is cut of by a line from the start and end point of the circular arc.
+You can create that circle segment with the method `cajal.CircleSegment(x, y, r, angle)`
+Example: create a circle segment with an angle of 120 Degrees a radius of 50
+
+    var cseg = cajal.CircleSsegment(20, 30, 50, 120);
 
 #### Item specific methods ####
-* `close()`: Close the path by connecting the both end points of the segment with a line
+* `close()`: Connect the end and start point of the circular arc with a line.
 
 
 ### Methods for every item ###

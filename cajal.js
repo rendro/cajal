@@ -602,6 +602,7 @@
             fill: null,
             width: 1,
             font: '13px sans-serif',
+            textAlign: 'left',
             lineCap: 'butt', //butt,square,round
             lineJoin: 'miter', //bevel,miter,round
             miterLimit: 10,
@@ -1267,6 +1268,7 @@
         center: function(ctx) {
             ctx.save();
             ctx.font = this.drawOptions.font;
+            ctx.textAlign = this.drawOptions.textAlign;
             var size = ctx.measureText(this.t);
             ctx.restore();
             return {
@@ -1359,53 +1361,6 @@
             this.finalize(canvas, options);
         }
     });
-
-    /**
-     * Create a circular segment
-     * @param x position in pixel
-     * @param y position in pixel
-     * @param r radius of the circle
-     * @param angle angle of the segment
-     * @return circle item instance
-     */
-    cajal.Segment = function(x, y, r, angle) {
-        this.drawOptions = cajal.extend({}, defaultDrawOptions);
-        this.itemOptions = cajal.extend({}, defaultItemOptions);
-        this.p = {
-            radius: r,
-            angle: angle
-        };
-        this.move(x, y);
-    }
-    cajal.extend(cajal.Segment.prototype, Item, {
-        /**
-         * Get the center of the item for rotation
-         * @return point object of the center
-         */
-        center: function() {
-            return {
-                x: 0,
-                y: 0
-            };
-        },
-        
-        /**
-         * Draw routine for the item
-         * @param canvas cajal instance
-         * @param options draw options for this draw call
-         */
-        draw: function(canvas, options) {
-            var ctx = canvas.ctx;
-            options = this.prepare(canvas, options);
-            
-            ctx.moveTo(this.p.radius, 0);
-            var angle = this.p.angle%360 * (Math.PI / 180);
-            ctx.arc(0, 0, this.p.radius, 0, angle, false);
-
-            this.finalize(canvas, options);
-        }
-
-    });
     
     /**
      * Create a circular segment
@@ -1415,7 +1370,7 @@
      * @param angle angle of the segment
      * @return circle item instance
      */
-    cajal.Segment = function(x, y, r, angle) {
+    cajal.CircleSegment = function(x, y, r, angle) {
         this.drawOptions = cajal.extend({}, defaultDrawOptions);
         this.itemOptions = cajal.extend({}, defaultItemOptions);
         this.p = {
@@ -1425,7 +1380,7 @@
         this.isClosed = false;
         this.move(x, y);
     }
-    cajal.extend(cajal.Segment.prototype, Item, {
+    cajal.extend(cajal.CircleSegment.prototype, Item, {
         /**
          * Get the center of the item for rotation
          * @return point object of the center
@@ -1461,6 +1416,55 @@
             if (this.isClosed) {
                 ctx.closePath();
             }
+
+            this.finalize(canvas, options);
+        }
+
+    });
+
+    /**
+     * Create a circular sector
+     * @param x position in pixel
+     * @param y position in pixel
+     * @param r radius of the circle
+     * @param angle angle of the sector
+     * @return circle item instance
+     */
+    cajal.CircleSector = function(x, y, r, angle) {
+        this.drawOptions = cajal.extend({}, defaultDrawOptions);
+        this.itemOptions = cajal.extend({}, defaultItemOptions);
+        this.p = {
+            radius: r,
+            angle: angle
+        };
+        this.move(x, y);
+    }
+    cajal.extend(cajal.CircleSector.prototype, Item, {
+        /**
+         * Get the center of the item for rotation
+         * @return point object of the center
+         */
+        center: function() {
+            return {
+                x: 0,
+                y: 0
+            };
+        },
+
+        /**
+         * Draw routine for the item
+         * @param canvas cajal instance
+         * @param options draw options for this draw call
+         */
+        draw: function(canvas, options) {
+            var ctx = canvas.ctx;
+            options = this.prepare(canvas, options);
+
+            ctx.moveTo(0,0);
+            ctx.lineTo(this.p.radius, 0);
+            var angle = this.p.angle%360 * (Math.PI / 180);
+            ctx.arc(0, 0, this.p.radius, 0, angle, false);
+            ctx.closePath();
 
             this.finalize(canvas, options);
         }

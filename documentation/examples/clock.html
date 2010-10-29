@@ -26,9 +26,9 @@
 		<h1>Circular Clock</h1>
 		<div class="inner">
 
-			<canvas id="canvas" height="300" width="620"></canvas>
+			<canvas id="canvas" height="300" width="620" style="background: rgba(0,0,0,0.8);"></canvas>
 			<script type="text/javascript">
-            var c = new cajal('canvas');
+            var c = new cajal('canvas',{loopFps: 10});
 
             var animHour = function (f,t) {
                 c.get('h').p.angle += cajal.Ease.expInOut(30,f,t,2);
@@ -49,17 +49,17 @@
                     var date = new Date();
                     c.get('min').p.angle = 6 * date.getMinutes();
                     if (c.get('min').p.angle === 0) {
-                        this.animate(animHour,60);
+                        this.animate(animHour,c.options.loopFps*2);
                     }
                 }
             }
 
             var animSec = function (f,t) {
-                c.get('sec').p.angle += 6/30;
+                c.get('sec').p.angle += 6/c.options.loopFps;
                 if (Math.floor(c.get('sec').p.angle%360) === 0) {
                     var date = new Date();
                     c.get('sec').p.angle = 6 * date.getSeconds();
-                    this.animate(animMin,60);
+                    this.animate(animMin,c.options.loopFps*2);
                 }
             }
 
@@ -70,30 +70,109 @@
                 }
                 var date = new Date();
 
-                var sec = new cajal.Segment(center.x, center.y, 50, 6 * date.getSeconds()).options({width:10,stroke:'rgba(255,0,0,0.7)'}).rotate(-90);
-                var min = new cajal.Segment(center.x, center.y, 35, 6 * date.getMinutes()).options({width:10,stroke:'rgba(0,255,0,0.7)'}).rotate(-90);
-                var h =   new cajal.Segment(center.x, center.y, 20, 30 * date.getHours()).options({width:10,stroke:'rgba(255,255,0,0.7)'}).rotate(-90);
-                
+                var drawOptions = {
+                    width: 2,
+                    stroke:'rgba(255,255,255,0.7)',
+                    shadow: 'rgba(255,255,255,0.5)',
+                    shadowBlur: 3
+                };
+
+                var sec = new cajal.Segment(center.x, center.y, 29, 6 * date.getSeconds()).options(drawOptions).rotate(-90).scale(0.6,3);
+                var min = new cajal.Segment(center.x, center.y, 22, 6 * date.getMinutes()).options(drawOptions).rotate(-90).scale(0.6,3);
+                var h =   new cajal.Segment(center.x, center.y, 15, 30 * date.getHours()).options(drawOptions).rotate(-90).scale(0.6,3);
+
                 var ap = 'AM';
                 if (date.getHours() >= 12) {
                     ap = 'PM';
                 }
-                
-                var text = new cajal.Text(center.x-9, center.y+4, ap).options({
-                    font: '12px Hevetica, Arial, sans-serif',
-                    fill: 'rgba(0,0,0,0.8)'
+
+                var text = new cajal.Text(center.x-7, center.y+3, ap).options({
+                    font: 'bold 10px "Hevetica Neue", Helvetica, Arial, sans-serif',
+                    textAlign: 'center',
+                    fill: 'rgba(255,255,255,0.5)',
+                    shadow: 'rgba(255,255,255,0.3)',
+                    shadowBlur: 3
                 });
                 c.add('sec',sec).add('min',min).add('h',h).add('ap',text);
             }
-            
             init();
             c.animate(animSec);
+
 
 			</script><br/>
 			<h3>Code</h3>
 			<pre>
-&lt;canvas id="canvas" height="200" width="400"&gt;&lt;/canvas&gt;
+&lt;canvas id="canvas" height="200" width="400" style="background: rgba(0,0,0,0.8);"&gt;&lt;/canvas&gt;
 &lt;script type="text/javascript"&gt;
+var c = new cajal('canvas',{loopFps: 10});
+
+var animHour = function (f,t) {
+    c.get('h').p.angle += cajal.Ease.expInOut(30,f,t,2);
+    if (f===t) {
+        var date = new Date();
+        c.get('h').p.angle = 30 * date.getHours();
+        var ap = 'AM';
+        if (date.getHours() >= 12) {
+            ap = 'PM';
+        }
+        c.get('ap').text(ap);
+    }
+}
+
+var animMin = function (f,t) {
+    c.get('min').p.angle += cajal.Ease.expInOut(6,f,t,2);
+    if (f===t) {
+        var date = new Date();
+        c.get('min').p.angle = 6 * date.getMinutes();
+        if (c.get('min').p.angle === 0) {
+            this.animate(animHour,c.options.loopFps*2);
+        }
+    }
+}
+
+var animSec = function (f,t) {
+    c.get('sec').p.angle += 6/c.options.loopFps;
+    if (Math.floor(c.get('sec').p.angle%360) === 0) {
+        var date = new Date();
+        c.get('sec').p.angle = 6 * date.getSeconds();
+        this.animate(animMin,c.options.loopFps*2);
+    }
+}
+
+var init = function () {
+    var center = {
+        x: c.canvas.width/2,
+        y: c.canvas.height/2
+    }
+    var date = new Date();
+
+    var drawOptions = {
+        width: 2,
+        stroke:'rgba(255,255,255,0.7)',
+        shadow: 'rgba(255,255,255,0.5)',
+        shadowBlur: 3
+    };
+
+    var sec = new cajal.Segment(center.x, center.y, 29, 6 * date.getSeconds()).options(drawOptions).rotate(-90).scale(0.6,3);
+    var min = new cajal.Segment(center.x, center.y, 22, 6 * date.getMinutes()).options(drawOptions).rotate(-90).scale(0.6,3);
+    var h =   new cajal.Segment(center.x, center.y, 15, 30 * date.getHours()).options(drawOptions).rotate(-90).scale(0.6,3);
+
+    var ap = 'AM';
+    if (date.getHours() >= 12) {
+        ap = 'PM';
+    }
+
+    var text = new cajal.Text(center.x-7, center.y+3, ap).options({
+        font: 'bold 10px "Hevetica Neue", Helvetica, Arial, sans-serif',
+        textAlign: 'center',
+        fill: 'rgba(255,255,255,0.5)',
+        shadow: 'rgba(255,255,255,0.3)',
+        shadowBlur: 3
+    });
+    c.add('sec',sec).add('min',min).add('h',h).add('ap',text);
+}
+init();
+c.animate(animSec);
 &lt;/script&gt;
 			</pre>
 

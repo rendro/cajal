@@ -127,26 +127,37 @@
 &lt;/script&gt;
 			</pre>
             
+            <h2>Circular Sector</h2>
+			<canvas id="sector" height="200" width="400"></canvas>
+			<script type="text/javascript">
+			var sec = new cajal('sector');
+			sec.add(new cajal.CircleSector(200, 100, 50, 120)).draw({fill: 'black', stroke: 'blue', width: 10});
+			</script>
+			<h3>Code</h3>
+			<pre>
+&lt;canvas id="sector" height="200" width="400"&gt;&lt;/canvas&gt;
+&lt;script type="text/javascript"&gt;
+var sec = new cajal('sector');
+sec.add(new cajal.CircleSector(200, 100, 50, 120))
+   .draw({fill: 'black', stroke: 'blue', width: 10});
+&lt;/script&gt;
+			</pre>
+
             <h2>Circular Segment</h2>
 			<canvas id="segment" height="200" width="400"></canvas>
 			<script type="text/javascript">
 			var seg = new cajal('segment');
-			seg.add(new cajal.Segment(200, 100, 50, 120).close()).draw({fill: 'black', stroke: 'blue', width: 10});
+			seg.add(new cajal.CircleSegment(200, 100, 50, 120).close()).draw({fill: 'black', stroke: 'blue', width: 10});
 			</script>
 			<h3>Code</h3>
 			<pre>
 &lt;canvas id="segment" height="200" width="400"&gt;&lt;/canvas&gt;
 &lt;script type="text/javascript"&gt;
-    var seg = new cajal('segment');
-    seg.add(new cajal.Segment(200, 100, 50, 120).close())
-        .draw({
-            fill  : 'black',
-            stroke: 'blue',
-            width : 10
-    });
+var seg = new cajal('segment');
+seg.add(new cajal.CircleSegment(200, 100, 50, 120).close())
+   .draw({fill: 'black', stroke: 'blue', width: 10});
 &lt;/script&gt;
 			</pre>
-
 
 		</div>
 	</div>

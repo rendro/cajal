@@ -165,6 +165,25 @@ You can create that circular segment with the method <code>cajal.Segment(x, y, r
 <li><code>close()</code>: Close the path by connecting the both end points of the segment with a line</li>
 </ul>
 
+<h3>Circle sector</h3>
+<p>A circle sector (circular sector) is the part of a circle defined by a radius and an angle, that you can find in a pie chart for example.</p>
+<p>You can create that circle sector with the method <code>cajal.CircleSector(x, y, r, angle)</code></p>
+<p>Example: create a circle sector with an angle of 120 Degrees a radius of 50</p>
+<pre><code>var csec = cajal.CircleSector(20, 30, 50, 120);
+</code></pre>
+
+<h3>Circle segment</h3>
+<p>A circle segment (circular segment) is a part of a circle defined by a radius and an angle. Compared with the circle sector, a segment does not contain the inner part of a circle. It is cut of by a line from the start and end point of the circular arc.</p>
+<p>You can create that circle segment with the method <code>cajal.CircleSegment(x, y, r, angle)</code></p>
+<p>Example: create a circle segment with an angle of 120 Degrees a radius of 50</p>
+<pre><code>var cseg = cajal.CircleSsegment(20, 30, 50, 120);
+</code></pre>
+
+<h4>Item specific methods</h4>
+<ul>
+<li><code>close()</code>: Connect the end and start point of the circular arc with a line.</li>
+</ul>
+
 <h3>Methods for every item</h3>
 
 <p>There are a bunch of methods that you can call on each item object to modify it.</p>
