@@ -477,7 +477,11 @@
                 var animation = this.loopAnimations[i];
                 animation.frame++;
                 if (animation.duration > 0 && animation.frame > animation.duration) {
-                    delete(this.loopAnimations[i]);
+                    if (this.loopAnimations.length === 1) {
+                        this.loopAnimations = [];
+                    } else {
+                        delete(this.loopAnimations[i]);
+                    }
                 } else {
                     animation.callback.apply(this, [animation.frame, animation.duration]);
                 }
