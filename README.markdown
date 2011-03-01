@@ -35,7 +35,7 @@ This literal object can have the following variables:
 
 * `autoClearCanvas`: Boolean weather the canvas is cleared automatically each `draw()` call [default value *true*]
 * `globalAlpha`: Double between 0 and 1 which defines the global alpha value applied to each item drawn
-* `globalCompositeOperation`: Describes how the items are drawn to the canvas [more information](https://developer.mozilla.org/samples/canvas-tutorial/6_1_canvas_composite.html) [default value *source-over*]
+* `globalCompositeOperation`: Describes how the items are drawn to the canvas [default value *source-over*] ([more information](https://developer.mozilla.org/samples/canvas-tutorial/6_1_canvas_composite.html))
 * `loopFps`: Frame rate for animations (frames/sec)
 
 ##  The shapes  ##
@@ -76,7 +76,7 @@ Create a path object with `cajal.Path(xPos, yPos)`. There are several methods yo
 
 #### Item specific methods ####
 * `line(xPos, yPos)`: Draw a line from the last point in path to the position (xPos, yPos)
-* `to(xPos, yPos)`: Synonym for `to(xPos, yPos)`
+* `to(xPos, yPos)`: Synonym for `line(xPos, yPos)`
 * `quadraticCurve(xPos, yPos, cx, cy)`: Draw a quadratic bezier curve to (xPos, yPos) with the control point (cx, cy)
 * `bezierCurve(xPos, yPos, c1x, c1y, c2x, c2y)`: Draw a quadratic bezier curve to (xPos, yPos) with the control points (c1x, c1y) and (c2x, c2y)
 * `close()`: Close the path (every path will be automatically closed before drawing it on the canvas)
@@ -84,7 +84,7 @@ Create a path object with `cajal.Path(xPos, yPos)`. There are several methods yo
 
 
 ### Text ###
-Create a path object with `cajal.Text(xPos, yPos, text)`.
+Create a text object with `cajal.Text(xPos, yPos, text)`.
 
     var text = cajal.Text(20, 30, 'cajal - canvas javascript library');
 
@@ -98,7 +98,7 @@ Create a path object with `cajal.Text(xPos, yPos, text)`.
 
 ### Polygon ###
 Create a symmetric polygon object with `cajal.Polygon(xPos, yPos, edges, radius)`.
-Example: create a poygon with 5 edges and a radius of 50px
+Example: create a poygon with 5 edges and a radius of 30px
 
     var poly = cajal.Polygon(20, 30, 5, 30);
 
@@ -111,14 +111,14 @@ Example: create a poygon with 5 edges and a radius of 50px
 ### Circle sector ###
 A circle sector (circular sector) is the part of a circle defined by a radius and an angle, that you can find in a pie chart for example.
 You can create that circle sector with the method `cajal.CircleSector(x, y, r, angle)`
-Example: create a circle sector with an angle of 120 Degrees a radius of 50
+Example: create a circle sector with an angle of 120 Degrees and a radius of 50
 
     var csec = cajal.CircleSector(20, 30, 50, 120);
 
 ### Circle segment ###
-A circle segment (circular segment) is a part of a circle defined by a radius and an angle. Compared with the circle sector, a segment does not contain the inner part of a circle. It is cut of by a line from the start and end point of the circular arc.
+A circle segment (circular segment) is a part of a circle defined by a radius and an angle. Compared with the circle sector, a segment does not contain the inner part of a circle. It is cut off by a line from the start and end point of the circular arc.
 You can create that circle segment with the method `cajal.CircleSegment(x, y, r, angle)`
-Example: create a circle segment with an angle of 120 Degrees a radius of 50
+Example: create a circle segment with an angle of 120 Degrees and a radius of 50
 
     var cseg = cajal.CircleSsegment(20, 30, 50, 120);
 
@@ -138,13 +138,13 @@ There are a bunch of methods that you can call on each item object to modify it.
 * `rotateBy(angle)`: Rotate the item by a given angle (in degrees)
 * `move(x, y)`: Move the item to the given position
 * `moveBy(dx, dy)`: Move the item by the given offset
-* `scale(dx, dy)`: Scale the item to a given size `item.scale(1.2, 1.2)` will scale your item to 120% of its initial size
-* `scaleBy(dx, dy)`: Scale the item by a given size `item.scale(1.5, 1.5)` will scale your item to 150% of its current size
+* `scale(dx, dy)`: Scale the item to a given size `item.scale(1.2, 1.2)` will scale your item to 120% of its _initial_ size
+* `scaleBy(dx, dy)`: Scale the item by a given size `item.scaleBy(1.5, 1.5)` will scale your item to 150% of its _current_ size
 * `options(options)`: Set draw options for this item as described in the chapter below
 
 
 ### Draw options ###
-The draw options must be a literal object with the following optional variables. Other variables will be ignored by the script an can be used as a data storage for item relevant information
+The draw options must be a literal object with the following optional variables. Other variables will be ignored by the script and can be used as a data storage for item relevant information
 
 * `stroke`: Color to stroke, or *null* for no stroke. Accepted values are hexadecimal color codes (e.g. #175175), strings (e.g. *red* or *blue*), rgb(a) values (e.g. *rgba(120,200,85,0.7)* or *rgb(120,200,85)*) [default value: *null*]
 * `fill`: Color to fill, or *null* for no filling. Accepted values are hexadecimal color codes (e.g. #175175), strings (e.g. *red* or *blue*), rgb(a) values (e.g. *rgba(120,200,85,0.7)* or *rgb(120,200,85)*) [default value: *null*]
@@ -152,7 +152,7 @@ The draw options must be a literal object with the following optional variables.
 * `font`: Font size and family for text renderings [default value: '13px sans-serif']
 * `lineCap`: Accepted values: *butt*, *square* and *round* [default value: *butt*] ([more information](http://www.whatwg.org/specs/web-apps/current-work/multipage/the-canvas-element.html#line-styles))
 * `lineJoin`: Accepted values: *miter*, *bevel* and *round* [default value: *miter*] ([more information](http://www.whatwg.org/specs/web-apps/current-work/multipage/the-canvas-element.html#line-styles))
-* `miterLimit`: [More information](http://www.whatwg.org/specs/web-apps/current-work/multipage/the-canvas-element.html#line-styles) [default value: 10]
+* `miterLimit`: [default value: 10] ([more information](http://www.whatwg.org/specs/web-apps/current-work/multipage/the-canvas-element.html#line-styles))
 * `shadowX`: Shadow x offset
 * `shadowX`: Shadow y offset
 * `shadowBlur`: Shadow blur value
@@ -160,34 +160,34 @@ The draw options must be a literal object with the following optional variables.
 
 
 ## How to add, remove and draw items to the canvas ##
-First of all you need an instance of cajal with for the canvas element that you want to draw on.
+First of all you need an instance of cajal for the canvas element that you want to draw on.
 
 
 ### Add items ###
 Then you can add items with the method `add()`. There are two ways to use this method. You can either pass the item as one argument, or you pass an itemId and the item as two arguments.
 If you want to change the item you need to specify a name (itemId) for it, so that you can access the item with the get-Method afterwards. In the case of a more simple usage, you can pass only the item object, but you will not be able to change this item afterwards.
-If you an item with the given itemId already exists, it will be overwritten.
+If you add an item with an itemId that already exists, it will be overwritten.
 
 Example: drawing a circle
 
-    //get the cajal instance
+    // get the cajal instance
     var c = cajal('mycanvas');
 
-    //create a black circle with a white 2px stroke
+    // create a black circle with a white 2px stroke
     var circle = cajal.Circle(30,40,100).options({
         fill   : 'black',
         stroke : 'white',
         width  : 2
     });
 
-    //add the item to the cajal instance with a name
+    // add the item to the cajal instance with a name
     c.add('myCircle', circle);
 
-    //draw all items (in that case only the circle
+    // draw all items (in that case only the circle
     c.draw();
 
 
-### Get item for manipulation ###
+### Get an item for manipulation ###
 If you want to manipulate your item after adding it to the cajal instance call `get(itemId)`
 
 Example: fill the circle created above blue and move by 100px right and 50px down
@@ -196,8 +196,7 @@ Example: fill the circle created above blue and move by 100px right and 50px dow
         fill: 'blue'
     });
 
-    //draw again to see the changes
-
+    // draw again to see the changes
     c.draw()
 
 
@@ -212,7 +211,7 @@ Example: Replace the circle with a rectangular
         width  : 3
     }));
 
-    //draw again to see changes
+    // draw again to see changes
     c.draw();
 
 
@@ -225,7 +224,7 @@ Example: removing the circle created above
 
 
 ### Promote and demote items ####
-The items are drawn in the order they are added to the cajal instance. That means, that the item that is added first will be on the bottom layer and the item added last on the top layer. To rearrange those layers and promote or demote different items you can use the following functions:
+The items are drawn in the order they are added to the cajal instance. That means, that the item that is added first will be on the bottom layer and the item added last on the top layer. To rearrange those layers and promote or demote items you can use the following functions:
 
 * `up()`: Moves the item up one layer
 * `down()`: Moves the item down one layer
@@ -257,7 +256,7 @@ Now you have three circles (red, green and blue one) with the red on the bottom 
 With the method `clear()` you clear the canvas.
 
 ### Define global draw options ###
-If you want all items drawn with the same draw options you can pass a literal object with the draw options as a parameter to the `draw()` method. Those draw options will overwrite the draw options of each item only for this draw call. Calling the draw method without a parameter will draw the items in their specific draw options again.
+If you want all items drawn with the same draw options you can pass a literal object with the draw options as a parameter to the `draw()` method. Those draw options will overwrite the draw options of each item only for this draw call. Calling the draw method without a parameter will draw the items with their specific draw options again.
 See above for the different draw option variables.
 
 
@@ -265,16 +264,16 @@ See above for the different draw option variables.
 So after knowing how to draw on the canvas we want to take a look on how to animate our elements. The cajal library has no default animations implemented, so that you must create animations by yourself. A animation is a normal function with some optional parameters.
 A basic animation function:
 
-	var foo = function (frame, duration) {
-		//move the item 'myItem' by 0.5px to the right, 0.3px to the bottom and rotate it by 1 degree counter-clockwise
+	var myAnimation = function (frame, duration) {
+		// move the item 'myItem' by 0.5px to the right, 0.3px to the bottom and rotate it by 1 degree counter-clockwise
 		this.get('myItem').moveBy(0.5,0.3).rotateBy(-1);
 	}
 
 Inside the animation function you can access the cajal instance the animation is running using `this`. That makes an animation independent from the canvas it is called on and you can reuse your animation functions on different canvas elements.
 This function can be triggered to start or stop by calling the function `animate(animation, [duration])` and `stop(animation)`. The animation parameter in both functions is the animation function that we created.
 
-	//start the foo animation and set the lifetime to 500 frames
-	c.animate(foo, 500);
+	// start the myAnimation animation and set the lifetime to 500 frames
+	c.animate(myAnimation, 500);
 
 Now this function is called every frame (default framerate is set to 30) and after 500 calls/frames it will be stopped.
 The `duration` parameter is optional and leaving it blank will run the animation until you stop it manually.
@@ -302,7 +301,7 @@ To get more natural movements cajal comes with some easing functions from [Rober
 Example: using expInOut with a power of 3 to move a rectangular by 300px on the x axis to the right
 
 	//define the animation function
-	var bar = function (frame, duration) {
+	var myEasingAnimation = function (frame, duration) {
 		var dx = cajal.Ease.expInOut(300, frame, duration, 3);
 		this.get('myRect').moveBy(dx, 0);
 	}
@@ -313,4 +312,4 @@ Example: using expInOut with a power of 3 to move a rectangular by 300px on the 
 	}));
 
 	//start animation and set lifetime to 350 frames
-	c.animate(bar, 350);
+	c.animate(myEasingAnimation, 350);
