@@ -3,33 +3,12 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
 	<link rel="stylesheet" href="../style.css" type="text/css" />
+    <!--[if IE]><script type="text/javascript" src="excanvas.js"></script><![endif]-->
 	<script type="text/javascript" src="../../src/cajal.js"></script>
     <script type="text/javascript" src="../../src/cajal.ease.js"></script>
 	<title>Examples: beautiful clock with cajal - canvas javascript library</title>
-</head>
-<body>
-<div id="wrapper">
-	<ol id="nav">
-		<li><a href="../index.html">Documentation</a></li>
-		<li><a href="../function-reference.html">Function Reference</a></li>
-		<li>
-			<a href="shapes.html" class='active'>Examples</a>
-			<ul>
-				<li><a href="shapes.html">Basic shapes</a></li>
-                <li><a href="promote-demote.html">Layer management</a></li>
-				<li><a href="animations.html">Animations</a></li>
-				<li><a href="bars.html">Bar chart</a></li>
-				<li><a href="particular.html">Particle explosion</a></li>
-                <li><a href="clock.html" class='active'>Clock</a></li>
-			</ul>
-		</li>
-	</ol>
-	<div id="content">
-		<h1>Circular Clock</h1>
-		<div class="inner">
-
-			<canvas id="canvas" height="300" width="620" style="background: rgba(0,0,0,0.8);"></canvas>
-			<script type="text/javascript">
+    <script type="text/javascript">
+        function initCajal() {
             var c = new cajal('canvas',{loopFps: 10});
 
             var animHour = function (f,t) {
@@ -99,9 +78,32 @@
             }
             init();
             c.animate(animSec);
+        };
+    </script>
+</head>
+<body onload="initCajal();">
+<div id="wrapper">
+	<ol id="nav">
+		<li><a href="../index.html">Documentation</a></li>
+		<li><a href="../function-reference.html">Function Reference</a></li>
+		<li>
+			<a href="shapes.html" class='active'>Examples</a>
+			<ul>
+				<li><a href="shapes.html">Basic shapes</a></li>
+                <li><a href="promote-demote.html">Layer management</a></li>
+				<li><a href="animations.html">Animations</a></li>
+				<li><a href="bars.html">Bar chart</a></li>
+				<li><a href="particular.html">Particle explosion</a></li>
+                <li><a href="clock.html" class='active'>Clock</a></li>
+			</ul>
+		</li>
+	</ol>
+	<div id="content">
+		<h1>Circular Clock</h1>
+		<div class="inner">
 
-
-			</script><br/>
+			<canvas id="canvas" height="300" width="620" style="background: rgba(0,0,0,0.8);"></canvas>
+			<br/>
 			<h3>Code</h3>
 			<pre>
 &lt;canvas id="canvas" height="200" width="400" style="background: rgba(0,0,0,0.8);"&gt;&lt;/canvas&gt;

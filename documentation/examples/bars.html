@@ -3,34 +3,13 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
 	<link rel="stylesheet" href="../style.css" type="text/css" />
+    <!--[if IE]><script type="text/javascript" src="excanvas.js"></script><![endif]-->
 	<script type="text/javascript" src="../../src/cajal.js"></script>
     <script type="text/javascript" src="../../src/cajal.ease.js"></script>
 	<title>Examples: bar chart with cajal - canvas javascript library</title>
-</head>
-<body>
-<div id="wrapper">
-	<ol id="nav">
-		<li><a href="../index.html">Documentation</a></li>
-		<li><a href="../function-reference.html">Function Reference</a></li>
-		<li>
-			<a href="shapes.html" class='active'>Examples</a>
-			<ul>
-				<li><a href="shapes.html">Basic shapes</a></li>
-                <li><a href="promote-demote.html">Layer management</a></li>
-				<li><a href="animations.html">Animations</a></li>
-				<li><a href="bars.html" class='active'>Bar chart</a></li>
-				<li><a href="particular.html">Particle explosion</a></li>
-                <li><a href="clock.html">Clock</a></li>
-			</ul>
-		</li>
-	</ol>
-	<div id="content">
-		<h1>Bar chart</h1>
-		<div class="inner">
-
-			<canvas id="canvas" height="300" width="620"></canvas>
-			<script type="text/javascript">
-			var values = [];
+    <script type="text/javascript">
+        function initCajal() {
+            var values = [];
             for (var p=0; p<19;p++) {
                 values.push(Math.round(Math.random()*250));
             }
@@ -73,8 +52,31 @@
                 }
             }
             c.animate(init,150);
+        };
+    </script>
+</head>
+<body onload="initCajal();">
+<div id="wrapper">
+	<ol id="nav">
+		<li><a href="../index.html">Documentation</a></li>
+		<li><a href="../function-reference.html">Function Reference</a></li>
+		<li>
+			<a href="shapes.html" class='active'>Examples</a>
+			<ul>
+				<li><a href="shapes.html">Basic shapes</a></li>
+                <li><a href="promote-demote.html">Layer management</a></li>
+				<li><a href="animations.html">Animations</a></li>
+				<li><a href="bars.html" class='active'>Bar chart</a></li>
+				<li><a href="particular.html">Particle explosion</a></li>
+                <li><a href="clock.html">Clock</a></li>
+			</ul>
+		</li>
+	</ol>
+	<div id="content">
+		<h1>Bar chart</h1>
+		<div class="inner">
 
-			</script>
+			<canvas id="canvas" height="300" width="620"></canvas>
 			<h3>Code</h3>
 			<pre>
 &lt;canvas id="canvas" height="200" width="400"&gt;&lt;/canvas&gt;
