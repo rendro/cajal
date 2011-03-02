@@ -81,7 +81,31 @@
 
     //extend the cajal object with static funcitons
     cajal.extend({
+        /**
+         * Default options for cajal
+         */
+        defaultOptions: {
+            /**
+             * flag weather the canvas will be cleared before each call of the draw method
+             */
+            autoClearCanvas: true,
 
+            /**
+             * Global Alpha (will be applied to all objects drawn on the canvas)
+             */
+            globalAlpha: 1,
+
+            /**
+             * Global composite operation
+             * valid values: source-over, source-atop, source-in, source-out, destination-atop, destination-in, destination-out, destination-over, copy, darker, lighter, xor
+             */
+            globalCompositeOperation: 'source-over',
+
+            /**
+             * FPS for the animation loop
+             */
+            loopFps: 30
+        },
         isEmptyObject: function(obj) {
             for (var name in obj) {
                 return false;
@@ -131,32 +155,6 @@
         }
     });
 
-    /**
-     * Default options for cajal
-     */
-    var defaultOptions = {
-        /**
-         * flag weather the canvas will be cleared before each call of the draw method
-         */
-        autoClearCanvas: true,
-
-        /**
-         * Global Alpha (will be applied to all objects drawn on the canvas)
-         */
-        globalAlpha: 1,
-
-        /**
-         * Global composite operation
-         * valid values: source-over, source-atop, source-in, source-out, destination-atop, destination-in, destination-out, destination-over, copy, darker, lighter, xor
-         */
-        globalCompositeOperation: 'source-over',
-
-        /**
-         * FPS for the animation loop
-         */
-        loopFps: 30
-    };
-
     //extend the cajal instance by basic functions
     cajal.extend(cajal.prototype, {
 
@@ -205,7 +203,7 @@
             /**
              * Cajal options
              */
-            this.options = cajal.extend({}, defaultOptions, options);
+            this.options = cajal.extend({}, cajal.defaultOptions, options);
 
             /**
              * Flag if canvas is not empty. In that case it has to be cleared before drawing
