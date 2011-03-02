@@ -106,9 +106,9 @@
             }
 
             // Not own constructor property must be Object
-            if (obj.constructor
-                && !Object.prototype.hasOwnProperty.call(obj, "constructor")
-                && !Object.prototype.hasOwnProperty.call(obj.constructor.prototype, "isPrototypeOf")) {
+            if (obj.constructor &&
+                !Object.prototype.hasOwnProperty.call(obj, "constructor") &&
+                !Object.prototype.hasOwnProperty.call(obj.constructor.prototype, "isPrototypeOf")) {
                 return false;
             }
 
@@ -234,7 +234,7 @@
             } else if (typeof(arguments[1]) === 'object' && arguments.length === 2) {
                 var itemId = "" + arguments[0];
                 if (this.get(itemId)) {
-                    this.remove(itemId)
+                    this.remove(itemId);
                 }
                 this.items.push({
                     itemId: itemId,
@@ -250,7 +250,7 @@
          * @return the item with specific itemId or false
          */
         get: function(itemId) {
-            for (i in this.items) {
+            for (var i in this.items) {
                 if (this.items[i].itemId === itemId) {
                     return this.items[i].item;
                 }
@@ -280,14 +280,14 @@
          * @return key of the item or false if item does not exist
          */
         index: function(item) {
-            for (i in this.items) {
+            for (var i in this.items) {
                 if (typeof(item) === 'object') {
                     if (this.items[i].item === item) {
-                        return  parseInt(i);
+                        return parseInt(i, 10);
                     }
                 } else {
                     if (this.items[i].itemId === item) {
-                        return  parseInt(i);
+                        return parseInt(i, 10);
                     }
                 }
             }
@@ -372,7 +372,7 @@
                 this.clear();
             }
             this.isEmpty = false;
-            for (i in this.items) {
+            for (var i in this.items) {
                 this.items[i].item.draw(this, options);
             }
             return this;
@@ -415,9 +415,9 @@
                         time *= this.options.loopFps * 3600;
                         break;
                 }
-                duration = parseInt(time);
+                duration = parseInt(time, 10);
             } else {
-                duration = parseInt(duration);
+                duration = parseInt(duration, 10);
             }
             
             this.loopAnimations.push({
@@ -445,7 +445,7 @@
             if (animation === true) {
                 this.loopAnimations = [];
             }
-            for (i in this.loopAnimations) {
+            for (var i in this.loopAnimations) {
                 if (this.loopAnimations[i].callback === animation) {
                     if (this.loopAnimations.length === 1) {
                         this.loopAnimations = [];
@@ -473,7 +473,7 @@
          */
         loop: function() {
             this.loopFrame++;
-            for (i in this.loopAnimations) {
+            for (var i in this.loopAnimations) {
                 var animation = this.loopAnimations[i];
                 animation.frame++;
                 if (animation.duration > 0 && animation.frame > animation.duration) {
@@ -492,7 +492,6 @@
                 clearInterval(this.loopInterval);
                 this.loopInterval = null;
             }
-
         }
 
     });
@@ -517,7 +516,7 @@
                 y: y2
             },
             colorStops: []
-        }
+        };
         return this;
     };
 
@@ -544,7 +543,7 @@
          */
         draw: function(context) {
             var gradient = context.createLinearGradient(this.properties.start.x, this.properties.start.y, this.properties.end.x, this.properties.end.y);
-            for (i in this.properties.colorStops) {
+            for (var i in this.properties.colorStops) {
                 gradient.addColorStop(this.properties.colorStops[i].pos, this.properties.colorStops[i].color);
             }
             return gradient;
@@ -575,7 +574,7 @@
                 r: r2
             },
             colorStops: []
-        }
+        };
         return this;
     };
     cajal.extend(cajal.RadialGradient.prototype, {
@@ -599,7 +598,7 @@
          */
         draw: function(context) {
             var gradient = context.createRadialGradient(this.properties.start.x, this.properties.start.y, this.properties.start.r, this.properties.end.x, this.properties.end.y, this.properties.end.r);
-            for (i in this.properties.colorStops) {
+            for (var i in this.properties.colorStops) {
                 gradient.addColorStop(this.properties.colorStops[i].pos, this.properties.colorStops[i].color);
             }
             return gradient;
@@ -696,7 +695,7 @@
                 m21: m.m21 * m11 + m.m22 * m21,
                 m22: m.m21 * m21 + m.m22 * m22,
                 dy : m.m21 * dx  + m.m22 * dy  + m.dy
-            }
+            };
             return this;
         },
 
@@ -889,7 +888,7 @@
                 ctx.setTransform(m.m11, m.m12, m.m21, m.m22, m.dx, m.dy);
             }
             //center of object
-            var center = this.center(ctx)
+            var center = this.center(ctx);
             //translate
             if (this.itemOptions.translate !== undefined && this.itemOptions.translate !== null) {
                 ctx.translate(this.itemOptions.translate.x, this.itemOptions.translate.y);
@@ -944,7 +943,8 @@
         this.itemOptions = cajal.extend({}, defaultItemOptions);
         this.radius = r;
         this.move(x, y);
-    }
+    };
+
     cajal.extend(cajal.Circle.prototype, Item, {
         /**
          * Get the center of the item for rotation
@@ -996,7 +996,8 @@
             this.rect.r = r;
         }
         this.move(x, y);
-    }
+    };
+
     cajal.extend(cajal.Rect.prototype, Item, {
         /**
          * Get the center of the item for rotation
@@ -1057,10 +1058,11 @@
         this.offset = {
             x: x || 0,
             y: y || 0
-        }
+        };
         this.pointStack = [{type: 'start'}];
         this.move(x, y);
-    }
+    };
+
     cajal.extend(cajal.Path.prototype, Item, {
 
         /**
@@ -1118,7 +1120,7 @@
                 y:  y - this.offset.y,
                 cx: cx - this.offset.x,
                 cy: cy - this.offset.y
-            }
+            };
             this.pointStack.push(p);
             return this;
         },
@@ -1142,7 +1144,7 @@
                 c1y: c1y - this.offset.y,
                 c2x: c2x - this.offset.x,
                 c2y: c2y - this.offset.y
-            }
+            };
             this.pointStack.push(p);
             return this;
         },
@@ -1199,7 +1201,7 @@
             var ctx = canvas.ctx;
             options = this.prepare(canvas, options);
 
-            for (i in this.pointStack) {
+            for (var i in this.pointStack) {
                 var p = this.pointStack[i];
 
                 switch (p.type) {
@@ -1243,6 +1245,7 @@
         this.move(x, y);
         this.t = text;
     };
+
     cajal.extend(cajal.Text.prototype, Item, {
 
         /**
@@ -1326,7 +1329,8 @@
         this.pointStack = [];
         this.move(x, y);
         this.setPoints(n, r);
-    }
+    };
+
     cajal.extend(cajal.Polygon.prototype, Item, {
 
         /**
@@ -1367,7 +1371,7 @@
             var ctx = canvas.ctx;
             options = this.prepare(canvas, options);
 
-            for (i in this.pointStack) {
+            for (var i in this.pointStack) {
                 var p = this.pointStack[i];
                 ctx.lineTo(p.x, p.y);
             }
@@ -1393,7 +1397,8 @@
         };
         this.isClosed = false;
         this.move(x, y);
-    }
+    };
+
     cajal.extend(cajal.CircleSegment.prototype, Item, {
         /**
          * Get the center of the item for rotation
@@ -1452,7 +1457,8 @@
             angle: angle
         };
         this.move(x, y);
-    }
+    };
+
     cajal.extend(cajal.CircleSector.prototype, Item, {
         /**
          * Get the center of the item for rotation
@@ -1524,7 +1530,9 @@
          */
         quadInOut: function(d, f, t) {
             f /= t / 2;
-            if (f < 1) return 2 * f * d / t;
+            if (f < 1) {
+                return 2 * f * d / t;
+            }
             f--;
             return -2 * (f - 1) * d / t;
         },
@@ -1565,7 +1573,9 @@
          */
         expInOut: function(d, f, t, p) {
             f /= t / 2;
-            if (f < 1) return this.expIn(d, f*t, t, p);
+            if (f < 1) {
+                return this.expIn(d, f*t, t, p);
+            }
             f--;
             return this.expOut(d, f*t, t, p);
         },
@@ -1610,7 +1620,9 @@
         backInOut: function(d, f, t, a) {
             a = a || 1.70158 * 1.525;
             f /= t / 2;
-            if (f < 1) return f * (3 * a * f + 3 * f - 2 * a) * d / t;
+            if (f < 1) {
+                return f * (3 * a * f + 3 * f - 2 * a) * d / t;
+            }
             f -= 2;
             return f * (3 * a * f + 3 * f + 2 * a) * d / t;
         },
@@ -1623,7 +1635,7 @@
          * @return change of the value for frame f
          */
         bounceIn: function(d, f, t) {
-            return this.bounceOut(d, t-f, t)
+            return this.bounceOut(d, t-f, t);
         },
 
         /**
@@ -1654,7 +1666,9 @@
          * @return change of the value for frame f
          */
         bounceInOut: function(d, f, t) {
-            if (f < t/2) return this.bounceIn(d, f*2, t);
+            if (f < t/2) {
+                return this.bounceIn(d, f*2, t);
+            }
             return this.bounceOut(d, f*2-t, t);
         },
 
@@ -1670,7 +1684,7 @@
             f /= t;
             p = p || 3;
             var pi = Math.PI;
-            var T = 1 / (p + .25);
+            var T = 1 / (p + 0.25);
             return d / t * (2 / 9) * Math.pow(f, 3.5) * Math.sin(f * 2 * pi / T) + d / t * Math.pow(f, 4.5) * Math.cos(f * 2 * pi / T) * (2 * pi / T);
         },
 
@@ -1695,7 +1709,9 @@
          * @return change of the value for frame f
          */
         elasticInOut: function(d, f, t, p) {
-            if (f < t/2) return this.elasticIn(d, f*2, t, p);
+            if (f < t/2) {
+                return this.elasticIn(d, f*2, t, p);
+            }
             return this.elasticOut(d, f*2-t, t, p);
         }
 
