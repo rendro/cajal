@@ -226,7 +226,6 @@
          * @return cajal instance or false if itemId already exists or param item is no object
          */
         add: function() {
-            var item;
             if (typeof(arguments[0]) === 'object' && arguments.length === 1) {
                 this.items.push({
                     item: arguments[0]
