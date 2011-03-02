@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+	<link rel="stylesheet" href="../style.css" type="text/css" />
+	<script type="text/javascript" src="../../src/cajal.js"></script>
+	<script type="text/javascript" src="../../src/cajal.hit-algorithm.js"></script>
+	<title>Examples: events - canvas javascript library</title>
+</head>
+<body>
+<div id="wrapper">
+	<ol id="nav">
+		<li><a href="../index.html">Documentation</a></li>
+		<li><a href="../function-reference.html">Function Reference</a></li>
+		<li>
+			<a href="shapes.html" class='active'>Examples</a>
+			<ul>
+				<li><a href="shapes.html" class='active'>Basic shapes</a></li>
+                <li><a href="promote-demote.html">Layer management</a></li>
+				<li><a href="animations.html">Animations</a></li>
+				<li><a href="bars.html">Bar chart</a></li>
+				<li><a href="particular.html">Particle explosion</a></li>
+                <li><a href="clock.html">Clock</a></li>
+			</ul>
+		</li>
+	</ol>
+	<div id="content">
+		<h1>Events</h1>
+		<div class="inner">
+
+			<h2>Test</h2>
+			<canvas id="event" height="200" width="400" onclick="myfunc(event)"></canvas>
+			<script type="text/javascript">
+			var c = new cajal('event');
+            for (var p=0;p<20;p++) {
+                c.add(new cajal.Circle(Math.random()*c.canvas.width, Math.random()*c.canvas.height, 8).options({fill: '#000000', stroke:'#ff0000', width: 8}));
+            }
+            c.draw();
+
+            
+
+            var myfunc = function (e) {
+                var x = e.clientX-c.canvas.offsetLeft;
+                var y = e.clientY-c.canvas.offsetTop;
+                var item = cajal.getItemAtPoint(c,x,y);
+                if (item !== null) {
+                    c.animate(function () {
+                        item.scaleBy(0.01,0.01);
+                    },'2s');
+                }
+                c.draw();
+            };
+			</script>
+
+		</div>
+	</div>
+</div>
+<div style="clear:both;padding-bottom:20px;"></div>
+</body>
+</html>
