@@ -608,36 +608,37 @@
     /**
      * Default values for the drawing options
      */
-    var defaultDrawOptions = {
-            stroke: null,
-            fill: null,
-            width: 1,
-            font: '13px sans-serif',
-            textAlign: 'left',
-            lineCap: 'butt', //butt,square,round
-            lineJoin: 'miter', //bevel,miter,round
-            miterLimit: 10,
-            shadowX: 0,
-            shadowY: 0,
-            shadowBlur: 0,
-            shadow: null
-        },
-        /**
-         * Default values for the item options
-         */
-        defaultItemOptions  = {
-            translate: null,
-            scale: null,
-            rotate: null,
-            matrix: null,
-            hidden: false
-        };
+    cajal.defaultDrawOptions = {
+        stroke: null,
+        fill: null,
+        width: 1,
+        font: '13px sans-serif',
+        textAlign: 'left',
+        lineCap: 'butt', //butt,square,round
+        lineJoin: 'miter', //bevel,miter,round
+        miterLimit: 10,
+        shadowX: 0,
+        shadowY: 0,
+        shadowBlur: 0,
+        shadow: null
+    };
+
+    /**
+     * Default values for the item options
+     */
+    cajal.defaultItemOptions  = {
+        translate: null,
+        scale: null,
+        rotate: null,
+        matrix: null,
+        hidden: false
+    };
 
     /**
      * Basic item methods
      * Each item hase those methods
      */
-    var Item = {
+    cajal.Item = {
 
         /**
          * Clone the item
@@ -938,13 +939,13 @@
      * @return circle item instance
      */
     cajal.Circle = function(x, y, r) {
-        this.drawOptions = cajal.extend({}, defaultDrawOptions);
-        this.itemOptions = cajal.extend({}, defaultItemOptions);
+        this.drawOptions = cajal.extend({}, cajal.defaultDrawOptions);
+        this.itemOptions = cajal.extend({}, cajal.defaultcajal.ItemOptions);
         this.radius = r;
         this.move(x, y);
     };
 
-    cajal.extend(cajal.Circle.prototype, Item, {
+    cajal.extend(cajal.Circle.prototype, cajal.Item, {
         /**
          * Get the center of the item for rotation
          * @return point object of the center
@@ -985,8 +986,8 @@
      * @return rectangle item instance
      */
     cajal.Rect = function(x, y, w, h, r) {
-        this.drawOptions = cajal.extend({}, defaultDrawOptions);
-        this.itemOptions = cajal.extend({}, defaultItemOptions);
+        this.drawOptions = cajal.extend({}, cajal.defaultDrawOptions);
+        this.itemOptions = cajal.extend({}, cajal.defaultItemOptions);
         this.rect = {
             w: w,
             h: h
@@ -997,7 +998,7 @@
         this.move(x, y);
     };
 
-    cajal.extend(cajal.Rect.prototype, Item, {
+    cajal.extend(cajal.Rect.prototype, cajal.Item, {
         /**
          * Get the center of the item for rotation
          * @return point object of the center
@@ -1051,8 +1052,8 @@
      * @return path item instance
      */
     cajal.Path = function(x, y) {
-        this.drawOptions = cajal.extend({}, defaultDrawOptions);
-        this.itemOptions = cajal.extend({}, defaultItemOptions);
+        this.drawOptions = cajal.extend({}, cajal.defaultDrawOptions);
+        this.itemOptions = cajal.extend({}, cajal.defaultItemOptions);
         this.isClosed = false;
         this.offset = {
             x: x || 0,
@@ -1062,7 +1063,7 @@
         this.move(x, y);
     };
 
-    cajal.extend(cajal.Path.prototype, Item, {
+    cajal.extend(cajal.Path.prototype, cajal.Item, {
 
         /**
          * Array for the points in the path
@@ -1239,13 +1240,13 @@
      * @return text item instance
      */
     cajal.Text = function(x, y, text) {
-        this.drawOptions = cajal.extend({}, defaultDrawOptions);
-        this.itemOptions = cajal.extend({}, defaultItemOptions);
+        this.drawOptions = cajal.extend({}, cajal.defaultDrawOptions);
+        this.itemOptions = cajal.extend({}, cajal.defaultItemOptions);
         this.move(x, y);
         this.t = text;
     };
 
-    cajal.extend(cajal.Text.prototype, Item, {
+    cajal.extend(cajal.Text.prototype, cajal.Item, {
 
         /**
          * Append text to the current text
@@ -1323,14 +1324,14 @@
      * @return polygon item instance
      */
     cajal.Polygon = function(x, y, n, r) {
-        this.drawOptions = cajal.extend({}, defaultDrawOptions);
-        this.itemOptions = cajal.extend({}, defaultItemOptions);
+        this.drawOptions = cajal.extend({}, cajal.defaultDrawOptions);
+        this.itemOptions = cajal.extend({}, cajal.defaultItemOptions);
         this.pointStack = [];
         this.move(x, y);
         this.setPoints(n, r);
     };
 
-    cajal.extend(cajal.Polygon.prototype, Item, {
+    cajal.extend(cajal.Polygon.prototype, cajal.Item, {
 
         /**
          * Get the center of the item for rotation
@@ -1388,8 +1389,8 @@
      * @return circle item instance
      */
     cajal.CircleSegment = function(x, y, r, angle) {
-        this.drawOptions = cajal.extend({}, defaultDrawOptions);
-        this.itemOptions = cajal.extend({}, defaultItemOptions);
+        this.drawOptions = cajal.extend({}, cajal.defaultDrawOptions);
+        this.itemOptions = cajal.extend({}, cajal.defaultItemOptions);
         this.p = {
             radius: r,
             angle: angle
@@ -1398,7 +1399,7 @@
         this.move(x, y);
     };
 
-    cajal.extend(cajal.CircleSegment.prototype, Item, {
+    cajal.extend(cajal.CircleSegment.prototype, cajal.Item, {
         /**
          * Get the center of the item for rotation
          * @return point object of the center
@@ -1449,8 +1450,8 @@
      * @return circle item instance
      */
     cajal.CircleSector = function(x, y, r, angle) {
-        this.drawOptions = cajal.extend({}, defaultDrawOptions);
-        this.itemOptions = cajal.extend({}, defaultItemOptions);
+        this.drawOptions = cajal.extend({}, cajal.defaultDrawOptions);
+        this.itemOptions = cajal.extend({}, cajal.defaultItemOptions);
         this.p = {
             radius: r,
             angle: angle
@@ -1458,7 +1459,7 @@
         this.move(x, y);
     };
 
-    cajal.extend(cajal.CircleSector.prototype, Item, {
+    cajal.extend(cajal.CircleSector.prototype, cajal.Item, {
         /**
          * Get the center of the item for rotation
          * @return point object of the center
