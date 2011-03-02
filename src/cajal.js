@@ -938,7 +938,7 @@
      */
     cajal.Circle = function(x, y, r) {
         this.drawOptions = cajal.extend({}, cajal.defaultDrawOptions);
-        this.itemOptions = cajal.extend({}, cajal.defaultcajal.ItemOptions);
+        this.itemOptions = cajal.extend({}, cajal.defaultItemOptions);
         this.radius = r;
         this.move(x, y);
     };
