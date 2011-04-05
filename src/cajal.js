@@ -203,7 +203,7 @@
             /**
              * Cajal options
              */
-            this.options = cajal.extend({}, cajal.defaultOptions, options);
+            this.options = cajal.extend(true, {}, cajal.defaultOptions, options);
 
             /**
              * Flag if canvas is not empty. In that case it has to be cleared before drawing
@@ -718,7 +718,9 @@
     cajal.defaultItemOptions  = {
         translate: null,
         scale: null,
-        rotate: null,
+        rotate: {
+            angle: null
+        },
         matrix: null,
         hidden: false
     };
@@ -816,11 +818,14 @@
          * @param angle rotation angle in degree
          * @return item instance
          */
-        rotateBy: function(angle) {
-            if (this.itemOptions !== null) {
-                this.itemOptions.rotate += Math.PI * angle / 180;
+        rotateBy: function(angle, point) {
+            if (this.itemOptions.rotate.angle !== null) {
+                this.itemOptions.rotate.angle += Math.PI * angle / 180;
+                if (point !== undefined) {
+                    this.itemOptions.rotate.point = point;
+                }
             } else {
-                return this.rotate(angle);
+                return this.rotate(angle, point);
             }
             return this;
         },
@@ -830,11 +835,14 @@
          * @param angle rotation angle in degree
          * @return item instance
          */
-        rotate: function(angle) {
+        rotate: function(angle, point) {
             if (angle === 0) {
-                this.itemOptions.rotate = null;
+                this.itemOptions.rotate.angle = null;
             } else {
-                this.itemOptions.rotate = Math.PI * angle / 180;
+                this.itemOptions.rotate.angle = Math.PI * angle / 180;
+                if (point !== undefined) {
+                    this.itemOptions.rotate.point = point;
+                }
             }
             return this;
         },
@@ -972,27 +980,28 @@
 
             //handle matrix changes
             //matrix changes
-            if (this.itemOptions.matrix !== undefined && this.itemOptions.matrix !== null) {
+            if (this.itemOptions.matrix !== null) {
                 var m = this.itemOptions.matrix;
                 ctx.setTransform(m.m11, m.m12, m.m21, m.m22, m.dx, m.dy);
             }
             //center of object
             var center = this.center(ctx);
             //translate
-            if (this.itemOptions.translate !== undefined && this.itemOptions.translate !== null) {
+            if (this.itemOptions.translate !== null) {
                 ctx.translate(this.itemOptions.translate.x, this.itemOptions.translate.y);
             }
-            // rotate round center of object
-            if (this.itemOptions.rotate !== undefined && this.itemOptions.rotate !== null) {
+            // rotate round center of object or specific point
+            if (this.itemOptions.rotate.angle !== null) {
+                var point = this.itemOptions.rotate.point || {};
                 //translate to the center of the object
-                ctx.translate(center.x, center.y);
+                ctx.translate(point.x || center.x, point.y || center.y);
                 //rotate
-                ctx.rotate(this.itemOptions.rotate);
+                ctx.rotate(this.itemOptions.rotate.angle);
                 //translate back
-                ctx.translate(-center.x, -center.y);
+                ctx.translate(-(point.x || center.x), -(point.y || center.y));
             }
             //scale form center of object
-            if (this.itemOptions.scale !== undefined && this.itemOptions.scale !== null) {
+            if (this.itemOptions.scale !== null) {
                 //translate to the center of the object
                 ctx.translate(center.x, center.y);
                 //scale
@@ -1028,8 +1037,8 @@
      * @return circle item instance
      */
     cajal.Circle = function(x, y, r) {
-        this.drawOptions = cajal.extend({}, cajal.defaultDrawOptions);
-        this.itemOptions = cajal.extend({}, cajal.defaultItemOptions);
+        this.drawOptions = cajal.extend(true, {}, cajal.defaultDrawOptions);
+        this.itemOptions = cajal.extend(true, {}, cajal.defaultItemOptions);
         this.radius = r;
         this.move(x, y);
     };
@@ -1075,8 +1084,8 @@
      * @return rectangle item instance
      */
     cajal.Rect = function(x, y, w, h, r) {
-        this.drawOptions = cajal.extend({}, cajal.defaultDrawOptions);
-        this.itemOptions = cajal.extend({}, cajal.defaultItemOptions);
+        this.drawOptions = cajal.extend(true, {}, cajal.defaultDrawOptions);
+        this.itemOptions = cajal.extend(true, {}, cajal.defaultItemOptions);
         this.rect = {
             w: w,
             h: h
@@ -1141,8 +1150,8 @@
      * @return path item instance
      */
     cajal.Path = function(x, y) {
-        this.drawOptions = cajal.extend({}, cajal.defaultDrawOptions);
-        this.itemOptions = cajal.extend({}, cajal.defaultItemOptions);
+        this.drawOptions = cajal.extend(true, {}, cajal.defaultDrawOptions);
+        this.itemOptions = cajal.extend(true, {}, cajal.defaultItemOptions);
         this.isClosed = false;
         this.offset = {
             x: x || 0,
@@ -1329,8 +1338,8 @@
      * @return text item instance
      */
     cajal.Text = function(x, y, text) {
-        this.drawOptions = cajal.extend({}, cajal.defaultDrawOptions);
-        this.itemOptions = cajal.extend({}, cajal.defaultItemOptions);
+        this.drawOptions = cajal.extend(true, {}, cajal.defaultDrawOptions);
+        this.itemOptions = cajal.extend(true, {}, cajal.defaultItemOptions);
         this.move(x, y);
         this.t = text;
     };
@@ -1413,8 +1422,8 @@
      * @return polygon item instance
      */
     cajal.Polygon = function(x, y, n, r) {
-        this.drawOptions = cajal.extend({}, cajal.defaultDrawOptions);
-        this.itemOptions = cajal.extend({}, cajal.defaultItemOptions);
+        this.drawOptions = cajal.extend(true, {}, cajal.defaultDrawOptions);
+        this.itemOptions = cajal.extend(true, {}, cajal.defaultItemOptions);
         this.pointStack = [];
         this.move(x, y);
         this.setPoints(n, r);
@@ -1478,8 +1487,8 @@
      * @return circle item instance
      */
     cajal.CircleSegment = function(x, y, r, angle) {
-        this.drawOptions = cajal.extend({}, cajal.defaultDrawOptions);
-        this.itemOptions = cajal.extend({}, cajal.defaultItemOptions);
+        this.drawOptions = cajal.extend(true, {}, cajal.defaultDrawOptions);
+        this.itemOptions = cajal.extend(true, {}, cajal.defaultItemOptions);
         this.p = {
             radius: r,
             angle: angle
@@ -1539,8 +1548,8 @@
      * @return circle item instance
      */
     cajal.CircleSector = function(x, y, r, angle) {
-        this.drawOptions = cajal.extend({}, cajal.defaultDrawOptions);
-        this.itemOptions = cajal.extend({}, cajal.defaultItemOptions);
+        this.drawOptions = cajal.extend(true, {}, cajal.defaultDrawOptions);
+        this.itemOptions = cajal.extend(true, {}, cajal.defaultItemOptions);
         this.p = {
             radius: r,
             angle: angle
