@@ -19,7 +19,7 @@
                 b = b.toString(16).replace('0','00');
 
                 return '#' + r + g + b;
-            }
+            };
 
             // Secondary hitmap canvas
             var map = cajalInstance.canvas.cloneNode(true);
@@ -28,18 +28,10 @@
             var width = parseInt(map.width,10);
             var height = parseInt(map.height,10);
 
-            //debug stuff to show hitMap
-            map.style.position = "absolute";
-            map.style.top = "10px";
-            map.style.left = "10px";
-            map.style.background = "white";
-            document.body.appendChild(map);
-
             //check if any item was hit
-            var imageData = cajalInstance.ctx.getImageData(0, 0, width, height).data;
-            var index = 4 * ( y * width + x );
+            var imageData = cajalInstance.ctx.getImageData(x, y, 1, 1).data;
 
-            if (imageData[index] === 0 && imageData[index+1] === 0 && imageData[index+2] === 0 && imageData[index+3] === 0) {
+            if (imageData[0] === 0 && imageData[1] === 0 && imageData[2] === 0 && imageData[3] === 0) {
                 return null;
             }
             //otherwise an item was found, so it's up now to check wich one
@@ -74,7 +66,7 @@
                 c.clear();
                 c.items = [];
                 // draw all items to the temp canvas
-                var restItems = cajalInstance.items.slice(start, end).reverse();
+                var restItems = cajalInstance.items.slice(start, end);
                 for (var j = 0; j < restItems.length; j++) {
                     c.add(restItems[j].item.clone().options({
                         fill: colors[j],
@@ -84,9 +76,9 @@
                 c.draw();
 
                 //analyze imageData
-                var tempImageData = c.ctx.getImageData(0, 0, width, height).data;
-                if (tempImageData[index+3] !== 0) {
-                    var detectedColor = convertToHex(tempImageData[index], tempImageData[index+1], tempImageData[index+2]);
+                var tempImageData = c.ctx.getImageData(x, y, 1, 1).data;
+                if (tempImageData[3] !== 0) {
+                    var detectedColor = convertToHex(tempImageData[0], tempImageData[1], tempImageData[2]);
                     for (var color in colors) {
                         if (colors[color] === detectedColor) {
                             return restItems[color].item;

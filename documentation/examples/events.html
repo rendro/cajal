@@ -27,12 +27,11 @@
 	<div id="content">
 		<h1>Events</h1>
 		<div class="inner">
-
 			<h2>Test</h2>
 			<canvas id="event" height="200" width="400" onclick="myfunc(event)"></canvas>
 			<script type="text/javascript">
 			var c = new cajal('event');
-            for (var p=0;p<20;p++) {
+            for (var p=0;p<200;p++) {
                 c.add(new cajal.Circle(Math.random()*c.canvas.width, Math.random()*c.canvas.height, 8).options({fill: '#000000', stroke:'#ff0000', width: 8}));
             }
             c.draw();
@@ -44,9 +43,13 @@
                 var y = e.clientY-c.canvas.offsetTop;
                 var item = cajal.getItemAtPoint(c,x,y);
                 if (item !== null) {
-                    c.animate(function () {
+                    item.options({
+                        fill: 'rgba('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
+                        stroke: 'rgba('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')'
+                    });
+                    /*c.animate(function () {
                         item.scaleBy(0.01,0.01);
-                    },'2s');
+                    },'2s');*/
                 }
                 c.draw();
             };
