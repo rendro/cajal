@@ -3,11 +3,53 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
 	<link rel="stylesheet" href="../style.css" type="text/css" />
+    <!--[if IE]><script type="text/javascript" src="excanvas.js"></script><![endif]-->
 	<script type="text/javascript" src="../../src/cajal.js"></script>
 	<script type="text/javascript" src="../../src/cajal.ease.js"></script>
 	<title>Examples: animations for cajal - canvas javascript library</title>
+    <script type="text/javascript">
+        function initCajal() {
+            var c1 = new cajal('anim1');
+			c1.add('rect', new cajal.Rect(20, 20, 50,50).options({fill: 'black', stroke:'blue', width: 10})).draw();
+			var myAnimation = function () {
+				this.get('rect').moveBy(0.5,0.5).rotateBy(1).scaleBy(0.01,0.002);
+			};
+
+            window.c1 = c1, window.myAnimation = myAnimation;
+
+            var c2 = new cajal('anim2');
+			var options = {fill: 'black', stroke:'blue', width: 4};
+			c2.add('rect', new cajal.Rect(20, 20, 15, 15).options(options))
+			  .add('rect2', new cajal.Rect(20, 50, 15, 15).options(options))
+			  .add('rect3', new cajal.Rect(20, 80, 15, 15).options(options))
+			  .add('rect4', new cajal.Rect(20, 110, 15, 15).options(options))
+			  .add('rect5', new cajal.Rect(20, 140, 15, 15).options(options))
+			  .draw();
+			var easing = function (frame, duration) {
+				this.get('rect').moveBy(300/duration,0);
+				this.get('rect2').moveBy(cajal.Ease.expInOut(300,frame,duration,2),0);
+				this.get('rect3').moveBy(cajal.Ease.expInOut(300,frame,duration,3),0);
+				this.get('rect4').moveBy(cajal.Ease.expInOut(300,frame,duration,4),0);
+				this.get('rect5').moveBy(cajal.Ease.expInOut(300,frame,duration,5),0);
+			};
+
+            window.c2 = c2, window.easing = easing;
+
+            var c3 = new cajal('anim3');
+			c3.add('item', new cajal.Polygon(200, 100, 5, 50).options({
+                fill  : 'black',
+                stroke: 'blue',
+                width : 4
+            })).draw();
+			var rotation = function () {
+				this.get('item').rotateBy(0.5);
+			};
+
+            window.c3 = c3, window.rotation = rotation;
+        };
+    </script>
 </head>
-<body>
+<body onload="initCajal();">
 <div id="wrapper">
 	<ol id="nav">
 		<li><a href="../index.html">Documentation</a></li>
@@ -30,13 +72,7 @@
 
 			<h2>Move, rotate and scale</h2>
 			<canvas id="anim1" height="200" width="400"></canvas>
-			<script type="text/javascript">
-			var c1 = new cajal('anim1');
-			c1.add('rect', new cajal.Rect(20, 20, 50,50).options({fill: 'black', stroke:'blue', width: 10})).draw();
-			var myAnimation = function () {
-				this.get('rect').moveBy(0.5,0.5).rotateBy(1).scaleBy(0.01,0.002);
-			}
-			</script><br/>
+			<br/>
 			<a href="#" onclick="c1.animate(myAnimation,'5s'); return false;">Start animation</a>
 			<h3>Code</h3>
 			<pre>
@@ -57,23 +93,7 @@
 
 			<h2>Use easing functions</h2>
 			<canvas id="anim2" height="200" width="400"></canvas>
-			<script type="text/javascript">
-			var c2 = new cajal('anim2');
-			var options = {fill: 'black', stroke:'blue', width: 4};
-			c2.add('rect', new cajal.Rect(20, 20, 15, 15).options(options))
-			  .add('rect2', new cajal.Rect(20, 50, 15, 15).options(options))
-			  .add('rect3', new cajal.Rect(20, 80, 15, 15).options(options))
-			  .add('rect4', new cajal.Rect(20, 110, 15, 15).options(options))
-			  .add('rect5', new cajal.Rect(20, 140, 15, 15).options(options))
-			  .draw();
-			var easing = function (frame, duration) {
-				this.get('rect').moveBy(300/duration,0);
-				this.get('rect2').moveBy(cajal.Ease.expInOut(300,frame,duration,2),0);
-				this.get('rect3').moveBy(cajal.Ease.expInOut(300,frame,duration,3),0);
-				this.get('rect4').moveBy(cajal.Ease.expInOut(300,frame,duration,4),0);
-				this.get('rect5').moveBy(cajal.Ease.expInOut(300,frame,duration,5),0);
-			}
-			</script><br/>
+			<br/>
 			<a href="#" onclick="c2.animate(easing,200); return false;">Start animation</a>
 			<h3>Code</h3>
 			<pre>
@@ -100,17 +120,7 @@ var easing = function (frame, duration) {
 
             <h2>Start and stop infinite animations</h2>
 			<canvas id="anim3" height="200" width="400"></canvas>
-			<script type="text/javascript">
-			var c3 = new cajal('anim3');
-			c3.add('item', new cajal.Polygon(200, 100, 5, 50).options({
-                fill  : 'black',
-                stroke: 'blue',
-                width : 4
-            })).draw();
-			var rotation = function () {
-				this.get('item').rotateBy(0.5);
-			}
-			</script><br/>
+			<br/>
 			<a href="#" onclick="c3.animate(rotation); return false;">Start animation</a> |
 			<a href="#" onclick="c3.stop(rotation); return false;">Stop animation</a>
 			<h3>Code</h3>

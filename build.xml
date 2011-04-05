@@ -1,6 +1,6 @@
 <project name="cajal" default="lint">
 
-    <property name="file" value="src/cajal.js"/>
+    <property name="file" value="src/cajal.js src/cajal.ease.js"/>
 
     <!--  lint (http://www.jslint.com/lint.html) -->
     <target name="lint">

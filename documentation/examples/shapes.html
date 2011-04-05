@@ -3,10 +3,35 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
 	<link rel="stylesheet" href="../style.css" type="text/css" />
+	<!--[if IE]><script type="text/javascript" src="excanvas.js"></script><![endif]-->
 	<script type="text/javascript" src="../../src/cajal.js"></script>
 	<title>Examples: basic shapes of cajal - canvas javascript library</title>
+    <script type="text/javascript">
+        function initCajal() {
+            var circle = new cajal('circle');
+	        circle.add(new cajal.Circle(200, 100, 50)).draw({fill: 'black', stroke:'blue', width: 10});
+
+            var rect = new cajal('rect');
+			rect.add(new cajal.Rect(50, 50, 60, 80)).add(new cajal.Rect(200,50,60,80,15)).draw({fill: 'black', stroke:'blue', width: 10});
+
+			var path = new cajal('path');
+			path.add(new cajal.Path(50,50).quadraticCurve(100,50,50,80).to(80,120).to(20,80).close()).draw({fill: 'black', stroke:'blue', width: 10});
+
+			var text = new cajal('text');
+			text.add(new cajal.Text(50, 150, "cajal")).draw({fill: 'black', font: '90px sans-serif'});
+
+			var poly = new cajal('poly');
+			poly.add(new cajal.Polygon(200, 100, 5, 80)).draw({fill: 'black', stroke: 'blue', width: 10});
+
+			var sec = new cajal('sector');
+			sec.add(new cajal.CircleSector(200, 100, 50, 120)).draw({fill: 'black', stroke: 'blue', width: 10});
+
+			var seg = new cajal('segment');
+			seg.add(new cajal.CircleSegment(200, 100, 50, 120).close()).draw({fill: 'black', stroke: 'blue', width: 10});
+        };
+    </script>
 </head>
-<body>
+<body onload="initCajal();">
 <div id="wrapper">
 	<ol id="nav">
 		<li><a href="../index.html">Documentation</a></li>
@@ -29,10 +54,6 @@
 
 			<h2>Circle</h2>
 			<canvas id="circle" height="200" width="400"></canvas>
-			<script type="text/javascript">
-			var circle = new cajal('circle');
-			circle.add(new cajal.Circle(200, 100, 50)).draw({fill: 'black', stroke:'blue', width: 10});
-			</script>
 			<h3>Code</h3>
 			<pre>
 &lt;canvas id="circle" height="200" width="400"&gt;&lt;/canvas&gt;
@@ -48,10 +69,6 @@
 
 			<h2>Rectangular (normal &amp; rounded corners)</h2>
 			<canvas id="rect" height="200" width="400"></canvas>
-			<script type="text/javascript">
-			var rect = new cajal('rect');
-			rect.add(new cajal.Rect(50, 50, 60, 80)).add(new cajal.Rect(200,50,60,80,15)).draw({fill: 'black', stroke:'blue', width: 10});
-			</script>
 			<h3>Code</h3>
 			<pre>
 &lt;canvas id="rect" height="200" width="400"&gt;&lt;/canvas&gt;
@@ -69,10 +86,6 @@
 
 			<h2>Path</h2>
 			<canvas id="path" height="200" width="400"></canvas>
-			<script type="text/javascript">
-			var path = new cajal('path');
-			path.add(new cajal.Path(50,50).quadraticCurve(100,50,50,80).to(80,120).to(20,80).close()).draw({fill: 'black', stroke:'blue', width: 10});
-			</script>
 			<h3>Code</h3>
 			<pre>
 &lt;canvas id="path" height="200" width="400"&gt;&lt;/canvas&gt;
@@ -91,10 +104,6 @@
 
 			<h2>Text</h2>
 			<canvas id="text" height="200" width="400"></canvas>
-			<script type="text/javascript">
-			var text = new cajal('text');
-			text.add(new cajal.Text(50, 150, "cajal")).draw({fill: 'black', font: '90px sans-serif'});
-			</script>
 			<h3>Code</h3>
 			<pre>
 &lt;canvas id="text" height="200" width="400"&gt;&lt;/canvas&gt;
@@ -110,10 +119,6 @@
 
 			<h2>Polygon</h2>
 			<canvas id="poly" height="200" width="400"></canvas>
-			<script type="text/javascript">
-			var poly = new cajal('poly');
-			poly.add(new cajal.Polygon(200, 100, 5, 80)).draw({fill: 'black', stroke: 'blue', width: 10});
-			</script>
 			<h3>Code</h3>
 			<pre>
 &lt;canvas id="poly" height="200" width="400"&gt;&lt;/canvas&gt;
@@ -130,10 +135,6 @@
             
             <h2>Circular Sector</h2>
 			<canvas id="sector" height="200" width="400"></canvas>
-			<script type="text/javascript">
-			var sec = new cajal('sector');
-			sec.add(new cajal.CircleSector(200, 100, 50, 120)).draw({fill: 'black', stroke: 'blue', width: 10});
-			</script>
 			<h3>Code</h3>
 			<pre>
 &lt;canvas id="sector" height="200" width="400"&gt;&lt;/canvas&gt;
@@ -146,10 +147,6 @@ sec.add(new cajal.CircleSector(200, 100, 50, 120))
 
             <h2>Circular Segment</h2>
 			<canvas id="segment" height="200" width="400"></canvas>
-			<script type="text/javascript">
-			var seg = new cajal('segment');
-			seg.add(new cajal.CircleSegment(200, 100, 50, 120).close()).draw({fill: 'black', stroke: 'blue', width: 10});
-			</script>
 			<h3>Code</h3>
 			<pre>
 &lt;canvas id="segment" height="200" width="400"&gt;&lt;/canvas&gt;
