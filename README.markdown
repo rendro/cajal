@@ -134,8 +134,8 @@ There are a bunch of methods that you can call on each item object to modify it.
 * `show()`: Show the item if it was hidden
 * `changeMatrix(m11, m12, m21, m22, dy, dx)`: Change the matrix of the canvas element only for this item. The current matrix will be multiplied with your matrix (scaling, rotation and moving can be done in one step if you know the basics of matrix stuff)
 * `setMatrix(m11, m12, m21, m22, dy, dx)`: Set the matrix of the canvas element only for this item. The current matrix will be overwritten with your matrix (scaling, rotation and moving can be done in one step if you know the basics of matrix stuff)
-* `rotate(angle)`: Rotate the item to the given angle (in degrees)
-* `rotateBy(angle)`: Rotate the item by a given angle (in degrees)
+* `rotate(angle, [point])`: Rotate the item to the given angle (in degrees). If you want the item not to rotate around its center but around a specific point, can pass a literal object with x and y as the points parameter. (`{x:23, y: 56}` will rotate around the point (23|65) )
+* `rotateBy(angle, [point])`: Rotate the item by a given angle (in degrees). If you want the item not to rotate around its center but around a specific point, can pass a literal object with x and y as the points parameter. (`{x:23, y: 56}` will rotate around the point (23|65) )
 * `move(x, y)`: Move the item to the given position
 * `moveBy(dx, dy)`: Move the item by the given offset
 * `scale(dx, dy)`: Scale the item to a given size `item.scale(1.2, 1.2)` will scale your item to 120% of its _initial_ size
