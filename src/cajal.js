@@ -143,15 +143,6 @@
             for (key in obj) {}
 
             return key === undefined || Object.prototype.hasOwnProperty.call(obj, key);
-        },
-
-        uniqid: function () {
-            var chars = '0123456789abcdefghijklmnopqurstuvwxyzABCDEFGHIJKLMNOPQURSTUVWXYZ';
-            var id = '';
-            for (var i=0; i<32; i++) {
-                id += chars.substr(Math.floor(Math.random()*62),1);
-            }
-            return id;
         }
     });
 

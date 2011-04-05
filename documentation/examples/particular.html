@@ -18,7 +18,7 @@
                 //add new Particles
                 if (f < t/10) {
                     for (var count=1; count<=60; count++) {
-                        this.add('particle_'+ cajal.uniqid(), new cajal.Circle(0,0,Math.round(Math.random()*7)).move(c.canvas.width/2,c.canvas.height/2).options({
+                        this.add(new cajal.Circle(0,0,Math.round(Math.random()*7)).move(c.canvas.width/2,c.canvas.height/2).options({
                             fill: 'rgba('+Math.round(Math.random()*255)+','+Math.round(Math.random()*50)+','+Math.round(Math.random()*255)+',' + Math.random() + ')',
                             speed: {
                                 dx: ((Math.random()*2) - 1)*Math.random()*10,
@@ -31,25 +31,23 @@
                 //animate Particles
                 if (this.items.length > 0) {
                     for (i in this.items) {
-                        if (this.items[i].itemId.match(/particle_([a-zA-Z0-9]{32})/g)) {
-                            //move particle
-                            this.items[i].item.moveBy(this.items[i].item.drawOptions.speed.dx, this.items[i].item.drawOptions.speed.dy);
-                            //raise livecycle
-                            this.items[i].item.drawOptions.livecycle++;
+                        //move particle
+                        this.items[i].item.moveBy(this.items[i].item.drawOptions.speed.dx, this.items[i].item.drawOptions.speed.dy);
+                        //raise livecycle
+                        this.items[i].item.drawOptions.livecycle++;
 
-                            //reduce speed on x-axis
-                            this.items[i].item.drawOptions.speed.dx *= 0.99;
-                            //gravity on y axis
-                            this.items[i].item.drawOptions.speed.dy += 0.1;
+                        //reduce speed on x-axis
+                        this.items[i].item.drawOptions.speed.dx *= 0.99;
+                        //gravity on y axis
+                        this.items[i].item.drawOptions.speed.dy += 0.1;
 
-                            //animate opcity in the last 3/4 of animation
-                            if (this.items[i].item.drawOptions.livecycle > t/4) {
-                                this.items[i].item.drawOptions.fill = this.items[i].item.drawOptions.fill.replace(/,([0-9\.]+)\)$/g,',' + Math.random() + ')');
-                            }
-                            //remove particles after 9/10 of animation
-                            if (this.items[i].item.drawOptions.livecycle >= (t-t/10)) {
-                                this.items.splice(i,1);
-                            }
+                        //animate opcity in the last 3/4 of animation
+                        if (this.items[i].item.drawOptions.livecycle > t/4) {
+                            this.items[i].item.drawOptions.fill = this.items[i].item.drawOptions.fill.replace(/,([0-9\.]+)\)$/g,',' + Math.random() + ')');
+                        }
+                        //remove particles after 9/10 of animation
+                        if (this.items[i].item.drawOptions.livecycle >= (t-t/10)) {
+                            this.items.splice(i,1);
                         }
                     }
                 } else {
@@ -99,7 +97,7 @@ var emitter = function (f,t) {
     //add new Particles
     if (f < t/10) {
         for (var count=1; count<=60; count++) {
-            this.add('particle_'+ cajal.uniqid(), new cajal.Circle(0,0,Math.round(Math.random()*7)).move(c.canvas.width/2,c.canvas.height/2).options({
+            this.add(new cajal.Circle(0,0,Math.round(Math.random()*7)).move(c.canvas.width/2,c.canvas.height/2).options({
                 fill: 'rgba('+Math.round(Math.random()*255)+','+Math.round(Math.random()*50)+','+Math.round(Math.random()*255)+',' + Math.random() + ')',
                 speed: {
                     dx: ((Math.random()*2) - 1)*Math.random()*10,
@@ -112,25 +110,23 @@ var emitter = function (f,t) {
     //animate Particles
     if (this.items.length > 0) {
         for (i in this.items) {
-            if (this.items[i].itemId.match(/particle_([a-zA-Z0-9]{32})/g)) {
-                //move particle
-                this.items[i].item.moveBy(this.items[i].item.drawOptions.speed.dx, this.items[i].item.drawOptions.speed.dy);
-                //raise livecycle
-                this.items[i].item.drawOptions.livecycle++;
+            //move particle
+            this.items[i].item.moveBy(this.items[i].item.drawOptions.speed.dx, this.items[i].item.drawOptions.speed.dy);
+            //raise livecycle
+            this.items[i].item.drawOptions.livecycle++;
 
-                //reduce speed on x-axis
-                this.items[i].item.drawOptions.speed.dx *= 0.99;
-                //gravity on y axis
-                this.items[i].item.drawOptions.speed.dy += 0.1;
+            //reduce speed on x-axis
+            this.items[i].item.drawOptions.speed.dx *= 0.99;
+            //gravity on y axis
+            this.items[i].item.drawOptions.speed.dy += 0.1;
 
-                //animate opcity in the last 3/4 of animation
-                if (this.items[i].item.drawOptions.livecycle > t/4) {
-                    this.items[i].item.drawOptions.fill = this.items[i].item.drawOptions.fill.replace(/,([0-9\.]+)\)$/g,',' + Math.random() + ')');
-                }
-                //remove particles after 9/10 of animation
-                if (this.items[i].item.drawOptions.livecycle >= (t-t/10)) {
-                    this.items.splice(i,1);
-                }
+            //animate opcity in the last 3/4 of animation
+            if (this.items[i].item.drawOptions.livecycle > t/4) {
+                this.items[i].item.drawOptions.fill = this.items[i].item.drawOptions.fill.replace(/,([0-9\.]+)\)$/g,',' + Math.random() + ')');
+            }
+            //remove particles after 9/10 of animation
+            if (this.items[i].item.drawOptions.livecycle >= (t-t/10)) {
+                this.items.splice(i,1);
             }
         }
     } else {
