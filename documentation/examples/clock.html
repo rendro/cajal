@@ -11,6 +11,16 @@
         function initCajal() {
             var c = new cajal('canvas',{loopFps: 10});
 
+            var thetime = function (){
+                var date = new Date();
+                var ret = date.getHours() < 10 ? '0' + date.getHours() : date.getHours();
+                ret += ':';
+                ret += date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes();;
+                ret += ':';
+                ret += date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();;
+                return ret;
+            };
+
             var animHour = function (f,t) {
                 c.get('h').p.angle += cajal.Ease.expInOut(30,f,t,2);
                 if (f===t) {
@@ -42,6 +52,7 @@
                     c.get('sec').p.angle = 6 * date.getSeconds();
                     this.animate(animMin,'2s');
                 }
+                c.get('time').text(thetime());
             }
 
             var init = function () {
@@ -74,7 +85,14 @@
                     shadow: 'rgba(255,255,255,0.3)',
                     shadowBlur: 3
                 });
-                c.add('sec',sec).add('min',min).add('h',h).add('ap',text);
+                var time = new cajal.Text(center.x-50, center.y+50, thetime()).options({
+                    font: 'bold 25px "Hevetica Neue", Helvetica, Arial, sans-serif',
+                    textAlign: 'center',
+                    fill: 'rgba(0,0,0,0.7)',
+                    shadow: 'rgba(255,255,255,0.5)',
+                    shadowBlur: 3
+                });
+                c.add('sec',sec).add('min',min).add('h',h).add('ap',text).add('time',time);
             }
             init();
             c.animate(animSec);
@@ -110,6 +128,16 @@
 &lt;script type="text/javascript"&gt;
 var c = new cajal('canvas',{loopFps: 10});
 
+var thetime = function (){
+    var date = new Date();
+    var ret = date.getHours() < 10 ? '0' + date.getHours() : date.getHours();
+    ret += ':';
+    ret += date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes();;
+    ret += ':';
+    ret += date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();;
+    return ret;
+};
+
 var animHour = function (f,t) {
     c.get('h').p.angle += cajal.Ease.expInOut(30,f,t,2);
     if (f===t) {
@@ -141,6 +169,7 @@ var animSec = function (f,t) {
         c.get('sec').p.angle = 6 * date.getSeconds();
         this.animate(animMin,'2s');
     }
+    c.get('time').text(thetime());
 }
 
 var init = function () {
@@ -173,7 +202,14 @@ var init = function () {
         shadow: 'rgba(255,255,255,0.3)',
         shadowBlur: 3
     });
-    c.add('sec',sec).add('min',min).add('h',h).add('ap',text);
+    var time = new cajal.Text(center.x-50, center.y+50, thetime()).options({
+        font: 'bold 25px "Hevetica Neue", Helvetica, Arial, sans-serif',
+        textAlign: 'center',
+        fill: 'rgba(0,0,0,0.7)',
+        shadow: 'rgba(255,255,255,0.5)',
+        shadowBlur: 3
+    });
+    c.add('sec',sec).add('min',min).add('h',h).add('ap',text).add('time',time);
 }
 init();
 c.animate(animSec);
