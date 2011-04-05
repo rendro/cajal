@@ -489,6 +489,97 @@
                 clearInterval(this.loopInterval);
                 this.loopInterval = null;
             }
+        },
+
+        /**
+         * This algorithm returns the top item at position x, y or null
+         * 
+         * At first it is checked, if any item was hit. In that case, the algorithm loops through all items
+         * checking 8 items per loop by drawing them on a hidden canvas in 8 different colors. Retrieving
+         * the color at position x, y tells us not only if an item was found, but exacly wich one.
+         */
+        getItemAtPoint: function (cajalInstance, x, y) {
+
+            var convertToHex = function (r, g, b)
+            {
+                r /= 255;
+                r = Math.round(r) * 255;
+                r = r.toString(16).replace('0','00');
+
+                g /= 255;
+                g = Math.round(g) * 255;
+                g = g.toString(16).replace('0','00');
+
+                b /= 255;
+                b = Math.round(b) * 255;
+                b = b.toString(16).replace('0','00');
+
+                return '#' + r + g + b;
+            };
+
+            //create hitmap canvas
+            var map = cajalInstance.canvas.cloneNode(true);
+
+            //check if any item was hit
+            var imageData = cajalInstance.ctx.getImageData(x, y, 1, 1).data;
+            
+            if (imageData[0] === 0 && imageData[1] === 0 && imageData[2] === 0 && imageData[3] === 0) {
+                return null;
+            }
+            //otherwise an item was found, so we have to check which one
+
+            //create cajal instance to draw the hitMap
+            var c = new cajal(map);
+
+            //the colors to fill the regions with
+            var colors = [
+                '#ff0000',
+                '#00ff00',
+                '#0000ff',
+                '#ffff00',
+                '#ff00ff',
+                '#00ffff',
+                '#000000',
+                '#ffffff'
+            ];
+
+            //loop through blocks of 8 items
+            for (var i = cajalInstance.items.length-1; i >= 0 ; i-=8) {
+                //determine start and end for slice function
+                var start, end;
+                if (i <= 8) {
+                    start = 0;
+                    end = i + 1;
+                } else {
+                    start = i - 7;
+                    end = i + 1;
+                }
+                //clear temp canvas
+                c.clear();
+                //empty items array
+                c.items = [];
+                // draw all 8 items of the block to the temp canvas using the 8 different colors for stroke and fill
+                var restItems = cajalInstance.items.slice(start, end);
+                for (var j = 0; j < restItems.length; j++) {
+                    c.add(restItems[j].item.clone().options({
+                        fill: colors[j],
+                        stroke: colors[j]
+                    }));
+                }
+                c.draw();
+
+                //analyze imageData
+                var tempImageData = c.ctx.getImageData(x, y, 1, 1).data;
+                if (tempImageData[3] !== 0) {
+                    var detectedColor = convertToHex(tempImageData[0], tempImageData[1], tempImageData[2]);
+                    for (var color in colors) {
+                        if (colors[color] === detectedColor) {
+                            return restItems[color].item;
+                        }
+                    }
+                }
+            }
+            return null;
         }
 
     });
