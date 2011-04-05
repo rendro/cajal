@@ -488,6 +488,10 @@
          * At first it is checked, if any item was hit. In that case, the algorithm loops through all items
          * checking 8 items per loop by drawing them on a hidden canvas in 8 different colors. Retrieving
          * the color at position x, y tells us not only if an item was found, but exacly wich one.
+         * @param cajalInstance the cajal instance to look for items
+         * @param x x coordinate of the event
+         * @param y y coordinate of the event
+         * @return item instance or null
          */
         getItemAtPoint: function (cajalInstance, x, y) {
 
