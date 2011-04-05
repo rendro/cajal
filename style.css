@@ -1,0 +1,180 @@
+body {
+    background: #444;
+    color: #fff;
+    font-family: Arial,Helvetica,sans-serif;
+    margin: 0;
+    padding: 20px 0;
+    text-rendering: optimizeLegibility
+}
+
+#head {
+    width: 720px;
+    height: 85px;
+    margin: 0 auto 10px auto;
+}
+
+#head .buttons {
+    float: right;
+    margin-top: 30px;
+}
+
+#content {
+    width: 700px;
+    min-height: 300px;
+    margin: 0 auto;
+    background: #555;
+    padding: 20px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+}
+
+h1, h2 {
+    color: #99d150;
+    margin: 0;
+}
+
+pre {
+    margin: 0 0 20px 0;
+    padding: 0;
+    background: #666;
+    padding: 20px;
+    margin-left: -20px;
+    margin-right: 20px;
+    -webkit-border-top-right-radius: 10px;
+    -webkit-border-bottom-right-radius: 10px;
+    -moz-border-radius-topright: 10px;
+    -moz-border-radius-bottomright: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+p {
+    margin: 15px 0;
+}
+
+a {
+    color: #99ccff;
+}
+
+.button {
+    background-color: #0088C0 !important;
+    color: #000000;
+    font-family: "Lucida Grande",sans-serif !important;
+    font-size: 0.8em !important;
+    padding: 6px 14px 7px;
+    color: #fff;
+    vertical-align: middle;
+    text-decoration: none;
+
+    background-image: -moz-linear-gradient(center top , rgba(255, 255, 255, 0.2), rgba(150, 150, 150, 0.2), transparent);
+    border-radius: 5px 5px 5px 5px !important;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5) !important;
+    text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.25), -2px 0 1px rgba(0, 0, 0, 0.25);
+}
+
+.button:focus,
+.button:hover {
+    background-image: -moz-linear-gradient(center top , rgba(255, 255, 255, 0.4), rgba(150, 150, 150, 0.3), transparent);
+}
+
+#dotsunited-tab a{background:transparent url("http://labs.dotsunited.de/static/img/dotsunited-tab.png") 0 0 no-repeat!important;display:block!important;height:127px!important;width:43px!important;margin:0!important;padding:0!important;position:fixed!important;text-indent:-9000px;top:40%!important;right:0;z-index:100001!important;}
+
+
+pre code {
+  padding: 0 !important;
+}
+
+pre .keyword,
+pre .literal,
+pre .change,
+pre .winutils,
+pre .flow,
+pre .lisp .title,
+pre .tex .special {
+  color: white;
+}
+
+pre code,
+pre .ruby .subst {
+  color: #DDD;
+}
+
+pre .string,
+pre .function .title,
+pre .class .title,
+pre .ini .title,
+pre .tag .value,
+pre .css .rules .value,
+pre .preprocessor,
+pre .ruby .symbol,
+pre .ruby .symbol .string,
+pre .ruby .symbol .keyword,
+pre .ruby .symbol .keymethods,
+pre .ruby .instancevar,
+pre .ruby .class .parent,
+pre .built_in,
+pre .sql .aggregate,
+pre .django .template_tag,
+pre .django .variable,
+pre .smalltalk .class,
+pre .javadoc,
+pre .ruby .string,
+pre .django .filter .argument,
+pre .smalltalk .localvars,
+pre .smalltalk .array,
+pre .attr_selector,
+pre .pseudo,
+pre .addition,
+pre .stream,
+pre .envvar,
+pre .apache .tag,
+pre .apache .cbracket,
+pre .tex .command {
+  color: #99d150;
+}
+
+pre .comment,
+pre .java .annotation,
+pre .python .decorator,
+pre .template_comment,
+pre .pi,
+pre .doctype,
+pre .deletion,
+pre .shebang,
+pre .apache .sqbracket,
+pre .tex .formula {
+  color: #8f8f8f;
+}
+
+pre .keyword,
+pre .literal,
+pre .css .id,
+pre .phpdoc,
+pre .function .title,
+pre .class .title,
+pre .vbscript .built_in,
+pre .sql .aggregate,
+pre .rsl .built_in,
+pre .smalltalk .class,
+pre .xml .tag .title,
+pre .diff .header,
+pre .chunk,
+pre .winutils,
+pre .bash .variable,
+pre .lisp .title,
+pre .apache .tag,
+pre .tex .special {
+  color: #99ccff;
+}
+
+pre .number {
+  color: #D88;
+}
+
+pre .html .css,
+pre .html .javascript,
+pre .html .vbscript,
+pre .tex .formula {
+  opacity: 0.8;
+}
