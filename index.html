@@ -171,7 +171,7 @@
         
         <h3>Graph</h3>
         <p>Hover over the data points to see the value in a pop up</p>
-        <canvas id="graph" width="500" height="200" onmousemove="graph_toolTip(event)"></canvas>
+        <canvas id="graph" width="500" height="100" onmousemove="graph_toolTip(event)"></canvas>
         <script type="text/javascript">
             var graph = new cajal('graph');
             var graph_toolTip = function(e) {
@@ -197,27 +197,14 @@
                     }
                 }
             };
-            var data = [
-                { x: 0, y: graph.canvas.height/2 + (0.5-Math.random()) * graph.canvas.height },
-                { x: 1, y: graph.canvas.height/2 + (0.5-Math.random()) * graph.canvas.height },
-                { x: 2, y: graph.canvas.height/2 + (0.5-Math.random()) * graph.canvas.height },
-                { x: 3, y: graph.canvas.height/2 + (0.5-Math.random()) * graph.canvas.height },
-                { x: 4, y: graph.canvas.height/2 + (0.5-Math.random()) * graph.canvas.height },
-                { x: 5, y: graph.canvas.height/2 + (0.5-Math.random()) * graph.canvas.height },
-                { x: 6, y: graph.canvas.height/2 + (0.5-Math.random()) * graph.canvas.height },
-                { x: 7, y: graph.canvas.height/2 + (0.5-Math.random()) * graph.canvas.height },
-                { x: 8, y: graph.canvas.height/2 + (0.5-Math.random()) * graph.canvas.height },
-                { x: 9, y: graph.canvas.height/2 + (0.5-Math.random()) * graph.canvas.height },
-                { x: 10, y: graph.canvas.height/2 + (0.5-Math.random()) * graph.canvas.height },
-                { x: 11, y: graph.canvas.height/2 + (0.5-Math.random()) * graph.canvas.height },
-                { x: 12, y: graph.canvas.height/2 + (0.5-Math.random()) * graph.canvas.height },
-                { x: 13, y: graph.canvas.height/2 + (0.5-Math.random()) * graph.canvas.height },
-                { x: 14, y: graph.canvas.height/2 + (0.5-Math.random()) * graph.canvas.height },
-            ];
+            var data = [];
+            for (var i=0;i<=20;i++) {
+                data.push({ x: i, y: graph.canvas.height/2 + (0.5-Math.random()) * graph.canvas.height });
+            }
             
             var lastPoint = null,
                 dx = (graph.canvas.width-20) / (data.length - 1),
-                dy = (graph.canvas.height-20)/ 500,
+                dy = (graph.canvas.height-20)/ graph.canvas.height,
                 lineStyle = {
                     stroke: '#0088C0'
                 };
