@@ -95,6 +95,81 @@
         <h1>cajal</h1>
         <p>cajal is a javascript library to draw and animate shapes on the HTML5 canvas element.</p>
 
+        <h2>Why you should use cajal?</h2>
+        <p>cajal provides object oriantated functionality to draw and animate shapes on the canvas element. You can easily reuse animations or complex shape-objects in other projects, as every shape can be assinged to as many canvas elements on your site as you like.</p>
+        <h3>Write less code</h3>
+        <p>Due to easy implementation and chainable method calls you can create shapes in 2 to 3 lines of code. If you ever tried out the native canvas API, you know that you need at least three times more code and you can't handle it flexibly.</p>
+        <h3>cajal never forgets</h3>
+        <p>You can fetch and manipulate every element that you already drew to the canvas. Plus, you have a hit algorithm that returns the drawn element located at specific coordinates of your canvas to handle klick events and interaction with the canvas.</p>
+        
+        <h2>Examples</h2>
+        <h3>Particle explosion</h3>
+        <p>Click anywhere inside the black canvas area to create a particle explosion</p>
+        <canvas id="particle-explosion" width="700" height="350" style="background:black;margin-bottom:2em;" onclick="particleCanvas.animate(emitter(event),100);"></canvas>
+        <script type="text/javascript">
+            var particleCanvas = new cajal('particle-explosion', {
+                globalCompositeOperation: 'lighter',
+                globalAlpha: 0.8
+            });
+            
+            var emitter = function(e) {
+                var particles = [];
+                
+                var click = {
+                    x: (e.pageX || e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft) - e.target.offsetLeft,
+                    y: (e.pageY || e.clientY + document.body.scrollTop + document.documentElement.scrollTop)  -e.target.offsetTop
+                };
+                
+                
+                return function(f,t) {
+                    
+                    if (f < (t*0.05)) {
+                        for (var count=0; count<=120; count++) {
+                            var particle = {
+                                item: new cajal.Circle(click.x, click.y, Math.round(Math.random()*7)).options({
+                                    fill: 'rgba('+Math.round(Math.random()*255)+','+Math.round(Math.random()*50)+','+Math.round(Math.random()*255)+',' + Math.random() + ')'
+                                }),
+                                speed: {
+                                    dx: ((Math.random()*2) - 1)*Math.random()*10,
+                                    dy: ((Math.random()*2) - 1)*Math.random()*10
+                                },
+                                livecycle: 0
+                            };
+                            particles.push(particle);
+                            this.add(particle.item);
+                        }
+                    }
+                    
+                    if (particles.length > 0) {
+                        for (var i in particles) {
+                            var p = particles[i];
+                            p.item.moveBy(p.speed.dx, p.speed.dy);
+                            
+                            p.speed.dx *= 0.99;
+                            p.speed.dy += 0.1;
+                            
+                            p.livecycle++;
+                            
+                            //animate opcity in the last 3/4 of animation
+                            if (p.livecycle > t/4) {
+                                p.item.drawOptions.fill = p.item.drawOptions.fill.replace(/,([0-9\.]+)\)$/g,',' + Math.random() + ')');
+                                p.item.scaleBy(-0.01,-0.01);
+                            }
+                            
+                            if (p.livecycle >= (t*0.85)) {
+                                this.remove(p.item);
+                                particles.splice(i,1);
+                            }
+                            
+                        }
+                    }
+                };
+            };
+        </script>
+        
+        <h3>Graph</h3>
+        <canvas id="graph" width="700" height="300" ></canvas>
+
         <h2>Installation</h2>
 
         <p>Download the source and include the cajal.js file in the head section of your html document:</p>
