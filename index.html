@@ -90,6 +90,8 @@
     <div id="head">
         <canvas id="cajal" width="160" height="85" onclick="animate();"></canvas>
         <div class="buttons">
+            <a class="button" href="index.html">Home</a>
+            <a class="button" href="documentation.html">Documentation</a>
             <a class="button" href="https://github.com/dotsunited/cajal/tarball/master">Download Version 0.1</a>
         </div>
     </div>
@@ -98,7 +100,7 @@
         <p>cajal is a javascript library to draw and animate shapes on the HTML5 canvas element.</p>
 
         <h2>Why you should use cajal?</h2>
-        <p>cajal provides object oriantated functionality to draw and animate shapes on the canvas element. You can easily reuse animations or complex shape-objects in other projects, as every shape can be assinged to as many canvas elements on your site as you like.</p>
+        <p>cajal provides object oriented functionality to draw and animate shapes on the canvas element. You can easily reuse animations or complex shape-objects in other projects, as every shape can be assinged to as many canvas elements on your site as you like.</p>
         <h3>Write less code</h3>
         <p>Due to easy implementation and chainable method calls you can create shapes in 2 to 3 lines of code. If you ever tried out the native canvas API, you know that you need at least three times more code and you can't handle it flexibly.</p>
         <h3>cajal never forgets</h3>
@@ -232,6 +234,99 @@
             }
             
             graph.draw();
+
+        </script>
+        
+        <h3>Circular clock</h3>
+        <canvas id="clock" width="700" height="120"></canvas>
+        <script type="text/javascript">
+            var clock = new cajal('clock',{loopFps: 10});
+            
+            var thetime = function (){
+                var date = new Date();
+                var ret = date.getHours() < 10 ? '0' + date.getHours() : date.getHours();
+                ret += ':';
+                ret += date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes();;
+                ret += ':';
+                ret += date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();;
+                return ret;
+            };
+            
+            var animHour = function (f,t) {
+                clock.get('h').p.angle += cajal.Ease.expInOut(30,f,t,2);
+                if (f===t) {
+                    var date = new Date();
+                    clock.get('h').p.angle = 30 * date.getHours();
+                    var ap = 'AM';
+                    if (date.getHours() >= 12) {
+                        ap = 'PM';
+                    }
+                    clock.get('ap').text(ap);
+                }
+            }
+
+            var animMin = function (f,t) {
+                clock.get('min').p.angle += cajal.Ease.expInOut(6,f,t,2);
+                if (f===t) {
+                    var date = new Date();
+                    clock.get('min').p.angle = 6 * date.getMinutes();
+                    if (clock.get('min').p.angle === 0) {
+                        this.animate(animHour,'2s');
+                    }
+                }
+            }
+
+            var animSec = function (f,t) {
+                clock.get('sec').p.angle += 6/clock.options.loopFps;
+                if (clock.get('sec').p.angle >= 360) {
+                    var date = new Date();
+                    clock.get('sec').p.angle = 6 * date.getSeconds();
+                    this.animate(animMin,'2s');
+                }
+                clock.get('time').text(thetime());
+            }
+            
+            var init = function () {
+                var center = {
+                    x: clock.canvas.width/2,
+                    y: clock.canvas.height/2
+                }
+                var date = new Date();
+
+                var drawOptions = {
+                    width: 2,
+                    stroke:'rgba(255,255,255,0.7)',
+                    shadow: 'rgba(255,255,255,0.5)',
+                    shadowBlur: 3
+                };
+
+                var sec = new cajal.CircleSegment(center.x, center.y, 29, 6 * date.getSeconds()).options(drawOptions).rotate(-90).scale(0.6,3);
+                var min = new cajal.CircleSegment(center.x, center.y, 22, 6 * date.getMinutes()).options(drawOptions).rotate(-90).scale(0.6,3);
+                var h = new cajal.CircleSegment(center.x, center.y, 15, 30 * date.getHours()).options(drawOptions).rotate(-90).scale(0.6,3);
+
+                var ap = 'AM';
+                if (date.getHours() >= 12) {
+                    ap = 'PM';
+                }
+
+                var text = new cajal.Text(center.x-7, center.y+3, ap).options({
+                    font: 'bold 10px "Hevetica Neue", Helvetica, Arial, sans-serif',
+                    textAlign: 'center',
+                    fill: 'rgba(255,255,255,0.5)',
+                    shadow: 'rgba(255,255,255,0.3)',
+                    shadowBlur: 3
+                });
+                var time = new cajal.Text(center.x-50, center.y+50, thetime()).options({
+                    font: 'bold 25px "Hevetica Neue", Helvetica, Arial, sans-serif',
+                    textAlign: 'center',
+                    fill: 'rgba(0,0,0,0.7)',
+                    shadow: 'rgba(255,255,255,0.5)',
+                    shadowBlur: 3
+                });
+                clock.add('sec',sec).add('min',min).add('h',h).add('ap',text).add('time',time);
+            }
+            init();
+            clock.animate(animSec);
             
         </script>
         
