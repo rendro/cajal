@@ -4,7 +4,6 @@
 	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
 	<link rel="stylesheet" href="style.css" type="text/css" />
 	<script type="text/javascript" src="../src/cajal.js"></script>
-	<script type="text/javascript" src="../src/cajal.hit-algorithm.js"></script>
 	<title>Examples: events - canvas javascript library</title>
 </head>
 <body>
@@ -39,7 +38,7 @@
             var myfunc = function (e) {
                 var x = e.clientX-c.canvas.offsetLeft;
                 var y = e.clientY-c.canvas.offsetTop;
-                var item = cajal.getItemAtPoint(c,x,y);
+                var item = c.getItemAtPoint(c,x,y);
                 if (item !== null) {
                     item.options({
                         fill: 'rgba('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',
