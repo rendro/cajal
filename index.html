@@ -171,7 +171,7 @@
         
         <h3>Graph</h3>
         <p>Hover over the data points to see the value in a pop up</p>
-        <canvas id="graph" width="500" height="100" onmousemove="graph_toolTip(event)"></canvas>
+        <canvas id="graph" width="700" height="100" onmousemove="graph_toolTip(event)"></canvas>
         <script type="text/javascript">
             var graph = new cajal('graph');
             var graph_toolTip = function(e) {
@@ -198,7 +198,7 @@
                 }
             };
             var data = [];
-            for (var i=0;i<=20;i++) {
+            for (var i=0;i<=30;i++) {
                 data.push({ x: i, y: graph.canvas.height/2 + (0.5-Math.random()) * graph.canvas.height });
             }
             
