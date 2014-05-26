@@ -5,31 +5,35 @@ cajal is a javascript library to draw and animate shapes on the HTML5 canvas ele
 ## Installation ##
 Download the source and include the cajal.js file in the head section of your html document:
 
-    <script type="text/javascript" src="cajal.js"></script>
-
+```html
+<script type="text/javascript" src="cajal.js"></script>
+```
 
 ## Getting an instance of cajal ##
 To create a instance of the cajal library call the cajal constructor and pass the id attribute or the DOM-object of your canvas element as an argument
 
-    <canvas id="mycanvas" width="800" height="600"></canvas>
-    <script type="text/javascript">
-        //passing the element id attribute
-        var c = new cajal('mycanvas');
-        //in combination with jQuery
-        var c2 = new cajal($('#mycanvas').get(0));
-    </script>
-
+```html
+<canvas id="mycanvas" width="800" height="600"></canvas>
+<script type="text/javascript">
+	//passing the element id attribute
+	var c = new cajal('mycanvas');
+	//in combination with jQuery
+	var c2 = new cajal($('#mycanvas').get(0));
+	</script>
+```
 
 ### Global settings ###
 There are a few options you can set globally for the cajal instance by passing a literal object as a second parameter to the cajal constructor.
 
-    <canvas id="mycanvas" width="800" height="600"></canvas>
-    <script type="text/javascript">
-        var c = new cajal('mycanvas', {
-            globalAlpha: 0.5,
-            globalCompositeOperation: 'lighter',
-        });
-    </script>
+```html
+<canvas id="mycanvas" width="800" height="600"></canvas>
+<script type="text/javascript">
+	var c = new cajal('mycanvas', {
+		globalAlpha: 0.5,
+		globalCompositeOperation: 'lighter',
+	});
+</script>
+```
 
 This literal object can have the following variables:
 
@@ -45,8 +49,9 @@ Each shape is an object that is independet from the canvas it is later drawn on.
 ### Circle ###
 You can create a circle by calling the circle constructor `cajal.Circle(xPos, yPos, radius)`. The arguments are the x and y position of the circle and the radius.
 
-    var circle = new cajal.Circle(50, 80, 30);
-
+```javascript
+var circle = new cajal.Circle(50, 80, 30);
+```
 
 #### Item specific methods ####
 * `center()`: The return value is a literal object with the x and the y coordinates of the circle's center. (For example: `{ x: 50, y: 80}`)
@@ -55,12 +60,13 @@ You can create a circle by calling the circle constructor `cajal.Circle(xPos, yP
 ### Rectangular ###
 Create a rectangular using `cajal.Rect(xPos, yPos, width, height, [radius])`. The parameter `radius` is optional for creating a rectangular with rounded corners.
 
-    //normal rectangular
-    var rect = new cajal.Rect(50, 80, 100, 120);
+```javascript
+//normal rectangular
+var rect = new cajal.Rect(50, 80, 100, 120);
 
-    //rounded corners
-    var roundedRect = new cajal.Rect(50, 80, 100, 120,30);
-
+//rounded corners
+var roundedRect = new cajal.Rect(50, 80, 100, 120,30);
+```
 
 #### Item specific methods ####
 * `center()`: The return value is a literal object with the x and the y coordinates of the rectangular's center. (For example: `{ x: 50, y: 80}`)
@@ -71,8 +77,9 @@ Create a rectangular using `cajal.Rect(xPos, yPos, width, height, [radius])`. Th
 ### Path ###
 Create a path object with `cajal.Path(xPos, yPos)`. There are several methods you can call to add points, or bezier curves to this path.
 
-    var path = cajal.Path(20, 30).to(100, 30).to(100, 80).close();
-
+```javascript
+var path = cajal.Path(20, 30).to(100, 30).to(100, 80).close();
+```
 
 #### Item specific methods ####
 * `line(xPos, yPos)`: Draw a line from the last point in path to the position (xPos, yPos)
@@ -86,8 +93,9 @@ Create a path object with `cajal.Path(xPos, yPos)`. There are several methods yo
 ### Text ###
 Create a text object with `cajal.Text(xPos, yPos, text)`.
 
-    var text = cajal.Text(20, 30, 'cajal - canvas javascript library');
-
+```javascript
+var text = cajal.Text(20, 30, 'cajal - canvas javascript library');
+```
 
 #### Item specific methods ####
 * `append(text)`: Append text to the current text
@@ -100,8 +108,9 @@ Create a text object with `cajal.Text(xPos, yPos, text)`.
 Create a symmetric polygon object with `cajal.Polygon(xPos, yPos, edges, radius)`.
 Example: create a poygon with 5 edges and a radius of 30px
 
-    var poly = cajal.Polygon(20, 30, 5, 30);
-
+```javascript
+var poly = cajal.Polygon(20, 30, 5, 30);
+```
 
 #### Item specific methods ####
 * `setPoints(n, r)`: Set the number of edges and the radius to new values
@@ -113,14 +122,18 @@ A circle sector (circular sector) is the part of a circle defined by a radius an
 You can create that circle sector with the method `cajal.CircleSector(x, y, r, angle)`
 Example: create a circle sector with an angle of 120 Degrees and a radius of 50
 
-    var csec = cajal.CircleSector(20, 30, 50, 120);
+```javascript
+var csec = cajal.CircleSector(20, 30, 50, 120);
+```
 
 ### Circle segment ###
 A circle segment (circular segment) is a part of a circle defined by a radius and an angle. Compared with the circle sector, a segment does not contain the inner part of a circle. It is cut off by a line from the start and end point of the circular arc.
 You can create that circle segment with the method `cajal.CircleSegment(x, y, r, angle)`
 Example: create a circle segment with an angle of 120 Degrees and a radius of 50
 
-    var cseg = cajal.CircleSsegment(20, 30, 50, 120);
+```javascript
+var cseg = cajal.CircleSsegment(20, 30, 50, 120);
+```
 
 #### Item specific methods ####
 * `close()`: Connect the end and start point of the circular arc with a line.
@@ -170,21 +183,23 @@ If you add an item with an itemId that already exists, it will be overwritten.
 
 Example: drawing a circle
 
-    // get the cajal instance
-    var c = cajal('mycanvas');
+```javascript
+// get the cajal instance
+var c = cajal('mycanvas');
 
-    // create a black circle with a white 2px stroke
-    var circle = cajal.Circle(30,40,100).options({
-        fill   : 'black',
-        stroke : 'white',
-        width  : 2
-    });
+// create a black circle with a white 2px stroke
+var circle = cajal.Circle(30,40,100).options({
+	fill   : 'black',
+	stroke : 'white',
+	width  : 2
+});
 
-    // add the item to the cajal instance with a name
-    c.add('myCircle', circle);
+// add the item to the cajal instance with a name
+c.add('myCircle', circle);
 
-    // draw all items (in that case only the circle
-    c.draw();
+// draw all items (in that case only the circle
+c.draw();
+```
 
 
 ### Get an item for manipulation ###
@@ -192,12 +207,14 @@ If you want to manipulate your item after adding it to the cajal instance call `
 
 Example: fill the circle created above blue and move by 100px right and 50px down
 
-    c.get('myCircle').move(100, 50).options({
-        fill: 'blue'
-    });
+```javascript
+c.get('myCircle').move(100, 50).options({
+	fill: 'blue'
+});
 
-    // draw again to see the changes
-    c.draw()
+// draw again to see the changes
+c.draw()
+```
 
 
 ### Overwrite an existing item ###
@@ -205,23 +222,25 @@ If you want to overwrite the circle created above use `set(itemid, newItem)`.
 
 Example: Replace the circle with a rectangular
 
-    c.set('myCircle', new cajal.Rect(30, 40, 100, 200).options({
-        fill   : 'blue',
-        stroke : 'white',
-        width  : 3
-    }));
+```javascript
+c.set('myCircle', new cajal.Rect(30, 40, 100, 200).options({
+	fill   : 'blue',
+	stroke : 'white',
+	width  : 3
+}));
 
-    // draw again to see changes
-    c.draw();
-
+// draw again to see changes
+c.draw();
+```
 
 ### Remove items ###
 You can remove an item from the canvas with `remove(itemId)` where `itemId` is your name for the item used in the `add` method
 
 Example: removing the circle created above
 
-    c.remove('myCircle');
-
+```javascript
+c.remove('myCircle');
+```
 
 ### Promote and demote items ####
 The items are drawn in the order they are added to the cajal instance. That means, that the item that is added first will be on the bottom layer and the item added last on the top layer. To rearrange those layers and promote or demote items you can use the following functions:
@@ -233,21 +252,23 @@ The items are drawn in the order they are added to the cajal instance. That mean
 
 Example: Three overlapping circles and some rearrangement
 
-	var c = new cajal('mycanvas');
+```javascript
+var c = new cajal('mycanvas');
 
-	var circle = new cajal.Circle(150, 150, 100);
+var circle = new cajal.Circle(150, 150, 100);
 
-	c.add('c1', circle.clone().options({
-		fill: 'red'
-	}));
-	c.add('c2', circle.clone().moveBy(100,0).options({
-		fill: 'green'
-	}));
-	c.add('c3', circle.clone().moveBy(50,100).options({
-		fill: 'blue'
-	}));
+c.add('c1', circle.clone().options({
+	fill: 'red'
+}));
+c.add('c2', circle.clone().moveBy(100,0).options({
+	fill: 'green'
+}));
+c.add('c3', circle.clone().moveBy(50,100).options({
+	fill: 'blue'
+}));
 
-	c.draw();
+c.draw();
+```
 
 Now you have three circles (red, green and blue one) with the red on the bottom and the blue on the top. `c.get('c1').up()` will bring the red circle one layer up. So now the green one is on the bottom. I think that should be enough to get the concept.
 
@@ -264,16 +285,20 @@ See above for the different draw option variables.
 So after knowing how to draw on the canvas we want to take a look on how to animate our elements. The cajal library has no default animations implemented, so that you must create animations by yourself. A animation is a normal function with some optional parameters.
 A basic animation function:
 
-	var myAnimation = function (frame, duration) {
-		// move the item 'myItem' by 0.5px to the right, 0.3px to the bottom and rotate it by 1 degree counter-clockwise
-		this.get('myItem').moveBy(0.5,0.3).rotateBy(-1);
-	}
+```javascript
+var myAnimation = function (frame, duration) {
+	// move the item 'myItem' by 0.5px to the right, 0.3px to the bottom and rotate it by 1 degree counter-clockwise
+	this.get('myItem').moveBy(0.5,0.3).rotateBy(-1);
+}
+```
 
 Inside the animation function you can access the cajal instance the animation is running using `this`. That makes an animation independent from the canvas it is called on and you can reuse your animation functions on different canvas elements.
 This function can be triggered to start or stop by calling the function `animate(animation, [duration])` and `stop(animation)`. The animation parameter in both functions is the animation function that we created.
 
-	// start the myAnimation animation and set the lifetime to 500 frames
-	c.animate(myAnimation, 500);
+```javascript
+// start the myAnimation animation and set the lifetime to 500 frames
+c.animate(myAnimation, 500);
+```
 
 Now this function is called every frame (default framerate is set to 30) and after 500 calls/frames it will be stopped.
 The `duration` parameter is optional and leaving it blank will run the animation until you stop it manually.
@@ -300,16 +325,18 @@ To get more natural movements cajal comes with some easing functions from [Rober
 
 Example: using expInOut with a power of 3 to move a rectangular by 300px on the x axis to the right
 
-	//define the animation function
-	var myEasingAnimation = function (frame, duration) {
-		var dx = cajal.Ease.expInOut(300, frame, duration, 3);
-		this.get('myRect').moveBy(dx, 0);
-	}
+```javascript
+//define the animation function
+var myEasingAnimation = function (frame, duration) {
+	var dx = cajal.Ease.expInOut(300, frame, duration, 3);
+	this.get('myRect').moveBy(dx, 0);
+}
 
-	//add a rectangular with 5px rounded corners
-	c.add('myRect', new cajal.Rect(50, 30, 50, 50, 5).options({
-		fill: 'black'
-	}));
+//add a rectangular with 5px rounded corners
+c.add('myRect', new cajal.Rect(50, 30, 50, 50, 5).options({
+	fill: 'black'
+}));
 
-	//start animation and set lifetime to 350 frames
-	c.animate(myEasingAnimation, 350);
+//start animation and set lifetime to 350 frames
+c.animate(myEasingAnimation, 350);
+```
