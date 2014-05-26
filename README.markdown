@@ -19,7 +19,7 @@ To create a instance of the cajal library call the cajal constructor and pass th
 	var c = new cajal('mycanvas');
 	//in combination with jQuery
 	var c2 = new cajal($('#mycanvas').get(0));
-	</script>
+</script>
 ```
 
 ### Global settings ###
